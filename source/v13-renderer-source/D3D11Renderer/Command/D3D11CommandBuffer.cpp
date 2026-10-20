@@ -330,6 +330,7 @@ namespace ashes::D3D11_NAMESPACE
 		m_recordedUploads.clear();   // v13.60
 		m_uploadSpans.clear();   // v13.73
 		m_hasBufferWrites = false;
+		m_hasExecuteCommands = false;   // v13.76
 		m_ringViews.clear();   // v13.74
 		for ( auto & recent : m_recentUploads ) recent = RecordedUpload{};   // v13.72
 		m_recentUploadsNext = 0u;
@@ -454,12 +455,15 @@ namespace ashes::D3D11_NAMESPACE
 			auto parent = get( buf->getMemory() );
 			if ( !memory.resource || memory.gpuWritten || !parent->shadow()
 				|| !checkFlag( parent->getMemoryPropertyFlags(), VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) ) return false;
-			D3D11_RESOURCE_DIMENSION dimension{};
-			memory.resource->GetType( &dimension );
-			if ( dimension != D3D11_RESOURCE_DIMENSION_BUFFER ) return false;
-			D3D11_BUFFER_DESC desc{};
-			static_cast< ID3D11Buffer * >( memory.resource )->GetDesc( &desc );
-			if ( desc.BindFlags != D3D11_BIND_CONSTANT_BUFFER ) return false;
+			if ( memory.pureConstantBuffer < 0 )   // v13.76: two COM calls once per buffer instead of per window
+			{
+				D3D11_RESOURCE_DIMENSION dimension{};
+				memory.resource->GetType( &dimension );
+				D3D11_BUFFER_DESC desc{};
+				if ( dimension == D3D11_RESOURCE_DIMENSION_BUFFER ) static_cast< ID3D11Buffer * >( memory.resource )->GetDesc( &desc );
+				memory.pureConstantBuffer = ( dimension == D3D11_RESOURCE_DIMENSION_BUFFER && desc.BindFlags == D3D11_BIND_CONSTANT_BUFFER ) ? 1 : 0;
+			}
+			if ( memory.pureConstantBuffer != 1 ) return false;
 			uint64_t const size = buf->getSize();
 			uint64_t const offset = uint64_t( info.offset ) + dynamicOffset;
 			if ( offset >= size || ( offset % 256u ) != 0u ) return false;
@@ -545,7 +549,8 @@ namespace ashes::D3D11_NAMESPACE
 			for ( auto & window : view->windows ) window.ok = false;
 			view->ringBuffer = nullptr;
 			if ( view->forceFallback ) continue;
-			for ( auto const & window : view->windows ) total += window.bindBytes;
+			for ( auto const & window : view->windows )
+				if ( !window.memory->gpuWritten.load( std::memory_order_relaxed ) ) total += window.bindBytes;
 		}
 		if ( !total ) return;
 		auto * ring = ubring::ring( get( m_device )->getDevice() );
@@ -562,12 +567,15 @@ namespace ashes::D3D11_NAMESPACE
 			view->ringBuffer = ring->buffer();
 			for ( auto & window : view->windows )
 			{
-				if ( !window.lifetime.expired() && !window.memory->gpuWritten )
+				if ( window.memory->gpuWritten.load( std::memory_order_relaxed ) ) continue;   // fallback; no space reserved
+				if ( !window.lifetime.expired() )
 				{
 					auto const * src = window.parent->shadow();
 					if ( src )
 					{
 						std::memcpy( dst + cursor, src + window.shadowOffset, window.copyBytes );
+						// v13.76 (review): bytes past the end of the buffer read as zero, like the original bind
+						if ( window.copyBytes < window.bindBytes ) std::memset( dst + cursor + window.copyBytes, 0, window.bindBytes - window.copyBytes );
 						window.firstConstant = ( batchStart + cursor ) / 16u;
 						window.ok = true;
 						++count;
@@ -619,7 +627,10 @@ namespace ashes::D3D11_NAMESPACE
 		if ( auto status = get( m_device )->getStatus(); status != VK_SUCCESS ) return status;
 		m_state.pushConstantBuffers.clear();
 		doMergeUploads();   // v13.73
-		if ( m_hasBufferWrites )   // v13.74: transfer writes or secondary command buffers in this recording: old path for every window
+		// v13.74: secondary command buffers may wrap the ring themselves -> old path for every window.
+		// v13.76 (review): transfer writes no longer disable the whole ring: only windows of buffers that
+		// are copy/fill/update destinations fall back (ObjectMemory::gpuWritten, checked at fill time).
+		if ( m_hasExecuteCommands )
 			for ( auto & view : m_ringViews ) view->forceFallback = true;
 		doFinishAfterSubmitActions();   // v13.51: recording order -> run order
 
@@ -648,6 +659,7 @@ namespace ashes::D3D11_NAMESPACE
 		reaper::retire( m_commands );   // v13.69: freed on a background thread
 		m_uploadSpans.clear();   // v13.73
 		m_hasBufferWrites = false;
+		m_hasExecuteCommands = false;   // v13.76
 		m_ringViews.clear();   // v13.74
 		m_state = State{};
 		return VK_SUCCESS;
@@ -700,6 +712,7 @@ namespace ashes::D3D11_NAMESPACE
 	void CommandBuffer::executeCommands( ArrayView< VkCommandBuffer const > commands )const
 	{
 		m_hasBufferWrites = true;   // v13.73: no upload merging in this recording
+		m_hasExecuteCommands = true;   // v13.76
 		if constexpr ( UseCommandsList )
 		{
 			for ( auto & commandBuffer : commands )

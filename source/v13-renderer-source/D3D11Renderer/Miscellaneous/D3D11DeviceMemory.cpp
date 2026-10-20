@@ -163,6 +163,9 @@ namespace ashes::D3D11_NAMESPACE
 				, nativeTextureBytes{ rhs.nativeTextureBytes }
 				, mapStaging{ rhs.mapStaging }
 				, subresources{ std::move( rhs.subresources ) }
+				, everUploaded{ rhs.everUploaded }   // v13.76 (review): keep state flags on move
+				, gpuWritten{ rhs.gpuWritten.load() }
+				, contentVersion{ rhs.contentVersion.load() + 1u }
 	{
 		rhs.mapStaging = nullptr;
 		rhs.device = nullptr;
@@ -229,7 +232,7 @@ namespace ashes::D3D11_NAMESPACE
 			, D3D11_MAPPED_SUBRESOURCE & data )const
 		{
 			data = {};
-			++contentVersion;   // v13.74: a mapped resource may be written
+			if ( mapFlags != D3D11_MAP_READ ) ++contentVersion;   // v13.74 (v13.76: not for read-only maps)
 			if ( !device || get( device )->getStatus() != VK_SUCCESS )
 			{
 				return VK_ERROR_DEVICE_LOST;
@@ -247,7 +250,7 @@ namespace ashes::D3D11_NAMESPACE
 		void ObjectMemory::unlock( ID3D11DeviceContext * context
 			, UINT subresource )const
 		{
-			++contentVersion;   // v13.74: index pool (staging copy-back)
+			if ( mapFlags != D3D11_MAP_READ ) ++contentVersion;   // v13.74: index pool (staging copy-back; v13.76: not for read-only maps)
 			if ( !device || get( device )->getStatus() != VK_SUCCESS )
 			{
 				safeRelease( mapStaging );
@@ -1272,10 +1275,12 @@ namespace ashes::D3D11_NAMESPACE
 						return;
 					}
 				}
+				// v13.76 (review): reset the write watch BEFORE copying, so an application write that
+				// lands during the copy is seen as dirty next time (was: copy, then reset = lost write)
+				m_data.resetRange( begin, end );
 				memory.upload( context, m_data.data(), subresource, begin, end - begin );
 				g_watchCopiedBytes += end - begin;
 				memory.everUploaded = true;
-				m_data.resetRange( begin, end );
 				return;
 			}
 			memory.upload( context

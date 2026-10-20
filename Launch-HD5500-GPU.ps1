@@ -44,6 +44,10 @@ param(
     # v13.29: run the game on Mesa lavapipe (a conformant CPU Vulkan driver) instead of the
     # bridge, as a REFERENCE: what correct Vulkan output looks like on this PC. Very slow.
     [switch]$Reference,
+    # v13.77: compare with ANOTHER Vulkan driver (ICD manifest .json), e.g. Mesa "Dozen" (Vulkan on D3D12,
+    # vulkan_dzn.dll + dzn_icd.x86_64.json from mesa-dist-win). Not bundled; nothing is installed. Like
+    # -Reference: the Intel preflight and experiment-env.txt are skipped. Experimental comparison only.
+    [string]$AltIcd = '',
     # v13.56: load the read-only tick-rate counter mod (mods\HD5500TickRate) with -mod=. Automatic for test
     # runs (-quicktest / -AutoCloseSeconds); for normal play only with -TickCounter, because -mod= starts the
     # game with the base game + DLCs + this mod only (other mods off for that run).
@@ -291,7 +295,7 @@ try {
         if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { throw ('Missing ' + $file + '. Extract the whole ZIP to a separate folder.') }
     }
     Write-Host ('Renderer SHA256: ' + (Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash)
-    if ((Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash -ne 'B09EEBB3A6813E62A67A2C2545A57DC849E8C4F8D9D75A8C0FEB646D6655FBA0') { throw 'Renderer hash differs from this v13.75 release. Re-extract the whole ZIP; do not mix revisions.' }
+    if ((Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash -ne '18FCD22080BDBF241DA1065E2B826994F8DF6DF6EA1EF05FF0BFF8BED3A89635') { throw 'Renderer hash differs from this v13.76 release. Re-extract the whole ZIP; do not mix revisions.' }
     # Local byte-identical copy of the user's existing loader; no Windows file changes.
     Copy-Item -LiteralPath $system -Destination $loaderCopy -Force
     if ((Get-FileHash -LiteralPath $system).Hash -ne (Get-FileHash -LiteralPath $loaderCopy).Hash) { throw 'Local original-loader copy verification failed.' }
@@ -317,6 +321,12 @@ try {
         $manifest = $lvpJson
         Write-Host 'REFERENCE MODE: Mesa lavapipe (CPU Vulkan) instead of the HD5500 bridge. Expect a few frames per second.'
     }
+    elseif ($AltIcd) {
+        if (-not (Test-Path -LiteralPath $AltIcd -PathType Leaf) -or [IO.Path]::GetExtension($AltIcd) -ne '.json') { throw ('-AltIcd needs the full path of a Vulkan driver manifest (.json): ' + $AltIcd) }
+        $manifest = (Resolve-Path -LiteralPath $AltIcd).Path
+        Write-Host ('ALTERNATIVE DRIVER MODE: ' + $manifest + ' instead of the HD5500 bridge (comparison only; not supported by this project).')
+    }
+    $foreignIcd = [bool]($Reference -or $AltIcd)
     [Environment]::SetEnvironmentVariable('VK_DRIVER_FILES',$manifest,'Process')
     [Environment]::SetEnvironmentVariable('VK_ICD_FILENAMES',$manifest,'Process')
     [Environment]::SetEnvironmentVariable('VK_ADD_DRIVER_FILES',$null,'Process')
@@ -366,7 +376,7 @@ try {
     # v13.30: one-off experiments without new buttons. experiment-env.txt next to this script,
     # lines KEY=VALUE (only RW_GPU_* / RW_HD5500_* / RW_OPT_* / DOTNET_GC* / DOTNET_Tiered* / DOTNET_TC_* names (v13.48: .NET garbage collector experiments); '#' = comment). Delete the file to stop.
     $experimentFile = Join-Path $PSScriptRoot 'experiment-env.txt'
-    if (-not $Reference -and (Test-Path -LiteralPath $experimentFile -PathType Leaf)) {
+    if (-not $foreignIcd -and (Test-Path -LiteralPath $experimentFile -PathType Leaf)) {
         foreach ($line in Get-Content -LiteralPath $experimentFile) {
             $t = $line.Trim()
             if ($t -eq '' -or $t.StartsWith('#')) { continue }
@@ -380,7 +390,7 @@ try {
     # bridge report that version; the loader also reads the version from the ICD manifest, so a
     # matching manifest copy is written next to the original and used for this run only.
     $apiVer = [Environment]::GetEnvironmentVariable('RW_GPU_API_VERSION','Process')
-    if (-not $Reference -and ($apiVer -eq '1.1' -or $apiVer -eq '1.2')) {
+    if (-not $foreignIcd -and ($apiVer -eq '1.1' -or $apiVer -eq '1.2')) {
         $verManifest = Join-Path $PSScriptRoot ('runtime\ashesD3D11Renderer_icd_' + $apiVer.Replace('.','') + '.json')
         ((Get-Content -LiteralPath $manifest -Raw) -replace '"api_version":\s*"[0-9.]+"', ('"api_version": "' + $apiVer + '.0"')) | Set-Content -LiteralPath $verManifest -Encoding ASCII
         $manifest = $verManifest
@@ -390,7 +400,7 @@ try {
     }
     Write-Host 'Check 1: stock loader + honest portable ICD, Intel selection, actual compute readback and Win32 presentation.'
     $raw = '--loader "' + $system + '" --icd "' + $manifest + '"'
-    if ($Reference) { $code = 0; Write-Host 'Reference mode: check 1 (Intel selection) skipped.' }
+    if ($foreignIcd) { $code = 0; Write-Host 'Reference/alternative driver mode: check 1 (Intel selection) skipped.' }
     else { $code = Invoke-Captured $probe $raw 'stock-gpu-preflight' 120; Show-Probe 'stock-gpu-preflight' }
     if ($code -ne 0) { throw ('GPU driver check failed, code ' + $code + '. RimWorld was not started and no game files were changed. Attach this report ZIP.') }
     if ($QuickStart) { Write-Host 'QuickStart: checks 2-18 skipped (play mode). Use Diagnose-UI-Frame.cmd for the full checks.' }

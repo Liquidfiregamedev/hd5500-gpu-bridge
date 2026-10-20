@@ -45,7 +45,7 @@ If RimWorld isn't in the usual Steam folder, the menu asks you once where `RimWo
 | Intel HD 2000 / 3000 (about 2011) | ❌ Too old, won't work |
 | Any newer graphics card | Not needed: your PC has Vulkan already |
 
-Not sure what you have? Press Win + R, type `dxdiag` and look under *Display*.
+Not sure what you have? Press Win + R, type `dxdiag` and look under *Display*. Or start the menu: the Home page tells you in one line whether your PC needs the bridge, and **Laptop health → PC check** gives the details (including which driver to install if your GPU does have Vulkan).
 
 ---
 

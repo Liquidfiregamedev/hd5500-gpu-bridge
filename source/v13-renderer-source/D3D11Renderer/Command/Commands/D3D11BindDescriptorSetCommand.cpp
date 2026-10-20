@@ -2214,7 +2214,7 @@ namespace ashes::D3D11_NAMESPACE
 	{
 	}
 
-	static void checkDeclaredUavs( Context const & context, uint32_t mask, VkPipeline pipeline, std::map< UINT, ID3D11UnorderedAccessView * > const & wanted )
+	static void checkDeclaredUavs( Context const & context, uint32_t mask, VkPipeline pipeline, std::map< UINT, ID3D11UnorderedAccessView * > const & wanted, uint64_t wantedSerial )
 	{
 		// v13.49: a shader that declares uN while slot N is empty reads zeros (instance data
 		// lost: the draw silently disappears). Generic detector, logs the first 24 cases.
@@ -2225,12 +2225,12 @@ namespace ashes::D3D11_NAMESPACE
 		// combination repeats for hundreds of draws per frame. RW_GPU_UAV_CHECK_CACHE=0 = check every draw.
 		static bool const cache = envflags::on( "RW_GPU_UAV_CHECK_CACHE", true );
 		thread_local VkPipeline lastPipeline{};
-		thread_local void const * lastWanted{};
+		thread_local uint64_t lastWanted{ ~0ull };   // v13.76: keyed on the resolve serial (an address can be reused)
 		thread_local UINT lastStart{ ~0u };
 		if ( cache )
 		{
-			if ( lastPipeline == pipeline && lastWanted == &wanted && lastStart == context.uavStart ) return;
-			lastPipeline = pipeline; lastWanted = &wanted; lastStart = context.uavStart;
+			if ( lastPipeline == pipeline && lastWanted == wantedSerial && lastStart == context.uavStart ) return;
+			lastPipeline = pipeline; lastWanted = wantedSerial; lastStart = context.uavStart;
 		}
 		static std::atomic< uint64_t > total{ 0u };
 		for ( uint32_t slot = 0u; slot < 32u; ++slot )
@@ -2252,7 +2252,7 @@ namespace ashes::D3D11_NAMESPACE
 
 	void ResolveOutputUavsCommand::apply( Context & context )const
 	{
-		checkDeclaredUavs( context, m_declaredUavMask, m_pipeline, m_resolved->uavs );
+		checkDeclaredUavs( context, m_declaredUavMask, m_pipeline, m_resolved->uavs, m_resolved->serial );
 		auto const & wanted = m_resolved->uavs;
 		UINT wantedEnd = wanted.empty() ? 0u : UINT( wanted.rbegin()->first + 1u );
 		// v13.53: with private copies bound (aliased buffer) the copy must be refreshed per draw.

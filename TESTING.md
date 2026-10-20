@@ -36,6 +36,9 @@ Open `SUMMARY.txt`. The important lines:
 - **Game errors/warnings** — the game's own complaints with mod-metadata noise removed. `[VALIDATION]` lines come from the bridge rejecting something.
 - **Frame diagnostics** — for each saved frame: how much of the screen is non-black and the average colour. A frame with 0% non-black is a black screen.
 
+## Other Vulkan driver (v13.77)
+Menu → Diagnostics → **Compare: other Vulkan driver**, or `Launch-HD5500-GPU.ps1 -QuickStart -AltIcd "C:\mesa\x64\dzn_icd.x86_64.json" -GameArguments "-quicktest"`. Runs the game on that driver instead of the bridge (nothing installed). On the HD 5500 Mesa Dozen will probably refuse to start (D3D12 binding tier 1); the report says why. Useful on PCs with D3D12 tier 2+ but a broken Vulkan driver.
+
 ## Reference run (v13.29)
 Menu → Diagnostics → **REFERENCE: real Vulkan on CPU (lavapipe, very slow)**, or `Launch-HD5500-GPU.ps1 -QuickStart -Reference -GameArguments "-quicktest"`. RimWorld runs on Mesa lavapipe instead of the bridge: 1–3 frames per second, but correct Vulkan output. Look at the colonists, trees, smoke and shadows: if they are right here, the bridge is at fault.
 
@@ -44,7 +47,7 @@ Runs are no longer zipped (add `-Zip` if you need a ZIP). After each run only th
 
 ## Switches for `Launch-HD5500-GPU.ps1`
 
-`-QuickStart` (skip the slow start-up checks), `-FrameDiag` (frame trace + pictures), `-DumpShaders` (HLSL dumps), `-AutoCloseSeconds N`, `-GameArguments "<game args>"` (e.g. `-quicktest`, `-noCompressAtlases`, `-QuitAfterBoot`, `-ResetVulkanFallback`), `-Capture`, `-SwapchainImages N`, `-Reference` (lavapipe), `-Zip`, `-KeepRuns N`.
+`-QuickStart` (skip the slow start-up checks), `-FrameDiag` (frame trace + pictures), `-DumpShaders` (HLSL dumps), `-AutoCloseSeconds N`, `-GameArguments "<game args>"` (e.g. `-quicktest`, `-noCompressAtlases`, `-QuitAfterBoot`, `-ResetVulkanFallback`), `-Capture`, `-SwapchainImages N`, `-Reference` (lavapipe), `-AltIcd "<driver .json>"` (v13.77: another Vulkan driver, e.g. Mesa Dozen), `-Zip`, `-KeepRuns N`.
 
 Environment switches read by the bridge itself: `RW_HD5500_D3D_DEBUG_LAYER=1` (Microsoft D3D11 debug layer, needs Windows "Graphics Tools"), `RW_GPU_BLIT_MODE=compute` (old blit path for A/B), `RW_GPU_SHADER_DISK_CACHE=<dir>|0` (persistent shader cache, v13.22), `RW_GPU_CB_EMULATE=1` (copy uniform-buffer windows like on feature level 11_0, v13.28), `RW_GPU_UPLOAD_DEDUPE=0` (no upload deduplication, v13.24), `RW_GPU_DOWNLOAD_ALL=1` (old behaviour: copy every storage buffer back after each draw, v13.23), `RW_GPU_SAMPLER_MAXLOD=<n>` (clamp all samplers to mip ≤ n, v13.31), `RW_GPU_RECTCLEAR=clearview` (partial clears through D3D11.1 ClearView instead of draws; v13.21), `RW_GPU_DUMP_HLSL=<folder>`, `RW_HD5500_FRAME_DIAG=1`. With frame diagnostics on, `vtx-compare` lines (v13.30) compare the vertices/indices of pawn-atlas draws on the GPU with the CPU copy the game wrote (`same=0` = stale upload). Read by the game: `WAYLITH_VULKAN_DEVICE=<part of GPU name>` (e.g. `Basic Render` for WARP; the bridge creates its device on that adapter since v13.19).
 
@@ -88,6 +91,10 @@ Bridge menu → "Install diagnostic tools (optional)" installs the laptop tool s
 Every start now runs the game in invariant-culture mode (saves always use a dot), shown in the launcher output as `Number format: invariant culture ON`. To compare with the old behaviour add `-NoInvariantCulture` to the launcher arguments. Check after a session: load a save made with v13.45 — pawn ages and need bars must be normal.
 SUMMARY.txt now has two new sections: **Game log digest** (from the game's own Player.log) and **Bridge performance digest** (slow command buffers: count, median, p95, max, most expensive command types). Those two sections are the first thing to compare between builds.
 
+
+## v13.76 checks
+- Menu Home page shows a "Graphics: … no Vulkan driver, the bridge is the right tool" line; the PC check has a "RimWorld 1.7 graphics compatibility (Vulkan)" section.
+- Speed test as before (same numbers as v13.75 expected; the ring now also stays on in frames with buffer copies).
 
 ## v13.75 checks
 - `[RW-GPU-UBRING] uniform ring … created` and `first batch` must appear now (v13.74 run 211523 had windows=0); `[RW-GPU-IA]` `uniform ring: windows=` growing, `fallbacks=` small; `descriptor sets bound by content match=` growing (was 5).

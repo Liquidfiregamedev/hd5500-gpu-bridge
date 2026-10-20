@@ -1,4 +1,4 @@
-# FIX RIMWORLD — handoff (updated 2026-10-20, v13.75)
+# FIX RIMWORLD — handoff (updated 2026-10-21, v13.77)
 
 Goal: run RimWorld 1.7 (Waylith engine, .NET 10, Vulkan) on a laptop with an Intel HD 5500 (Windows 10, no native Vulkan driver), via the "HD5500 GPU Bridge": a Vulkan 1.0 ICD built from Ashes' D3D11 backend (`ashesD3D11Renderer.dll`) plus a compat loader proxy. v1–v13.2 came from Manus; v13.3 onward is Claude work. Design goal added by the user: the bridge must stay reusable for other pre-Vulkan GPUs (Haswell/Ivy Bridge Intel, pre-GCN AMD, Fermi), so capability checks are asked of the driver at run time, never hard-coded for the HD 5500.
 
@@ -6,6 +6,9 @@ Goal: run RimWorld 1.7 (Waylith engine, .NET 10, Vulkan) on a laptop with an Int
 
 ## Target hardware
 Lenovo Z70-80 · Win10 Pro 22H2 (19045) · i5-5200U (2C/4T) · HD 5500 (DEV_1616, driver 20.19.15.5171, D3D11 FL 11_1, D3D12 SM 5.1 / binding tier 1) · 16 GB DDR3L · 256 GB SSD (C: nearly full; keep deploys small) · external 1920×1200 display. The game window is 1920×1080 windowed.
+
+## Other Vulkan drivers (v13.77)
+`-AltIcd "<driver .json>"` / menu Diagnostics → Compare: other Vulkan driver runs the quicktest on a user-supplied ICD (e.g. Mesa Dozen) instead of the bridge. Renderer unchanged since v13.76. Findings from the Fracture sessions are in RESEARCH (ninth pass); none required a bridge change.
 
 ## Other GPUs (v13.65)
 The bridge needs Direct3D 11 feature level 11_0 or higher; 11_1 is the fully supported path. Every run now logs a `[RW-GPU-COMPAT]` block (adapter, driver version, caps, `DEGRADED:` items, verdict) and the summary shows it at the top. Expected, untested: Intel Ivy Bridge HD 2500/4000, Haswell HD 4200–5200, Broadwell HD 5300–6200 (11_1); NVIDIA Fermi GT/GTX 4xx/5xx (11_0, Vulkan was never shipped on Windows); AMD TeraScale 2 HD 5000/6000 (11_0); AMD GCN1 HD 7000 (11_1, but has its own Vulkan driver). Not possible: Sandy Bridge HD 2000/3000 (10_1). Dozen (Vulkan on D3D12) needs Shader Model 6 and cannot run on any of these. CPU fallback for any PC: Mesa lavapipe (mesa-dist-win), playable only on fast CPUs.
@@ -27,6 +30,9 @@ Remaining candidates from the bridge review (not yet done, larger or riskier): p
 
 ## Render-thread finding (v13.67)
 All-thread profile: Waylith's render thread (`RenderFrame` 12–20 ms + `MapMainPass` 3–8 ms per frame) is the bottleneck; the main thread waits for it in `RenderEnqueue`. Bridge execution is 2–7 ms of that; the rest is the engine's own draw encoding. Index-offset folding found nothing to fold (Waylith already dedupes binds; meshes have their own index buffers). Levers: fewer draws (optimizer zoom-out limit, ~20% faster zoomed out in one test), cheaper per-draw bridge work, and finding the engine's heavy render code with profile level 3 (experiment-env.txt `RW_OPT_PROFILE=3`).
+
+## PC check 20 Oct 21:56 (hardware facts)
+Only the HD 5500 (no GeForce 840M in this unit). RAM 2×8 GB DDR3L-1600, channel A + B = dual channel (different brands). Intel graphics power plan already "maximum performance"; Game Mode on; Game Bar recording off; visual effects "best performance". BIOS ABCN32WW from 2014-06-20 (check Lenovo support for newer). No Lenovo Energy Management installed. 44 Kernel-Processor-Power event 37 ("speed limited by firmware") this week. Charger: battery at 50–51% and "charging" with charge rate 0 mW in both power checks (19 and 20 Oct) - suspect the adapter/power path (weak or non-original charger can trigger BD PROCHOT = the 22% cycles); test a run on battery. C: only 8 GB (3%) free. Discord used 10% CPU while idle. Defender real-time on.
 
 ## v13.75 (deployed 20 Oct)
 Measured v13.74: bridge 3.3 → 2.3 ms/frame; index pool works (25k index calls per session instead of millions). Ring and content fast path did not engage because Waylith writes per-draw uniforms as PLAIN uniform buffers at a new offset in a new descriptor set per draw (VulkanMeshDrawEncoder.TryUploadUniforms). v13.75 handles that (`RW_GPU_UNIFORM_RING_STATIC`, `RW_GPU_SET_CONTENT_UBO`). Next candidates: vertex-buffer pool, push constants into the ring.

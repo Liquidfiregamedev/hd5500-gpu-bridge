@@ -69,6 +69,23 @@ try {
   foreach ($g in $gpus) { W ('  ' + $g.Name + '  driver ' + $g.DriverVersion + ' (' + $(if ($g.DriverDate) { ([datetime]$g.DriverDate).ToString('yyyy-MM-dd') } else { '?' }) + ')  status ' + $g.Status) }
   if ($gpus | Where-Object { $_.Name -match 'NVIDIA|GeForce|Radeon' }) { $tips.Add('A second graphics chip was found (see "Graphics adapters"). Some Z70-80 models have a GeForce 840M, which has its own Vulkan driver: RimWorld could then run WITHOUT the bridge. Tell Claude what is listed.') }
 } catch { W ('  query failed: ' + $_.Exception.Message) }
+# v13.76: does this PC need the bridge? (RimWorld 1.7 needs Vulkan)
+W '== RimWorld 1.7 graphics compatibility (Vulkan) =='
+try {
+  . (Join-Path $root 'Gpu-Compat.ps1')
+  $gc = Get-GpuCompat
+  W ('  Vulkan drivers installed on this PC: ' + $(if ($gc.VulkanDrivers.Count) { $gc.VulkanDrivers.Count.ToString() + ' (' + (($gc.VulkanDrivers | ForEach-Object { Split-Path $_ -Leaf }) -join ', ') + ')' } else { 'none' }))
+  foreach ($g in $gc.Gpus) {
+    W ('  ' + $g.Name + ': ' + $(switch ($g.Kind) { 'native' { 'HAS VULKAN' } 'bridge' { 'NO VULKAN - bridge needed' } 'too-old' { 'TOO OLD (no Direct3D 11)' } 'no-driver' { 'NO DRIVER' } default { 'unknown - the bridge log will tell' } }))
+    if ($g.Advice) { W ('     ' + $g.Advice) }
+    if ($g.Kind -eq 'native') { $tips.Add($g.Name + ' has a Vulkan driver: try RimWorld 1.7 WITHOUT the bridge first (start it from Steam). The bridge is meant for GPUs without Vulkan.') }
+    if ($g.VramMb -gt 0 -and $g.VramMb -le 2048 -and $g.Kind -eq 'native' -and $g.Name -notmatch 'Intel') { $tips.Add($g.Name + ' has ' + $g.VramMb + ' MB video memory: if RimWorld 1.7 crashes with "out of memory"/device lost, set the Windows environment variable WAYLITH_VRAM_BUDGET_MB to about 70% of it (e.g. ' + [int]($g.VramMb * 0.7) + ') - a knob of the game engine seen in player logs; delete the variable to undo.') }
+  }
+  if ($gc.ImplicitLayers.Count) {
+    W ('  Vulkan overlay layers installed (Discord, OBS, Steam, RTSS ...): ' + ($gc.ImplicitLayers -join ', '))
+    W '     The bridge launcher switches them off for its own runs. When playing WITHOUT the bridge, close Discord/OBS/overlays if VRAM fills up or the game crashes (reported by several 1.7 players).'
+  }
+} catch { W ('  check failed: ' + $_.Exception.Message) }
 W '== Laptop model, BIOS, thermal/power software =='
 try {
   $prod = Get-CimInstance Win32_ComputerSystemProduct -ErrorAction Stop; $bios = Get-CimInstance Win32_BIOS -ErrorAction Stop

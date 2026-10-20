@@ -128,15 +128,18 @@ namespace ashes::D3D11_NAMESPACE
 			{
 				if ( !m_buffer || bytes == 0u || bytes > m_size ) return nullptr;
 				D3D11_MAP mode = D3D11_MAP_WRITE_NO_OVERWRITE;
-				if ( m_first || m_pos + bytes > m_size )
+				bool const wrap = m_first || m_pos + bytes > m_size;
+				if ( wrap ) mode = D3D11_MAP_WRITE_DISCARD;
+				D3D11_MAPPED_SUBRESOURCE mapped{};
+				// v13.76 (review): position/first-flag change only after a successful Map; a failed
+				// DISCARD must not let the next batch overwrite queued windows with NO_OVERWRITE.
+				if ( FAILED( context->Map( m_buffer, 0u, mode, 0u, &mapped ) ) || !mapped.pData ) return nullptr;
+				if ( wrap )
 				{
-					mode = D3D11_MAP_WRITE_DISCARD;
 					m_pos = 0u;
 					m_first = false;
 					g_discards.fetch_add( 1u, std::memory_order_relaxed );
 				}
-				D3D11_MAPPED_SUBRESOURCE mapped{};
-				if ( FAILED( context->Map( m_buffer, 0u, mode, 0u, &mapped ) ) || !mapped.pData ) return nullptr;
 				g_maps.fetch_add( 1u, std::memory_order_relaxed );
 				batchStart = m_pos;
 				m_pos += bytes;

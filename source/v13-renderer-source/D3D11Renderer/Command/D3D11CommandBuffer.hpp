@@ -219,6 +219,7 @@ namespace ashes::D3D11_NAMESPACE
 		struct UploadSpan { ObjectMemory const * memory; VkDeviceSize begin; VkDeviceSize end; uint32_t seq; class UploadMemoryCommand * command; };
 		mutable std::vector< UploadSpan > m_uploadSpans;
 		mutable bool m_hasBufferWrites{};
+		mutable bool m_hasExecuteCommands{};   // v13.76
 		void doMergeUploads()const;
 		// v13.74: uniform ring (Miscellaneous/D3D11UniformRing.hpp)
 		mutable std::vector< std::shared_ptr< ubring::View > > m_ringViews;

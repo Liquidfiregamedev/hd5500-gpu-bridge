@@ -53,8 +53,8 @@ namespace ashes::D3D11_NAMESPACE
 			// index, nothing in between that could change bindings -> only the dynamic offsets
 			// are re-applied).
 			uint64_t sideEffectEpoch{ 1u };
-			uint64_t srvHazardVersion{};
-			ubring::View const * ubRing{};   // v13.74: uniform-ring windows of the BindDescriptorSetCommand being applied   // v13.72: hazard-tracker version the SRV cache entries were checked against
+			uint64_t srvHazardVersion{};   // v13.72: hazard-tracker version the SRV cache entries were checked against
+			ubring::View const * ubRing{};   // v13.74: uniform-ring windows of the BindDescriptorSetCommand being applied
 			// v13.66: index-buffer offset folding. The index buffer is bound at offset 0 and the
 			// Vulkan offset (in indices) is added to firstIndex at draw time, so a new offset into
 			// the same buffer needs no IASetIndexBuffer call (DXVK-style).

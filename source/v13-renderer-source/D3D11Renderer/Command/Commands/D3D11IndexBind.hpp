@@ -19,7 +19,8 @@ namespace ashes::D3D11_NAMESPACE
 	{
 		auto const * memory = context.indexMemory;
 		if ( !memory ) return;   // pool off: BindIndexBufferCommand already bound it
-		if ( allowPool && !context.indexPending && memory->contentVersion == context.indexResolvedVersion ) return;
+		uint64_t const version = memory->contentVersion.load( std::memory_order_relaxed );
+		if ( allowPool && !context.indexPending && version == context.indexResolvedVersion ) return;
 		if ( !context.indexPoolChecked )
 		{
 			context.indexPoolChecked = true;
@@ -30,7 +31,7 @@ namespace ashes::D3D11_NAMESPACE
 		auto * pool = static_cast< idxpool::Pool * >( context.indexPool );
 		UINT slot = 0u;
 		if ( allowPool && pool && idxpool::enabled()
-			&& pool->resolve( *context.context, memory->serial, memory->contentVersion, memory->resource, slot ) )
+			&& pool->resolve( *context.context, memory->serial, version, memory->resource, slot ) )
 		{
 			buffer = pool->buffer();
 			offsetBytes += slot;
@@ -60,6 +61,6 @@ namespace ashes::D3D11_NAMESPACE
 		context.indexBase = base;
 		context.indexBuffer = buffer;
 		context.indexPending = !allowPool;
-		context.indexResolvedVersion = memory->contentVersion;
+		context.indexResolvedVersion = version;
 	}
 }

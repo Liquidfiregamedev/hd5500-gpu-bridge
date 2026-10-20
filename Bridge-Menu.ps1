@@ -252,6 +252,12 @@ Add-Action $pHome 'Refresh results' 'Re-read the latest summary and self-test (F
 
 function Update-Home {
     $lines = @()
+    # v13.76: one line about this PC's graphics (does it need the bridge at all?)
+    if ($null -eq $script:gpuLine) {
+        $script:gpuLine = ''
+        try { . (Join-Path $script:root 'Gpu-Compat.ps1'); $script:gpuLine = Get-GpuCompatLine } catch { }
+    }
+    if ($script:gpuLine) { $lines += $script:gpuLine; $lines += '' }
     $sumFile = Join-Path $script:reports 'LATEST-SUMMARY.txt'
     if (Test-Path -LiteralPath $sumFile) {
         $t = @(Get-Content -LiteralPath $sumFile -ErrorAction SilentlyContinue)
@@ -301,6 +307,16 @@ Add-Action $pTests 'Bridge self-test (1-2 min)' 'Developer test pictures on the 
 $pDiag = New-Page 'diag' 'Diagnostics' 'Diagnostics' 'Slower runs that record extra information, for finding the cause of a visual problem or crash.'
 Add-Action $pDiag 'Full start-up checks + frame trace' 'Thorough launcher with all checks and frame pictures.' 'The slow, thorough launcher: all start-up checks plus frame pictures. Use it when the game does not start or shows something badly wrong.' { Start-Launcher 'Full diagnostics' '-FrameDiag -SwapchainImages 1' '' 'full diagnostics' } | Out-Null
 Add-Action $pDiag 'Reference: real Vulkan on CPU' 'Mesa lavapipe instead of the bridge. 1-3 fps.' 'Runs the quicktest map on Mesa lavapipe (a correct Vulkan driver that runs on the CPU) instead of the bridge. Very slow, but shows what correct output looks like, so you can tell whether a glitch is the bridge''s fault or the game''s. Closes after 10 minutes.' { Start-Launcher 'Reference (lavapipe)' '-QuickStart -Reference -AutoCloseSeconds 600' '-quicktest' 'reference lavapipe' } | Out-Null
+# v13.77: compare with another Vulkan driver the user downloaded (e.g. Mesa Dozen = Vulkan on D3D12). Nothing is installed.
+Add-Action $pDiag 'Compare: other Vulkan driver' 'Pick a driver .json (e.g. Mesa Dozen). Experimental.' 'Runs the quicktest map on another Vulkan driver instead of the bridge, for example Mesa "Dozen" (Vulkan on Direct3D 12) from mesa-dist-win: pick its dzn_icd.x86_64.json. Nothing is installed or changed. Many old GPUs will fail here (Dozen needs more Direct3D 12 features than an HD 5500 offers); the report says why. Closes after 10 minutes.' {
+    $dlg = New-Object System.Windows.Forms.OpenFileDialog
+    $dlg.Title = 'Vulkan driver manifest (.json)'; $dlg.Filter = 'Vulkan driver manifest (*.json)|*.json'
+    if ($dlg.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+        # cmd /c + powershell -File: quote with double quotes (single quotes would stay in the value)
+        if ($dlg.FileName -match '[&|<>^%"]') { $script:status.Text = 'That path contains special characters; move the driver to a simple folder (e.g. C:\mesa) and try again.'; return }
+        Start-Launcher 'Other Vulkan driver' ('-QuickStart -AltIcd "' + $dlg.FileName + '" -AutoCloseSeconds 600') '-quicktest' 'alternative driver'
+    }
+} | Out-Null
 Add-Action $pDiag 'Record Vulkan calls (GFXReconstruct)' 'Records the game''s Vulkan calls for replay. Large files.' 'Records every Vulkan call the game makes, so a problem can be replayed and studied in the emulator. Produces large files; only use when asked.' { Start-Launcher 'Record' '-QuickStart -SwapchainImages 1 -Capture' '' 'capture' } | Out-Null
 Add-Action $pDiag 'Install diagnostic tools (optional)' 'RenderDoc, PresentMon, Intel GPA, HWiNFO and more via winget.' 'Installs optional analysis tools through winget: RenderDoc, PIX, Intel GPA, GPUView, PresentMon, HWiNFO, Vulkan SDK and more. Each is optional; see TOOLS.md for what each one is for.' { Start-Cmd 'Install-Tools.cmd' 'Install tools' } | Out-Null
 

@@ -68,7 +68,7 @@ namespace ashes::D3D11_NAMESPACE
 		mutable ID3D11Resource * mapStaging{};
 		std::vector< D3D11_SUBRESOURCE_DATA > subresources{};
 		mutable bool everUploaded{};   // v13.48: first upload is always complete
-		mutable bool gpuWritten{};     // v13.74: was a copy/fill/update destination (never served from the uniform ring)
+		mutable std::atomic< bool > gpuWritten{};     // v13.74 (v13.76 atomic: written at record time, read on the submit thread): was a copy/fill/update destination (never served from the uniform ring)
 		// v13.74: index pool (D3D11IndexPool.hpp). serial = identity that is never reused (addresses are);
 		// contentVersion changes whenever the bridge writes this object's D3D11 resource.
 		static uint64_t nextSerial()
@@ -77,7 +77,8 @@ namespace ashes::D3D11_NAMESPACE
 			return ++counter;
 		}
 		uint64_t serial{ nextSerial() };
-		mutable uint64_t contentVersion{ 1u };
+		mutable std::atomic< uint64_t > contentVersion{ 1u };   // v13.76: atomic (bumped by flush/unmap on the app thread)
+		mutable int8_t pureConstantBuffer{ -1 };   // v13.76: cached "D3D11 buffer is a pure constant buffer" (-1 = not checked)
 	};
 	using ObjectMemoryPtr = std::unique_ptr< ObjectMemory >;
 	/**
