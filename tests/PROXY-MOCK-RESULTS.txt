@@ -1,0 +1,14 @@
+PASS: proxy loads
+PASS: wrapped entry points exported
+PASS: disabled opt-in preserves original extension error
+PASS: GIPA exposes wrapped instance creation
+PASS: advertised portability is added and native feature error is retained
+PASS: original instance flags, extension list and API version unchanged
+PASS: real loader null-function behavior preserved
+PASS: advertised subset opt-in does not suppress unsupported-feature failure
+PASS: original device features and extension list unchanged
+PASS: disabled device opt-in preserves original request/error
+PASS: MOCK unit tests complete; no actual GPU or game was tested.
+PASS: proxy loads
+PASS: wrapped entry points exported
+PASS: missing backend fails honestly without crash

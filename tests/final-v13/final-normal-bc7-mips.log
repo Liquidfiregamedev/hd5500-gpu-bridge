@@ -1,0 +1,595 @@
+RimWorld BC7 raw Vulkan resource matrix
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+POLICY: this process makes no no-BC fallback decision. It requests only real BC7 resources.
+WARNING: --allow-non-intel-test is Wine sandbox integration only, NOT HD 5500 validation.
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0), max=1.4.362
+DEBUG_UTILS[1]: severity=0x100 type=0x1 code=0 id=Loader Message message=windows_read_data_files_in_registry: Registry lookup failed to get layer manifest files.
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+RESULT: vkCreateDebugUtilsMessengerEXT => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0), count=1
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0
+WARNING: selected adapter is synthetic/non-Intel; do not treat this as HD 5500 compatibility evidence.
+MEMORY_TYPE[0]: heap=0 flags=0x1
+MEMORY_TYPE[1]: heap=1 flags=0x6
+MEMORY_TYPE[2]: heap=1 flags=0xE
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE977510 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=0 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE977510 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=1 nativeBufferWidth=12544 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+FORMAT_PROPERTIES: format=BC7_UNORM_BLOCK(145) optimalFeatures=0xD401 sampled=0x1 transferSrc=0x4000 transferDst=0x8000
+FORMAT_QUERY_RESULT: format=BC7_UNORM_BLOCK usage=SAMPLED => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=48 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=48 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=48 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=48 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=816 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=816 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=1392 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=1392 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=5488 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=5488 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22566035456 commitAvailable=22566035456 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+FORMAT_QUERY_RESULT: format=BC7_UNORM_BLOCK usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950180 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C480 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C480 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C480 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C480 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C3B0 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C3B0 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C3B0 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+FORMAT_PROPERTIES: format=BC7_SRGB_BLOCK(146) optimalFeatures=0xD401 sampled=0x1 transferSrc=0x4000 transferDst=0x8000
+FORMAT_QUERY_RESULT: format=BC7_SRGB_BLOCK usage=SAMPLED => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C3B0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C3B0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C3B0 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C3B0 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE987120 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+FORMAT_QUERY_RESULT: format=BC7_SRGB_BLOCK usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=2 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=1 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=32 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=1392 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C550 parentBytes=5488 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C550 parentBytes=53341008 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=0 extent=24x24 blocks=6x6 bytes=576 offset=0 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=1 extent=12x12 blocks=3x3 bytes=144 offset=576 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=2 extent=6x6 blocks=2x2 bytes=64 offset=720 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=3 extent=3x3 blocks=1x1 bytes=16 offset=784 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=4 extent=1x1 blocks=1x1 bytes=16 offset=800 validBC7Mode6Prefix=40
+UPLOAD_CASE_BEGIN: format=BC7_UNORM_BLOCK image=24x24 mips=5 totalCompressedBytes=816; exact block transfer/readback, no decode/re-encode comparison.
+UPLOAD_CREATE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK bytes=816 alignment=16 typeBits=0x00000005 chosenDeviceLocal=0
+UPLOAD_IMAGE_ALLOC_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_IMAGE_BIND_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=4 levelCount=1 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-upload-src bytes=816 usage=0x1 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-upload-src reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-upload-src type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE950410 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE950410 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=13376 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: BC7-upload-src offset=0 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-readback-dst bytes=816 usage=0x2 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-readback-dst reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-readback-dst type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE986170 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=13376 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE986170 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: BC7-readback-dst offset=0 => VK_SUCCESS (0)
+UPLOAD_MAP_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_FLUSH_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDPOOL_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDBUF_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_BEGIN_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_END_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_FENCE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE985E40 parentBytes=576 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2208 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94C310 parentBytes=144 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1776 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE985E40 parentBytes=64 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1840 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE985E40 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1856 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE985E40 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1680 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+UPLOAD_SUBMIT_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_WAIT_RESULT: format=BC7_UNORM_BLOCK timeoutNs=15000000000 => VK_SUCCESS (0)
+READBACK_MAP_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+READBACK_INVALIDATE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=0 extent=24x24 bytes=576 offset=0 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=1 extent=12x12 bytes=144 offset=576 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=2 extent=6x6 bytes=64 offset=720 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=3 extent=3x3 bytes=16 offset=784 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=4 extent=1x1 bytes=16 offset=800 => EXACT_MATCH
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE986170 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE986170 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE950410 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE950410 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE986170 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE950410 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B2A0 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+UPLOAD_CASE_FINAL: format=BC7_UNORM_BLOCK => PASS all 5 mip byte ranges exact.
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=0 extent=24x24 blocks=6x6 bytes=576 offset=0 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=1 extent=12x12 blocks=3x3 bytes=144 offset=576 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=2 extent=6x6 blocks=2x2 bytes=64 offset=720 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=3 extent=3x3 blocks=1x1 bytes=16 offset=784 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=4 extent=1x1 blocks=1x1 bytes=16 offset=800 validBC7Mode6Prefix=40
+UPLOAD_CASE_BEGIN: format=BC7_SRGB_BLOCK image=24x24 mips=5 totalCompressedBytes=816; exact block transfer/readback, no decode/re-encode comparison.
+UPLOAD_CREATE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK bytes=816 alignment=16 typeBits=0x00000005 chosenDeviceLocal=0
+UPLOAD_IMAGE_ALLOC_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_IMAGE_BIND_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=4 levelCount=1 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-upload-src bytes=816 usage=0x1 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-upload-src reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-upload-src type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE989CF0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE989CF0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: BC7-upload-src offset=0 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-readback-dst bytes=816 usage=0x2 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-readback-dst reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-readback-dst type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE98E2A0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE98E2A0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: BC7-readback-dst offset=0 => VK_SUCCESS (0)
+UPLOAD_MAP_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_FLUSH_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDPOOL_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDBUF_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_BEGIN_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_END_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_FENCE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B1D0 parentBytes=576 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=3024 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B1D0 parentBytes=144 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2592 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B280 parentBytes=64 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2656 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B100 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2672 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98B100 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2496 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+UPLOAD_SUBMIT_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_WAIT_RESULT: format=BC7_SRGB_BLOCK timeoutNs=15000000000 => VK_SUCCESS (0)
+READBACK_MAP_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+READBACK_INVALIDATE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=0 extent=24x24 bytes=576 offset=0 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=1 extent=12x12 bytes=144 offset=576 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=2 extent=6x6 bytes=64 offset=720 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=3 extent=3x3 bytes=16 offset=784 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=4 extent=1x1 bytes=16 offset=800 => EXACT_MATCH
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE98E2A0 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2448 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE98E2A0 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2448 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE989CF0 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2448 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE989CF0 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=2448 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98E2A0 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE989CF0 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE988540 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=1632 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+UPLOAD_CASE_FINAL: format=BC7_SRGB_BLOCK => PASS all 5 mip byte ranges exact.
+RESULT: vkDeviceWaitIdle => VK_SUCCESS (0)
+BC7_MATRIX_SUMMARY: queries=4 queryFailures=0 creates=48 createFailures=0 allocations=48 allocationFailures=0 binds=48 bindFailures=0 fullViews=50 fullViewFailures=0 tailViews=50 tailViewFailures=0 noDeviceLocal=0 noHostVisibleCoherent=0 uploadCases=2 uploadFailures=0 readbackMipMismatches=0
+[RW-GPU-FENCE] fenced_submits=2 flushes=2 polls=36 timeouts=0
+[RW-GPU-STAGING] cap=268435456 liveBytes=1632 peakBytes=1632 entries=2 hits=8 misses=2 evictions=0 uncached=0
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE98AB80 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=816 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE988730 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=14208 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=53341008 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22459523072 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=0 entries=0 hits=0 misses=0 inserts=0 evictions=0 rejected=0
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE977510 parentBytes=12544 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=14208 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE977510 parentBytes=12544 bindingOffset=0 logicalBytes=12544 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=14208 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE977510 parentBytes=0 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=14208 nativeLiveTextureBytes=0 nativePeakTextureBytes=53341008 physicalAvailable=22459523072 commitAvailable=22459523072 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-STATECACHE] hits=0 misses=0 invalidations=2
+DEBUG_SUMMARY: total=1 errors=0 textIntegrity=sane-or-no-messages
+FINAL: PASS status=0; BC7 resources, views, and exact tail-mip transfer/readback all succeeded.
+X connection to :162 broken (explicit kill or server shutdown).
+X connection to :162 broken (explicit kill or server shutdown).

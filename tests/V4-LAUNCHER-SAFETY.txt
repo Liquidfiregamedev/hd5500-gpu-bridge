@@ -1,0 +1,7 @@
+Temporary compatibility file: /tmp/RimWorldLauncherSafety-b3e9b549c77d48ebae7d111e7617d556/temporary destination.dll
+PASS: new temporary file copied and tracked by exact content hash.
+Reusing identical existing compatibility file: /tmp/RimWorldLauncherSafety-b3e9b549c77d48ebae7d111e7617d556/identical existing.dll
+PASS: identical pre-existing file reused without marking it for deletion.
+PASS: unrelated existing file refused and preserved unchanged.
+PASS: directory destination refused without alteration.
+PASS: syntax and staging unit tests complete; no game, driver or Windows file was used.

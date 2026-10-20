@@ -1,0 +1,70 @@
+Ashes D3D11 raw Vulkan texture create/bind matrix
+MODE: --matrix-only. No upload buffer, command buffer, copy, submit, or game path will run.
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11\test-runtime\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json
+ICD isolation: VK_ICD_FILENAMES and VK_DRIVER_FILES set in this process only.
+WARNING: synthetic/non-Intel adapter allowed for Wine sandbox integration only; NOT Intel hardware validation.
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0), loader max 1.4.362
+PORTABILITY: enabling advertised VK_KHR_portability_enumeration.
+DEBUG_UTILS: VK_EXT_debug_utils advertised; enabling native callback.
+DEBUG_UTILS[1]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: applicationName: "Ashes texture matrix", applicationVersion: 1, engineName: "standalone", engineVersion: 1, apiVersion: 1.0.0
+DEBUG_UTILS[2]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: Requested 0 instance layer(s):
+DEBUG_UTILS[3]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: Requested 2 instance extension(s):
+DEBUG_UTILS[4]: severity=0x10 type=0x1 code=0 id=Loader Message message=   VK_KHR_portability_enumeration
+DEBUG_UTILS[5]: severity=0x10 type=0x1 code=0 id=Loader Message message=   VK_EXT_debug_utils
+DEBUG_UTILS[6]: severity=0x10 type=0x1 code=0 id=Loader Message message=No valid vk_loader_settings.json file found, no loader settings will be active
+DEBUG_UTILS[7]: severity=0x10 type=0x1 code=0 id=Loader Message message=Portability enumeration bit was set, enumerating portability drivers.
+DEBUG_UTILS[8]: severity=0x10 type=0x1 code=0 id=Loader Message message=windows_get_app_package_manifest_path: Failed to find mapping layers packages by family name
+DEBUG_UTILS[9]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for implicit layer manifest files
+DEBUG_UTILS[10]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[11]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found no files
+DEBUG_UTILS[12]: severity=0x10 type=0x1 code=0 id=Loader Message message=Checking for Layer Manifest files in Registry at HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ImplicitLayers
+DEBUG_UTILS[13]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found no registry files in HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ImplicitLayers
+DEBUG_UTILS[14]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for explicit layer manifest files
+DEBUG_UTILS[15]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[16]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found no files
+DEBUG_UTILS[17]: severity=0x10 type=0x1 code=0 id=Loader Message message=Checking for Layer Manifest files in Registry at HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ExplicitLayers
+DEBUG_UTILS[18]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found no registry files in HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ExplicitLayers
+DEBUG_UTILS[19]: severity=0x100 type=0x1 code=0 id=Loader Message message=windows_read_data_files_in_registry: Registry lookup failed to get layer manifest files.
+DEBUG_UTILS[20]: severity=0x10 type=0x1 code=0 id=Loader Message message=windows_get_app_package_manifest_path: Failed to find mapping layers packages by family name
+DEBUG_UTILS[21]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for driver manifest files
+DEBUG_UTILS[22]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[23]: severity=0x10 type=0x1 code=0 id=Loader Message message=      Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json
+DEBUG_UTILS[24]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found the following files:
+DEBUG_UTILS[25]: severity=0x10 type=0x1 code=0 id=Loader Message message=      Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json
+DEBUG_UTILS[26]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found ICD manifest file Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json, version 1.0.1
+DEBUG_UTILS[27]: severity=0x1 type=0x1 code=0 id=Loader Message message=Searching for ICD drivers named .\ashesD3D11Renderer.dll
+DEBUG_UTILS[28]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance layer callstack setup to:
+DEBUG_UTILS[29]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Application>
+DEBUG_UTILS[30]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[31]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Loader>
+DEBUG_UTILS[32]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[33]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Drivers>
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+RESULT: vkCreateDebugUtilsMessengerEXT => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0), count=1
+RESULT: vkEnumeratePhysicalDevices(list) => VK_SUCCESS (0)
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+WARNING: selected synthetic/non-Intel/software-like adapter: sandbox result only, NOT a real Intel performance or hardware claim.
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0
+MEMORY_TYPE[0]: heap=0 flags=0x1 (raw VkMemoryPropertyFlags logged numerically)
+MEMORY_TYPE[1]: heap=1 flags=0x6 (raw VkMemoryPropertyFlags logged numerically)
+MEMORY_TYPE[2]: heap=1 flags=0xE (raw VkMemoryPropertyFlags logged numerically)
+PORTABILITY: enabling advertised VK_KHR_portability_subset.
+DEBUG_UTILS[34]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateDevice layer callstack setup to:
+DEBUG_UTILS[35]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Application>
+DEBUG_UTILS[36]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[37]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Loader>
+DEBUG_UTILS[38]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[39]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Device>
+DEBUG_UTILS[40]: severity=0x10 type=0x1 code=0 id=Loader Message message=       Using "NVIDIA GeForce GTX 470 (d3d11)" with driver: "Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer.dll"
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+ASSERT_FEATURE: textureCompressionBC=0 (expected 0)\nASSERT_FORMAT: BC1_RGB_UNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC1_RGB_SRGB_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC1_RGBA_UNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC1_RGBA_SRGB_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC2_UNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC2_SRGB_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC3_UNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC3_SRGB_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC4_UNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC4_SNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC5_UNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC5_SNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC6H_UFLOAT_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC6H_SFLOAT_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC7_UNORM_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\nASSERT_FORMAT: BC7_SRGB_BLOCK linear=0x0 optimal=0x0 buffer=0x0 (expected all zero)\n[RW-GPU-TEX2D] BC_FORMAT_REJECT vkFormat=137 extent=1x1x1 mips=1 vkUsage=0x4
+VkImage Allocation: BC textures disabled by the explicit GPU compatibility mode - A requested format is not supported on this device. (VkResult -11)
+ASSERT_CREATE: forced 1x1 BC3 sampled image without prior query => VK_ERROR_FORMAT_NOT_SUPPORTED (-11), image=NULL (expected VK_ERROR_FORMAT_NOT_SUPPORTED=-11 and NULL)\nASSERT_SUMMARY: failures=0; expected create failure is explicitly negative and not fabricated success\nRESULT: vkDeviceWaitIdle(matrix cleanup) => VK_SUCCESS (0)
+MATRIX_SUMMARY: formatQueries=0 pureUnsupportedQueries=0 queryFailures=0 capabilityLimitNegatives=0 createAttempts=0 createFailures=0 imagesCreated=0 bindAttempts=0 allocFailures=0 bindFailures=0 noDeviceLocal=0 noHostVisibleCoherent=0
+DEBUG_SUMMARY: total=40 errors=0 textIntegrity=sane-or-no-messages
+FINAL: PASS status=0; matrix completed without callback, query, create, allocation, or bind failures.
+X connection to :99 broken (explicit kill or server shutdown).
+RUN_EXIT=0

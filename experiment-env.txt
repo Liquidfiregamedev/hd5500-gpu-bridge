@@ -1,0 +1,22 @@
+# Lines KEY=VALUE with RW_GPU_* / RW_HD5500_* / RW_OPT_* / DOTNET_GC* / DOTNET_Tiered* / DOTNET_TC_* names are applied to the next test or game started from the menu.
+# v13.61: game process at above-normal priority (same as the menu option). Kept on for comparable map tests.
+RW_GPU_PROCESS_PRIORITY=above
+# Game frame profile level 3 (engine rendering code instrumented): remove the # in front of the next line.
+#RW_OPT_PROFILE=3
+# HD5500 Optimizer maximum zoom-out (cells, game default 60): remove the '#' to test a limit.
+#RW_OPT_MAX_ZOOM=40
+# Submit thread (bridge work on its own thread): remove the '#' in front of the next line.
+#RW_GPU_SUBMIT_THREAD=1
+# v13.73 .NET experiment: no background re-compilation of game code (slower start, possibly fewer small hitches in the first minutes). Remove the '#' to try; compare two Speed tests.
+#DOTNET_TieredPGO=0
+# v13.73 bridge switches back to v13.72 behaviour (only if something looks wrong):
+#RW_GPU_SET_CONTENT_FAST=0
+#RW_GPU_UPLOAD_MERGE=0
+#RW_GPU_HIGHQOS=0
+# v13.74 bigger rebuilds, switches back to v13.73 behaviour:
+#RW_GPU_UNIFORM_RING=0
+#RW_GPU_INDEX_POOL=0
+# v13.75 switches back to v13.74 behaviour:
+# A/B test 20 Oct (name labels ghosting): v13.75 parts OFF for the next run. Put the # back to switch them on again.
+RW_GPU_UNIFORM_RING_STATIC=0
+RW_GPU_SET_CONTENT_UBO=0

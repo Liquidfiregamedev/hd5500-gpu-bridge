@@ -1,0 +1,182 @@
+RimWorld focused BC7 GPU-only source probe
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+CONTRACT: Type0 only, DEVICE_LOCAL required, HOST_VISIBLE forbidden, no vkMapMemory(gpu_source_mem), actual vkCmdCopyBuffer producer, then GPU source in vkCmdCopyBufferToImage.
+WARNING: --allow-non-intel-test relaxes only the Intel vendor gate for sandbox integration; CPU/software adapters remain forbidden and this is not hardware validation.
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0), max=1.4.362
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0), count=1
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0 policy=sandbox-non-Intel-hardware-allowed
+MEMORY_TYPE[0]: heap=0 flags=0x1
+MEMORY_TYPE[1]: heap=1 flags=0x6
+MEMORY_TYPE[2]: heap=1 flags=0xE
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=0 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=1 nativeBufferWidth=12544 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+MIP_LAYOUT: format=BC7_UNORM_BLOCK mip=0 offset=0 bytes=576 extent=24x24 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_UNORM_BLOCK mip=1 offset=576 bytes=144 extent=12x12 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_UNORM_BLOCK mip=2 offset=720 bytes=64 extent=6x6 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_UNORM_BLOCK mip=3 offset=784 bytes=16 extent=3x3 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_UNORM_BLOCK mip=4 offset=800 bytes=16 extent=1x1 validBC7Mode6Prefix=40
+FORMAT_BEGIN: format=BC7_UNORM_BLOCK payloadBytes=816 sourcePath=HOST_STAGING --vkCmdCopyBuffer--> GPU_ONLY_TYPE0 --vkCmdCopyBufferToImage--> IMAGE --vkCmdCopyImageToBuffer--> HOST_READBACK
+BUFFER_CREATE_RESULT: name=HOST_UPLOAD_STAGING bytes=816 usage=0x1 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: name=HOST_UPLOAD_STAGING reqBytes=832 alignment=64 typeBits=0x00000005 hostCoherentType=2
+BUFFER_ALLOC_RESULT: name=HOST_UPLOAD_STAGING type=2 flags=0xE => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE949D40 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE949D40 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=13376 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: name=HOST_UPLOAD_STAGING offset=0 => VK_SUCCESS (0)
+GPU_SOURCE_CREATE_RESULT: name=DEFAULT_GPU_ONLY_SOURCE bytes=816 usage=TRANSFER_DST|TRANSFER_SRC(0x3) => VK_SUCCESS (0)
+GPU_SOURCE_REQUIREMENTS: typeBits=0x00000005 reqBytes=832 alignment=64 requestedType=0 flags=0x1
+GPU_SOURCE_ALLOC_RESULT: type=0 flags=0x1 hostVisible=0 => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94A7B0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=13376 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94A7B0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+GPU_SOURCE_BIND_RESULT: buffer=DEFAULT_GPU_ONLY_SOURCE type=0 offset=0 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: name=HOST_READBACK bytes=816 usage=0x2 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: name=HOST_READBACK reqBytes=832 alignment=64 typeBits=0x00000005 hostCoherentType=2
+BUFFER_ALLOC_RESULT: name=HOST_READBACK type=2 flags=0xE => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94AB70 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=14208 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94AB70 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15040 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: name=HOST_READBACK offset=0 => VK_SUCCESS (0)
+HOST_UPLOAD_MAP_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+HOST_UPLOAD_FLUSH_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+IMAGE_CREATE_RESULT: format=BC7_UNORM_BLOCK 24x24 mips=5 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK typeBits=0x00000005 deviceLocalType=0
+IMAGE_ALLOC_RESULT: format=BC7_UNORM_BLOCK type=0 => VK_SUCCESS (0)
+IMAGE_BIND_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+CMDPOOL_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+CMDBUF_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+BEGIN_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+RECORDED: vkCmdCopyBuffer HOST_UPLOAD_STAGING -> DEFAULT_GPU_ONLY_SOURCE bytes=816
+RECORDED: barrier DEFAULT_GPU_ONLY_SOURCE TRANSFER_WRITE -> TRANSFER_READ
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE985890 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15040 nativeLiveTextureBytes=816 nativePeakTextureBytes=816 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE985890 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=816 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+RECORDED: vkCmdCopyBufferToImage source=DEFAULT_GPU_ONLY_SOURCE regions=5
+END_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+FENCE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE9888E0 parentBytes=576 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2208 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE9888E0 parentBytes=144 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1776 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE988CD0 parentBytes=64 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1840 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE988CD0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1856 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE988AB0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1680 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+SUBMIT_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+WAIT_RESULT: format=BC7_UNORM_BLOCK timeoutNs=15000000000 => VK_SUCCESS (0)
+HOST_READBACK_MAP_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+HOST_READBACK_INVALIDATE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=0 offset=0 bytes=576 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=1 offset=576 bytes=144 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=2 offset=720 bytes=64 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=3 offset=784 bytes=16 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=4 offset=800 bytes=16 => EXACT_MATCH
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE985890 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE985890 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE985890 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94AB70 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94AB70 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94A7B0 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94A7B0 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE949D40 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE949D40 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94B610 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94AB70 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94A7B0 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE949D40 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+FORMAT_FINAL: format=BC7_UNORM_BLOCK => PASS exact all five mips through GPU-only Type0 source.
+MIP_LAYOUT: format=BC7_SRGB_BLOCK mip=0 offset=0 bytes=576 extent=24x24 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_SRGB_BLOCK mip=1 offset=576 bytes=144 extent=12x12 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_SRGB_BLOCK mip=2 offset=720 bytes=64 extent=6x6 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_SRGB_BLOCK mip=3 offset=784 bytes=16 extent=3x3 validBC7Mode6Prefix=40
+MIP_LAYOUT: format=BC7_SRGB_BLOCK mip=4 offset=800 bytes=16 extent=1x1 validBC7Mode6Prefix=40
+FORMAT_BEGIN: format=BC7_SRGB_BLOCK payloadBytes=816 sourcePath=HOST_STAGING --vkCmdCopyBuffer--> GPU_ONLY_TYPE0 --vkCmdCopyBufferToImage--> IMAGE --vkCmdCopyImageToBuffer--> HOST_READBACK
+BUFFER_CREATE_RESULT: name=HOST_UPLOAD_STAGING bytes=816 usage=0x1 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: name=HOST_UPLOAD_STAGING reqBytes=832 alignment=64 typeBits=0x00000005 hostCoherentType=2
+BUFFER_ALLOC_RESULT: name=HOST_UPLOAD_STAGING type=2 flags=0xE => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE986C10 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE986C10 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: name=HOST_UPLOAD_STAGING offset=0 => VK_SUCCESS (0)
+GPU_SOURCE_CREATE_RESULT: name=DEFAULT_GPU_ONLY_SOURCE bytes=816 usage=TRANSFER_DST|TRANSFER_SRC(0x3) => VK_SUCCESS (0)
+GPU_SOURCE_REQUIREMENTS: typeBits=0x00000005 reqBytes=832 alignment=64 requestedType=0 flags=0x1
+GPU_SOURCE_ALLOC_RESULT: type=0 flags=0x1 hostVisible=0 => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE9874A0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE9874A0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+GPU_SOURCE_BIND_RESULT: buffer=DEFAULT_GPU_ONLY_SOURCE type=0 offset=0 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: name=HOST_READBACK bytes=816 usage=0x2 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: name=HOST_READBACK reqBytes=832 alignment=64 typeBits=0x00000005 hostCoherentType=2
+BUFFER_ALLOC_RESULT: name=HOST_READBACK type=2 flags=0xE => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE985BF0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE985BF0 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+BUFFER_BIND_RESULT: name=HOST_READBACK offset=0 => VK_SUCCESS (0)
+HOST_UPLOAD_MAP_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+HOST_UPLOAD_FLUSH_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+IMAGE_CREATE_RESULT: format=BC7_SRGB_BLOCK 24x24 mips=5 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK typeBits=0x00000005 deviceLocalType=0
+IMAGE_ALLOC_RESULT: format=BC7_SRGB_BLOCK type=0 => VK_SUCCESS (0)
+IMAGE_BIND_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+CMDPOOL_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+CMDBUF_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+BEGIN_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+RECORDED: vkCmdCopyBuffer HOST_UPLOAD_STAGING -> DEFAULT_GPU_ONLY_SOURCE bytes=816
+RECORDED: barrier DEFAULT_GPU_ONLY_SOURCE TRANSFER_WRITE -> TRANSFER_READ
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE989450 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE989450 parentBytes=832 bindingOffset=0 logicalBytes=816 retainedParentObjects=1 nativeBufferWidth=832 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=2208 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+RECORDED: vkCmdCopyBufferToImage source=DEFAULT_GPU_ONLY_SOURCE regions=5
+END_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+FENCE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94B1D0 parentBytes=576 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=3024 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94B1D0 parentBytes=144 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2592 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94B1D0 parentBytes=64 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2656 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94B1D0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2672 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94B1D0 parentBytes=16 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2496 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+SUBMIT_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+WAIT_RESULT: format=BC7_SRGB_BLOCK timeoutNs=15000000000 => VK_SUCCESS (0)
+HOST_READBACK_MAP_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+HOST_READBACK_INVALIDATE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=0 offset=0 bytes=576 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=1 offset=576 bytes=144 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=2 offset=720 bytes=64 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=3 offset=784 bytes=16 => EXACT_MATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=4 offset=800 bytes=16 => EXACT_MATCH
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE989450 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=15872 nativeLiveBufferCount=5 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2448 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE989450 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2448 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE989450 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=2448 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE985BF0 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=15040 nativeLiveBufferCount=4 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE985BF0 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE9874A0 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=14208 nativeLiveBufferCount=3 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE9874A0 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE986C10 parentBytes=0 bindingOffset=0 logicalBytes=816 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=13376 nativeLiveBufferCount=2 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE986C10 parentBytes=832 bindingOffset=0 logicalBytes=832 retainedParentObjects=0 nativeBufferWidth=832 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE988C40 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE985BF0 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE9874A0 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE986C10 parentBytes=832 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=1632 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+FORMAT_FINAL: format=BC7_SRGB_BLOCK => PASS exact all five mips through GPU-only Type0 source.
+RESULT: vkDeviceWaitIdle => VK_SUCCESS (0)
+[RW-GPU-FENCE] fenced_submits=2 flushes=1 polls=19 timeouts=0
+[RW-GPU-STAGING] cap=268435456 liveBytes=1632 peakBytes=1632 entries=2 hits=8 misses=2 evictions=0 uncached=0
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94A560 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=816 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE986330 parentBytes=816 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=0 nativePeakTextureBytes=3024 physicalAvailable=22561988608 commitAvailable=22561988608 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=15872 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=3024 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22561345536 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=0 entries=0 hits=0 misses=0 inserts=0 evictions=0 rejected=0
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=15872 nativeLiveTextureBytes=0 nativePeakTextureBytes=3024 physicalAvailable=22561345536 commitAvailable=22561345536 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=12544 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=15872 nativeLiveTextureBytes=0 nativePeakTextureBytes=3024 physicalAvailable=22561345536 commitAvailable=22561345536 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE976D30 parentBytes=0 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=15872 nativeLiveTextureBytes=0 nativePeakTextureBytes=3024 physicalAvailable=22561345536 commitAvailable=22561345536 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-STATECACHE] hits=0 misses=0 invalidations=2
+GPU_SOURCE_BC7_SUMMARY: formats=2 payloadBytesPerFormat=816 offsets=0,576,720,784,800 failures=0
+FINAL: PASS status=0; both BC7 formats exactly traversed actual GPU copy into Type0 GPU-only source and all five image mips round-tripped.
+X connection to :162 broken (explicit kill or server shutdown).

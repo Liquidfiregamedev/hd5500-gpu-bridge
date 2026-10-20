@@ -1,0 +1,18 @@
+# HD5500 GPU Bridge - files that stay on this laptop and are not uploaded to GitHub
+# run output, logs, frame pictures (contain paths from this PC)
+reports/
+# per-PC menu settings
+Bridge-Menu.settings.json
+# third-party tools, test binaries and large references that are not ours
+ThrottleStop*/
+ThrottleStop.exe
+ThrottleStop.ini
+ReadMe.txt
+logo.png
+reference/
+capture/
+dozen-test/
+# logs and saves from other players (Discord), research material only
+DiscordLogs/
+# leftover folder from the first GitHub Desktop attempt
+hd5500-gpu-bridge/

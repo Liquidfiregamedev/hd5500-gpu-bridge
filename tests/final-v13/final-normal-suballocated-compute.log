@@ -1,0 +1,228 @@
+Vulkan 1.0 GPU ICD suballocated-compute validation probe
+ICD selection: VK_ICD_FILENAMES and VK_DRIVER_FILES set in this process only to Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+Loader selection: supplied absolute path Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\vulkan-1.dll
+Requested Vulkan application API: 1.0.0 exactly (no 1.1+ features or calls).
+WARNING: --allow-non-intel-test supplied. Any selected non-Intel adapter is NOT an Intel HD 5500 hardware validation.
+CALL: vkEnumerateInstanceVersion
+OK: vkEnumerateInstanceVersion
+Loader maximum instance API reported: 1.4.362
+Instance extensions reported by supplied loader/selected ICD (8):
+  VK_KHR_surface (spec 25)
+  VK_KHR_win32_surface (spec 6)
+  VK_EXT_debug_report (spec 10)
+  VK_EXT_debug_utils (spec 2)
+  VK_KHR_get_physical_device_properties2 (spec 2)
+  VK_KHR_display (spec 23)
+  VK_KHR_portability_enumeration (spec 1)
+  VK_LUNARG_direct_driver_loading (spec 1)
+CALL: vkCreateInstance(apiVersion=VK_API_VERSION_1_0)
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+OK: vkCreateInstance(apiVersion=VK_API_VERSION_1_0)
+PASS: vkCreateInstance requested and created exactly Vulkan 1.0.
+CALL: vkCreateWin32SurfaceKHR
+OK: vkCreateWin32SurfaceKHR
+PASS: created visible Win32 test window and VkSurfaceKHR.
+CALL: vkEnumeratePhysicalDevices(count)
+OK: vkEnumeratePhysicalDevices(count)
+CALL: vkEnumeratePhysicalDevices(list)
+OK: vkEnumeratePhysicalDevices(list)
+Physical devices reported: 1
+  adapter[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU api=1.0.0 (compute eligibility is tested from queue flags below)
+REJECT adapter[0]: vendor 0x10DE is not Intel 0x8086.
+Candidate adapter[0] queue-family test:
+  queueFamily[0]: flags=0xFFFFFFFF queueCount=8 surfaceSupport=VK_TRUE
+WARNING: selected non-Intel adapter under explicit override; result is NOT HD 5500 hardware validation.
+Selected queue family: 0 (graphics + compute + present).
+
+=== SELECTED PHYSICAL DEVICE: actual ICD report ===
+deviceName=NVIDIA GeForce GTX 470 (d3d11)
+vendorID=0x10DE deviceID=0x06CD deviceType=DISCRETE_GPU (2)
+apiVersion=1.0.0
+driverVersion=0x00000000 (raw vendor-defined encoding)
+pipelineCacheUUID=00000000000000000000000000000000
+limits: maxComputeSharedMemorySize=49152 maxComputeWorkGroupInvocations=1536 maxComputeWorkGroupCount=[65535,65535,65535] maxStorageBufferRange=4294967295 nonCoherentAtomSize=64
+Selected-device VkPhysicalDeviceFeatures (actual query):
+  robustBufferAccess                       VK_TRUE
+  fullDrawIndexUint32                      VK_TRUE
+  imageCubeArray                           VK_TRUE
+  independentBlend                         VK_TRUE
+  geometryShader                           VK_FALSE
+  tessellationShader                       VK_FALSE
+  sampleRateShading                        VK_TRUE
+  dualSrcBlend                             VK_TRUE
+  logicOp                                  VK_TRUE
+  multiDrawIndirect                        VK_FALSE
+  drawIndirectFirstInstance                VK_TRUE
+  depthClamp                               VK_TRUE
+  depthBiasClamp                           VK_TRUE
+  fillModeNonSolid                         VK_TRUE
+  depthBounds                              VK_TRUE
+  wideLines                                VK_FALSE
+  largePoints                              VK_FALSE
+  alphaToOne                               VK_TRUE
+  multiViewport                            VK_TRUE
+  samplerAnisotropy                        VK_TRUE
+  textureCompressionETC2                   VK_FALSE
+  textureCompressionASTC_LDR               VK_FALSE
+  textureCompressionBC                     VK_TRUE
+  occlusionQueryPrecise                    VK_TRUE
+  pipelineStatisticsQuery                  VK_TRUE
+  vertexPipelineStoresAndAtomics           VK_TRUE
+  fragmentStoresAndAtomics                 VK_TRUE
+  shaderTessellationAndGeometryPointSize   VK_FALSE
+  shaderImageGatherExtended                VK_TRUE
+  shaderStorageImageExtendedFormats        VK_TRUE
+  shaderStorageImageMultisample            VK_TRUE
+  shaderStorageImageReadWithoutFormat      VK_TRUE
+  shaderStorageImageWriteWithoutFormat     VK_TRUE
+  shaderUniformBufferArrayDynamicIndexing  VK_TRUE
+  shaderSampledImageArrayDynamicIndexing   VK_TRUE
+  shaderStorageBufferArrayDynamicIndexing  VK_TRUE
+  shaderStorageImageArrayDynamicIndexing   VK_TRUE
+  shaderClipDistance                       VK_TRUE
+  shaderCullDistance                       VK_TRUE
+  shaderFloat64                            VK_FALSE
+  shaderInt64                              VK_FALSE
+  shaderInt16                              VK_FALSE
+  shaderResourceResidency                  VK_FALSE
+  shaderResourceMinLod                     VK_FALSE
+  sparseBinding                            VK_FALSE
+  sparseResidencyBuffer                    VK_FALSE
+  sparseResidencyImage2D                   VK_FALSE
+  sparseResidencyImage3D                   VK_FALSE
+  sparseResidency2Samples                  VK_FALSE
+  sparseResidency4Samples                  VK_FALSE
+  sparseResidency8Samples                  VK_FALSE
+  sparseResidency16Samples                 VK_FALSE
+  sparseResidencyAliased                   VK_FALSE
+  variableMultisampleRate                  VK_FALSE
+  inheritedQueries                         VK_TRUE
+Memory heaps (actual query): count=2
+  heap[0]: size=25604128768 flags=0x1 DEVICE_LOCAL
+  heap[1]: size=12802211840 flags=0x0
+Memory types (actual query): count=3
+  type[0]: heapIndex=0 flags=0x1 DEVICE_LOCAL
+  type[1]: heapIndex=1 flags=0x6 HOST_VISIBLE HOST_COHERENT
+  type[2]: heapIndex=1 flags=0xE HOST_VISIBLE HOST_COHERENT HOST_CACHED
+Device extensions reported by selected physical device (8):
+  VK_KHR_swapchain (spec 70)
+  VK_EXT_debug_report (spec 10)
+  VK_EXT_debug_marker (spec 4)
+  VK_EXT_debug_utils (spec 2)
+  VK_EXT_inline_uniform_block (spec 1)
+  VK_KHR_maintenance1 (spec 2)
+  VK_KHR_get_physical_device_properties2 (spec 2)
+  VK_KHR_portability_subset (spec 1)
+CALL: vkCreateDevice(Vulkan 1.0 core compute commands + VK_KHR_swapchain)
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFEB1A630 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=0 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22598893568 commitAvailable=22598893568 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFEB1A630 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=1 nativeBufferWidth=12544 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22598893568 commitAvailable=22598893568 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+OK: vkCreateDevice(Vulkan 1.0 core compute commands + VK_KHR_swapchain)
+PASS: created device with Vulkan 1.0 core compute commands (no optional features enabled) and obtained queue.
+CALL: vkCreateBuffer(storage buffer)
+OK: vkCreateBuffer(storage buffer)
+Compute storage buffer: logicalSize=4 requirementSize=64 parentAllocationSize=2097216 bindOffset=1048576 (1 MiB) memoryType=2 flags=0xE HOST_COHERENT
+CALL: vkAllocateMemory(compute parent: requirement + 2 MiB)
+OK: vkAllocateMemory(compute parent: requirement + 2 MiB)
+CALL: vkBindBufferMemory(compute storage at parent + 1 MiB)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFEAEE280 parentBytes=2097216 bindingOffset=1048576 logicalBytes=4 retainedParentObjects=0 nativeBufferWidth=64 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22598893568 commitAvailable=22598893568 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFEAEE280 parentBytes=2097216 bindingOffset=1048576 logicalBytes=4 retainedParentObjects=1 nativeBufferWidth=64 nativeLiveBufferBytes=12608 nativeLiveBufferCount=2 nativePeakBufferBytes=12608 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22598893568 commitAvailable=22598893568 memorySnapshotValid=1 hr=0x00000000
+OK: vkBindBufferMemory(compute storage at parent + 1 MiB)
+CALL: vkMapMemory(compute parent)
+OK: vkMapMemory(compute parent)
+PASS: parent compute memory mapped to a non-null pointer; CPU storage address is parent mapping + 1 MiB.
+CALL: vkCreateDescriptorSetLayout(storage buffer)
+OK: vkCreateDescriptorSetLayout(storage buffer)
+CALL: vkCreateDescriptorPool
+OK: vkCreateDescriptorPool
+CALL: vkAllocateDescriptorSets
+OK: vkAllocateDescriptorSets
+CALL: vkCreatePipelineLayout
+OK: vkCreatePipelineLayout
+CALL: vkCreateShaderModule(embedded SPIR-V 1.0)
+OK: vkCreateShaderModule(embedded SPIR-V 1.0)
+CALL: vkCreateComputePipelines
+OK: vkCreateComputePipelines
+CALL: vkCreateCommandPool
+OK: vkCreateCommandPool
+CALL: vkAllocateCommandBuffers
+OK: vkAllocateCommandBuffers
+CALL: vkCreateFence(compute)
+OK: vkCreateFence(compute)
+CALL: vkBeginCommandBuffer(compute)
+OK: vkBeginCommandBuffer(compute)
+CALL: vkEndCommandBuffer(compute)
+OK: vkEndCommandBuffer(compute)
+CALL: vkQueueSubmit(compute)
+OK: vkQueueSubmit(compute)
+CALL: vkWaitForFences(compute)
+OK: vkWaitForFences(compute)
+Compute readback actual value=0x00005500 (expected 0x00005500)
+PASS: Vulkan 1.0 descriptor-set/storage-buffer compute dispatch produced 0x00005500 with explicit barriers.
+CALL: vkGetPhysicalDeviceSurfaceCapabilitiesKHR
+OK: vkGetPhysicalDeviceSurfaceCapabilitiesKHR
+Surface capabilities: minImageCount=1 maxImageCount=1 currentExtent=360x280 minExtent=1280x1024 maxExtent=1280x1024 usage=0x97 transforms=0x1 compositeAlpha=0x1
+CALL: vkGetPhysicalDeviceSurfaceFormatsKHR(count)
+OK: vkGetPhysicalDeviceSurfaceFormatsKHR(count)
+CALL: vkGetPhysicalDeviceSurfaceFormatsKHR(list)
+OK: vkGetPhysicalDeviceSurfaceFormatsKHR(list)
+Selected surface format: format=44 colorSpace=0
+CALL: vkGetPhysicalDeviceSurfacePresentModesKHR(count)
+OK: vkGetPhysicalDeviceSurfacePresentModesKHR(count)
+CALL: vkGetPhysicalDeviceSurfacePresentModesKHR(list)
+OK: vkGetPhysicalDeviceSurfacePresentModesKHR(list)
+Surface present modes: 2
+Requesting swapchain: exactly 1 image, FIFO, extent=360x280, transfer-dst clear.
+CALL: vkCreateSwapchainKHR(one-image FIFO)
+OK: vkCreateSwapchainKHR(one-image FIFO)
+CALL: vkGetSwapchainImagesKHR(count)
+OK: vkGetSwapchainImagesKHR(count)
+CALL: vkGetSwapchainImagesKHR(image)
+OK: vkGetSwapchainImagesKHR(image)
+CALL: vkCreateSemaphore(acquired)
+OK: vkCreateSemaphore(acquired)
+CALL: vkCreateSemaphore(rendered)
+OK: vkCreateSemaphore(rendered)
+CALL: vkAcquireNextImageKHR
+OK: vkAcquireNextImageKHR
+CALL: vkBeginCommandBuffer(present)
+OK: vkBeginCommandBuffer(present)
+CALL: vkCmdPipelineBarrier(swapchain to transfer)
+OK: swapchain first image barrier; CALL: vkCmdClearColorImage
+OK: vkCmdClearColorImage
+CALL: vkCmdPipelineBarrier(swapchain to present)
+OK: swapchain final image barrier
+CALL: vkEndCommandBuffer(present)
+OK: vkEndCommandBuffer(present)
+CALL: vkQueueSubmit(clear frame)
+OK: vkQueueSubmit(clear frame)
+CALL: vkQueuePresentKHR(actual cleared frame)
+OK: vkQueuePresentKHR(actual cleared frame)
+CALL: vkDeviceWaitIdle(after present)
+OK: vkDeviceWaitIdle(after present)
+PASS: presented an actual green cleared frame to the visible Win32 window through one-image FIFO WSI.
+Window remains visible for 1.5 seconds so the presentation can be observed.
+PASS: probe complete. These are real results from the supplied loader and per-process ICD selection; this is not a RimWorld game launch.
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFEAEE280 parentBytes=0 bindingOffset=1048576 logicalBytes=4 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=12608 nativeLiveBufferCount=2 nativePeakBufferBytes=12608 nativeLiveTextureBytes=0 nativePeakTextureBytes=403200 physicalAvailable=22565027840 commitAvailable=22565027840 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFEAEE280 parentBytes=2097216 bindingOffset=1048576 logicalBytes=64 retainedParentObjects=0 nativeBufferWidth=64 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12608 nativeLiveTextureBytes=0 nativePeakTextureBytes=403200 physicalAvailable=22565027840 commitAvailable=22565027840 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFEAEE280 parentBytes=2097216 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12608 nativeLiveTextureBytes=0 nativePeakTextureBytes=403200 physicalAvailable=22565027840 commitAvailable=22565027840 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-FENCE] fenced_submits=1 flushes=0 polls=1 timeouts=0
+[RW-GPU-STAGING] cap=268435456 liveBytes=0 peakBytes=0 entries=0 hits=0 misses=0 evictions=0 uncached=0
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=12608 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=403200 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22565027840 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=718 entries=1 hits=0 misses=1 inserts=1 evictions=0 rejected=0
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFEB1A630 parentBytes=12544 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12608 nativeLiveTextureBytes=0 nativePeakTextureBytes=403200 physicalAvailable=22565027840 commitAvailable=22565027840 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFEB1A630 parentBytes=12544 bindingOffset=0 logicalBytes=12544 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=12608 nativeLiveTextureBytes=0 nativePeakTextureBytes=403200 physicalAvailable=22565027840 commitAvailable=22565027840 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFEB1A630 parentBytes=0 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=12608 nativeLiveTextureBytes=0 nativePeakTextureBytes=403200 physicalAvailable=22565027840 commitAvailable=22565027840 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-STATECACHE] hits=0 misses=0 invalidations=4
+X connection to :162 broken (explicit kill or server shutdown).
+X connection to :162 broken (explicit kill or server shutdown).

@@ -1,0 +1,86 @@
+UiIndexedDrawProbe Vulkan 1.0
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\rw_system_vulkan.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+POLICY: default is strict Intel 0x8086/non-software; sandbox override is explicit only.
+WARNING: --allow-non-intel-test is synthetic Wine evidence, not Intel validation.
+FRAME_DIAGNOSTICS: external RW_HD5500_FRAME_PROBE requested.
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0)
+LOADER API: 1.4.362, requested API: 1.0.0
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+RESULT: vkCreateWin32SurfaceKHR => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(list) => VK_SUCCESS (0)
+ADAPTER[0]: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) family=0 UBO-align=256
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+RESULT: vkCreateDevice(graphics) => VK_SUCCESS (0)
+RESULT: vkCreateBuffer(flush-control upload) => VK_SUCCESS (0)
+RESULT: vkAllocateMemory(HOST_VISIBLE|HOST_COHERENT) => VK_SUCCESS (0)
+RESULT: vkBindBufferMemory => VK_SUCCESS (0)
+HOST_COHERENT: vkCreateBuffer(flush-control upload) size=64 type=2
+RESULT: vkMapMemory(flush-control upload) => VK_SUCCESS (0)
+RESULT: CONTROL vkFlushMappedMemoryRanges(texture) => VK_SUCCESS (0)
+CONTROL: flushed+unmapped texture upload isolated before persistent mapping test.
+RESULT: vkCreateImage(texture) => VK_SUCCESS (0)
+RESULT: vkAllocateMemory(DEVICE_LOCAL) => VK_SUCCESS (0)
+RESULT: vkBindImageMemory => VK_SUCCESS (0)
+RESULT: vkCreateImageView(texture) => VK_SUCCESS (0)
+RESULT: vkCreateImage(target) => VK_SUCCESS (0)
+RESULT: vkAllocateMemory(DEVICE_LOCAL) => VK_SUCCESS (0)
+RESULT: vkBindImageMemory => VK_SUCCESS (0)
+RESULT: vkCreateImageView(target) => VK_SUCCESS (0)
+RESULT: vkCreateBuffer(persistent vertex) => VK_SUCCESS (0)
+RESULT: vkAllocateMemory(HOST_VISIBLE|HOST_COHERENT) => VK_SUCCESS (0)
+RESULT: vkBindBufferMemory => VK_SUCCESS (0)
+HOST_COHERENT: vkCreateBuffer(persistent vertex) size=64 type=2
+RESULT: vkCreateBuffer(persistent index) => VK_SUCCESS (0)
+RESULT: vkAllocateMemory(HOST_VISIBLE|HOST_COHERENT) => VK_SUCCESS (0)
+RESULT: vkBindBufferMemory => VK_SUCCESS (0)
+HOST_COHERENT: vkCreateBuffer(persistent index) size=64 type=2
+RESULT: vkCreateBuffer(persistent dynamic UBO) => VK_SUCCESS (0)
+RESULT: vkAllocateMemory(HOST_VISIBLE|HOST_COHERENT) => VK_SUCCESS (0)
+RESULT: vkBindBufferMemory => VK_SUCCESS (0)
+HOST_COHERENT: vkCreateBuffer(persistent dynamic UBO) size=512 type=2
+RESULT: vkCreateBuffer(persistent readback) => VK_SUCCESS (0)
+RESULT: vkAllocateMemory(HOST_VISIBLE|HOST_COHERENT) => VK_SUCCESS (0)
+RESULT: vkBindBufferMemory => VK_SUCCESS (0)
+HOST_COHERENT: vkCreateBuffer(persistent readback) size=1024 type=2
+RESULT: vkMapMemory(persistent readback) => VK_SUCCESS (0)
+RESULT: vkCreateSampler => VK_SUCCESS (0)
+RESULT: vkCreateDescriptorSetLayout(set0 empty) => VK_SUCCESS (0)
+RESULT: vkCreateDescriptorSetLayout(set1 texture+dynamic UBO) => VK_SUCCESS (0)
+RESULT: vkCreateDescriptorPool => VK_SUCCESS (0)
+RESULT: vkAllocateDescriptorSets(set1) => VK_SUCCESS (0)
+RESULT: vkCreatePipelineLayout(two set layouts) => VK_SUCCESS (0)
+DESCRIPTORS: set0 empty; texture+dynamic UBO bound at nonzero firstSet=1.
+RESULT: vkCreateShaderModule(vertex SPIR-V) => VK_SUCCESS (0)
+RESULT: vkCreateShaderModule(fragment SPIR-V) => VK_SUCCESS (0)
+RESULT: vkCreateRenderPass(RGBA8) => VK_SUCCESS (0)
+RESULT: vkCreateFramebuffer(offscreen) => VK_SUCCESS (0)
+RESULT: vkCreateGraphicsPipelines(indexed textured UI) => VK_SUCCESS (0)
+RESULT: vkCreateCommandPool => VK_SUCCESS (0)
+RESULT: vkAllocateCommandBuffers => VK_SUCCESS (0)
+RESULT: vkCreateFence => VK_SUCCESS (0)
+RESULT: vkBeginCommandBuffer(flush-control) => VK_SUCCESS (0)
+RESULT: vkEndCommandBuffer(flush-control) => VK_SUCCESS (0)
+RESULT: vkQueueSubmit(flush-control) => VK_SUCCESS (0)
+RESULT: vkWaitForFences => VK_SUCCESS (0)
+RESULT: vkMapMemory(control readback after fence) => VK_SUCCESS (0)
+MISMATCH: flush-control clear (3,3) got 00000000 expected 01020304
+MISMATCH: flush-control clear (7,5) got 00000000 expected 01020304
+MISMATCH: flush-control clear (8,8) got 00000000 expected 01020304
+MISMATCH: flush-control clear (12,11) got 00000000 expected 01020304
+[RW-GPU-STAGING] cap=268435456 liveBytes=16 peakBytes=16 entries=1 hits=0 misses=1 evictions=0 uncached=0
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=14272 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=2080 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22521933824 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=2924 entries=2 hits=0 misses=2 inserts=2 evictions=0 rejected=0
+X connection to :161 broken (explicit kill or server shutdown).
+X connection to :161 broken (explicit kill or server shutdown).

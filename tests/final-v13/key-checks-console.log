@@ -1,0 +1,6 @@
+retained normal checks PASS
+large BC7 PASS
+rc=0 log=/home/ubuntu/rimworld-gpu-d3d11-v13/test-results/one-final-fence.log
+rc=0 log=/home/ubuntu/rimworld-gpu-d3d11-v13/test-results/one-final-persistent.log
+rc=0 log=/home/ubuntu/rimworld-gpu-d3d11-v13/test-results/one-final-frame.log
+FINAL KEY CHECKS COMPLETE

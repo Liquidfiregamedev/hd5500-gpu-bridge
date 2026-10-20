@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>hd5500bridge.tickrate</packageId>
+  <name>HD5500 Bridge - tick-rate counter</name>
+  <author>HD5500 GPU Bridge</author>
+  <supportedVersions>
+    <li>1.7</li>
+  </supportedVersions>
+  <description>Read-only diagnostic for the HD5500 GPU Bridge: measures game ticks per real second against the target (60 x speed) and writes them to a CSV and the log. No patches, no gameplay changes. Loaded by the bridge launcher only for test runs (-mod=).</description>
+</ModMetaData>

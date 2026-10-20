@@ -1,0 +1,135 @@
+Compact parent-backing buffer-bind probe (raw Vulkan; no VMA)
+CONTRACT: 8 simultaneously live 4 KiB buffers, offsets 1..8 MiB, one exactly 16 MiB parent allocation.
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+ICD isolation: VK_ICD_FILENAMES and VK_DRIVER_FILES are set in this process only.
+MODE: default transfer-only: children include TRANSFER_SRC|TRANSFER_DST; no compute work is created.
+WARNING: --allow-non-intel-test accepts a Wine/synthetic/software-backed adapter only for sandbox integration; it is NOT Intel hardware validation.
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0)
+LOADER MAX API: 1.4.362; application requests 1.0.0.
+PORTABILITY: enabling advertised VK_KHR_portability_enumeration.
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(list) => VK_SUCCESS (0)
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU
+WARNING: selected adapter is synthetic/non-Intel and/or software-like: sandbox integration result only, NOT Intel hardware validation.
+SELECTED: NVIDIA GeForce GTX 470 (d3d11), vendor=0x10DE, queueFamily=0
+PORTABILITY: enabling advertised VK_KHR_portability_subset.
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=0 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=1 nativeBufferWidth=12544 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+RESULT: vkCreateBuffer(child[0], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[0]: size=4096 alignment=64 typeBits=0x00000005; target offset=1048576
+RESULT: vkCreateBuffer(child[1], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[1]: size=4096 alignment=64 typeBits=0x00000005; target offset=2097152
+RESULT: vkCreateBuffer(child[2], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[2]: size=4096 alignment=64 typeBits=0x00000005; target offset=3145728
+RESULT: vkCreateBuffer(child[3], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[3]: size=4096 alignment=64 typeBits=0x00000005; target offset=4194304
+RESULT: vkCreateBuffer(child[4], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[4]: size=4096 alignment=64 typeBits=0x00000005; target offset=5242880
+RESULT: vkCreateBuffer(child[5], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[5]: size=4096 alignment=64 typeBits=0x00000005; target offset=6291456
+RESULT: vkCreateBuffer(child[6], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[6]: size=4096 alignment=64 typeBits=0x00000005; target offset=7340032
+RESULT: vkCreateBuffer(child[7], 4KiB) => VK_SUCCESS (0)
+REQUIREMENTS child[7]: size=4096 alignment=64 typeBits=0x00000005; target offset=8388608
+PARENT: allocationSize=16777216 (16 MiB) exactly; memoryType=2 flags=0xE; all child offsets are non-zero 1MiB strides.
+RESULT: vkAllocateMemory(exact 16MiB parent) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=1048576 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=1048576 logicalBytes=4096 retainedParentObjects=1 nativeBufferWidth=4096 nativeLiveBufferBytes=16640 nativeLiveBufferCount=2 nativePeakBufferBytes=16640 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[0], parent, nonzero offset=1048576) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=1 nativeBufferWidth=4096 nativeLiveBufferBytes=16640 nativeLiveBufferCount=2 nativePeakBufferBytes=16640 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=2 nativeBufferWidth=4096 nativeLiveBufferBytes=20736 nativeLiveBufferCount=3 nativePeakBufferBytes=20736 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[1], parent, nonzero offset=2097152) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=3145728 logicalBytes=4096 retainedParentObjects=2 nativeBufferWidth=4096 nativeLiveBufferBytes=20736 nativeLiveBufferCount=3 nativePeakBufferBytes=20736 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=3145728 logicalBytes=4096 retainedParentObjects=3 nativeBufferWidth=4096 nativeLiveBufferBytes=24832 nativeLiveBufferCount=4 nativePeakBufferBytes=24832 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[2], parent, nonzero offset=3145728) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=4194304 logicalBytes=4096 retainedParentObjects=3 nativeBufferWidth=4096 nativeLiveBufferBytes=24832 nativeLiveBufferCount=4 nativePeakBufferBytes=24832 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=4194304 logicalBytes=4096 retainedParentObjects=4 nativeBufferWidth=4096 nativeLiveBufferBytes=28928 nativeLiveBufferCount=5 nativePeakBufferBytes=28928 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[3], parent, nonzero offset=4194304) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=5242880 logicalBytes=4096 retainedParentObjects=4 nativeBufferWidth=4096 nativeLiveBufferBytes=28928 nativeLiveBufferCount=5 nativePeakBufferBytes=28928 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=5242880 logicalBytes=4096 retainedParentObjects=5 nativeBufferWidth=4096 nativeLiveBufferBytes=33024 nativeLiveBufferCount=6 nativePeakBufferBytes=33024 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[4], parent, nonzero offset=5242880) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=6291456 logicalBytes=4096 retainedParentObjects=5 nativeBufferWidth=4096 nativeLiveBufferBytes=33024 nativeLiveBufferCount=6 nativePeakBufferBytes=33024 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=6291456 logicalBytes=4096 retainedParentObjects=6 nativeBufferWidth=4096 nativeLiveBufferBytes=37120 nativeLiveBufferCount=7 nativePeakBufferBytes=37120 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[5], parent, nonzero offset=6291456) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=7340032 logicalBytes=4096 retainedParentObjects=6 nativeBufferWidth=4096 nativeLiveBufferBytes=37120 nativeLiveBufferCount=7 nativePeakBufferBytes=37120 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=7340032 logicalBytes=4096 retainedParentObjects=7 nativeBufferWidth=4096 nativeLiveBufferBytes=41216 nativeLiveBufferCount=8 nativePeakBufferBytes=41216 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[6], parent, nonzero offset=7340032) => VK_SUCCESS (0)
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=8388608 logicalBytes=4096 retainedParentObjects=7 nativeBufferWidth=4096 nativeLiveBufferBytes=41216 nativeLiveBufferCount=8 nativePeakBufferBytes=41216 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=8388608 logicalBytes=4096 retainedParentObjects=8 nativeBufferWidth=4096 nativeLiveBufferBytes=45312 nativeLiveBufferCount=9 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22555152384 commitAvailable=22555152384 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(child[7], parent, nonzero offset=8388608) => VK_SUCCESS (0)
+PASS: all eight buffers are simultaneously live and bound to the single parent allocation.
+CALL: vkMapMemory(parent); write unique child patterns plus guard patterns; vkFlushMappedMemoryRanges; vkUnmapMemory.
+RESULT: map/write/flush/unmap initial exact parent image => VK_SUCCESS (0)
+PASS: parent mapping was explicitly flushed and unmapped before queue work.
+CALL: vkCmdCopyBuffer(last child -> first child subset: src+13 -> dst+29, 257 bytes)
+RESULT: initial subset copy last->first (source+13, destination+29, 257 bytes) => VK_SUCCESS (0)
+RESULT: vkDeviceWaitIdle after initial subset copy => VK_SUCCESS (0)
+CALL: vkMapMemory(parent readback); vkInvalidateMappedMemoryRanges; byte-exact compare; vkUnmapMemory.
+PASS: INITIAL READBACK (257-byte destination and unchanged neighbors) exact 16 MiB parent comparison passed (destination, all child neighbors, and guard regions).
+RESULT: initial map/invalidate/exact-readback => VK_SUCCESS (0)
+LIFETIME: destroying child[1] while retaining the live parent allocation, then reusing its exact non-zero offset 2097152.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=45312 nativeLiveBufferCount=9 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=41216 nativeLiveBufferCount=8 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkCreateBuffer(recycled child at released slot) => VK_SUCCESS (0)
+REQUIREMENTS recycled child: size=4096 alignment=64 typeBits=0x00000005; reused offset=2097152
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=8 nativeBufferWidth=4096 nativeLiveBufferBytes=41216 nativeLiveBufferCount=8 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=9 nativeBufferWidth=4096 nativeLiveBufferBytes=45312 nativeLiveBufferCount=9 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+RESULT: vkBindBufferMemory(recycled child, retained parent, released offset) => VK_SUCCESS (0)
+CALL: vkMapMemory(retained parent); write recycled-slot unique pattern; vkFlushMappedMemoryRanges; vkUnmapMemory.
+RESULT: map/write/flush/unmap recycled-slot pattern => VK_SUCCESS (0)
+CALL: vkCmdCopyBuffer(recycled slot -> first child full proof: src+0 -> dst+0, 4096 bytes)
+RESULT: recycled-slot full copy -> first child => VK_SUCCESS (0)
+RESULT: vkDeviceWaitIdle after recycled-slot proof => VK_SUCCESS (0)
+PASS: RECYCLED-SLOT READBACK (released child, retained parent, reused offset) exact 16 MiB parent comparison passed (destination, all child neighbors, and guard regions).
+RESULT: recycled-slot map/invalidate/exact-readback => VK_SUCCESS (0)
+PASS: compact parent-backing fixture completed: bind, subset-copy integrity, neighbor integrity, and release/reuse lifecycle all passed.
+CLEANUP: vkDestroyBuffer(recycled child) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=45312 nativeLiveBufferCount=9 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=2097152 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=41216 nativeLiveBufferCount=8 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkDestroyBuffer(child[7]) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=8388608 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=41216 nativeLiveBufferCount=8 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=8388608 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=37120 nativeLiveBufferCount=7 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkDestroyBuffer(child[6]) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=7340032 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=37120 nativeLiveBufferCount=7 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=7340032 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=33024 nativeLiveBufferCount=6 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkDestroyBuffer(child[5]) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=6291456 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=33024 nativeLiveBufferCount=6 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=6291456 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=28928 nativeLiveBufferCount=5 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkDestroyBuffer(child[4]) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=5242880 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=28928 nativeLiveBufferCount=5 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=5242880 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=24832 nativeLiveBufferCount=4 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkDestroyBuffer(child[3]) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=4194304 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=24832 nativeLiveBufferCount=4 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=4194304 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=20736 nativeLiveBufferCount=3 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkDestroyBuffer(child[2]) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=3145728 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=20736 nativeLiveBufferCount=3 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=3145728 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=16640 nativeLiveBufferCount=2 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkDestroyBuffer(child[0]) before releasing parent memory.
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE94B2A0 parentBytes=0 bindingOffset=1048576 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=16640 nativeLiveBufferCount=2 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=1048576 logicalBytes=4096 retainedParentObjects=0 nativeBufferWidth=4096 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+CLEANUP: vkFreeMemory(parent) after every parent-bound child was destroyed.
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE94B2A0 parentBytes=16777216 bindingOffset=0 logicalBytes=0 retainedParentObjects=9 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-FENCE] fenced_submits=2 flushes=2 polls=36 timeouts=0
+[RW-GPU-STAGING] cap=268435456 liveBytes=0 peakBytes=0 entries=0 hits=0 misses=0 evictions=0 uncached=0
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=45312 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=0 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22482649088 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=0 entries=0 hits=0 misses=0 inserts=0 evictions=0 rejected=0
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE976D30 parentBytes=12544 bindingOffset=0 logicalBytes=12544 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE976D30 parentBytes=0 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=45312 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22482649088 commitAvailable=22482649088 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-STATECACHE] hits=0 misses=0 invalidations=2
+X connection to :162 broken (explicit kill or server shutdown).
+X connection to :162 broken (explicit kill or server shutdown).

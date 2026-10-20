@@ -1,0 +1,644 @@
+RimWorld BC7 raw Vulkan resource matrix
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11\test-runtime\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json
+POLICY: this process makes no no-BC fallback decision. It requests only real BC7 resources.
+WARNING: --allow-non-intel-test is Wine sandbox integration only, NOT HD 5500 validation.
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0), max=1.4.362
+DEBUG_UTILS[1]: severity=0x100 type=0x1 code=0 id=Loader Message message=windows_read_data_files_in_registry: Registry lookup failed to get layer manifest files.
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+RESULT: vkCreateDebugUtilsMessengerEXT => VK_SUCCESS (0)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0), count=1
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0
+WARNING: selected adapter is synthetic/non-Intel; do not treat this as HD 5500 compatibility evidence.
+MEMORY_TYPE[0]: heap=0 flags=0x1
+MEMORY_TYPE[1]: heap=1 flags=0x6
+MEMORY_TYPE[2]: heap=1 flags=0xE
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+FORMAT_PROPERTIES: format=BC7_UNORM_BLOCK(145) optimalFeatures=0x1FC07 sampled=0x1 transferSrc=0x4000 transferDst=0x8000
+FORMAT_QUERY_RESULT: format=BC7_UNORM_BLOCK usage=SAMPLED => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=1 hr=0x00000000 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=1 hr=0x80070057 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[2]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=2 hr=0x00000000 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=2 hr=0x80070057 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[3]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=3 hr=0x00000000 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=3 hr=0x80070057 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[4]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=4 hr=0x00000000 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=4 hr=0x80070057 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[5]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=5 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=5 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=6 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=6 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=7 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=7 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=8 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=8 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=9 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=9 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=10 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=10 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=11 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=11 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=12 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=12 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+FORMAT_QUERY_RESULT: format=BC7_UNORM_BLOCK usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=13 hr=0x00000000 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=13 hr=0x80070057 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[6]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=14 hr=0x00000000 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=14 hr=0x80070057 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[7]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=15 hr=0x00000000 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=15 hr=0x80070057 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[8]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=16 hr=0x00000000 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=16 hr=0x80070057 vkFormat=145 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[9]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_UNORM_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=17 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=17 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=18 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=18 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=19 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=19 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=20 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=20 hr=0x00000000 vkFormat=145 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=21 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=21 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=22 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=22 hr=0x00000000 vkFormat=145 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=23 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=23 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_UNORM_BLOCK(145) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=24 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=24 hr=0x00000000 vkFormat=145 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+FORMAT_PROPERTIES: format=BC7_SRGB_BLOCK(146) optimalFeatures=0x1FC07 sampled=0x1 transferSrc=0x4000 transferDst=0x8000
+FORMAT_QUERY_RESULT: format=BC7_SRGB_BLOCK usage=SAMPLED => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=25 hr=0x00000000 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=25 hr=0x80070057 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[10]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=26 hr=0x00000000 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=26 hr=0x80070057 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[11]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=27 hr=0x00000000 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=27 hr=0x80070057 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[12]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=28 hr=0x00000000 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=28 hr=0x80070057 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[13]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=29 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=29 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=30 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=30 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=31 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=31 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=32 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=32 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=33 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=33 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=34 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=34 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=35 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=35 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=36 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=36 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+FORMAT_QUERY_RESULT: format=BC7_SRGB_BLOCK usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST => VK_SUCCESS (0) maxExtent=16384x16384x1 maxMipLevels=15 maxResourceSize=733007806464
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=37 hr=0x00000000 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=37 hr=0x80070057 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[14]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=1x1 extent=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=16 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=1x1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=16 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=38 hr=0x00000000 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=38 hr=0x80070057 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[15]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=1x1 mips=1 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=39 hr=0x00000000 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=39 hr=0x80070057 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[16]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=2x2 extent=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=32 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=2x2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=32 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=40 hr=0x00000000 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=40 hr=0x80070057 vkFormat=146 extent=2x2x1 mips=2 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+DEBUG_UTILS[17]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+BIND_RESULT: format=BC7_SRGB_BLOCK size=2x2 mips=2 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_ERROR_INITIALIZATION_FAILED (-3)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=41 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=41 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=24x24 extent=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=816 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=24x24 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=816 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=42 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=42 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24 mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=4 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=43 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=43 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=32x32 extent=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=1392 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=32x32 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=1392 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=44 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=44 hr=0x00000000 vkFormat=146 extent=32x32x1 mips=6 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=6 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=32x32 mips=6 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=5 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=45 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=45 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=64x64 extent=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=5488 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=64x64 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=5488 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=46 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=46 hr=0x00000000 vkFormat=146 extent=64x64x1 mips=7 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=7 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=64x64 mips=7 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=6 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL requiredFlags=0x1
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=0
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 flags=0x1 bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=47 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=47 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL type=0 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL baseMip=12 levelCount=1 => VK_SUCCESS (0)
+CREATE_ATTEMPT: format=BC7_SRGB_BLOCK(146) size=8000x5000 extent=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT requiredFlags=0x6
+CREATE_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT sizeBytes=53341008 alignment=16 typeBits=0x00000005 chosenType=2
+ALLOC_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 flags=0xE bytes=53341008 => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=48 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=48 hr=0x00000000 vkFormat=146 extent=8000x5000x1 mips=13 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+BIND_RESULT: format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT type=2 offset=0 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=0 levelCount=13 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=8000x5000 mips=13 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=HOST_VISIBLE|HOST_COHERENT baseMip=12 levelCount=1 => VK_SUCCESS (0)
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=0 extent=24x24 blocks=6x6 bytes=576 offset=0 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=1 extent=12x12 blocks=3x3 bytes=144 offset=576 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=2 extent=6x6 blocks=2x2 bytes=64 offset=720 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=3 extent=3x3 blocks=1x1 bytes=16 offset=784 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_UNORM_BLOCK mip=4 extent=1x1 blocks=1x1 bytes=16 offset=800 validBC7Mode6Prefix=40
+UPLOAD_CASE_BEGIN: format=BC7_UNORM_BLOCK image=24x24 mips=5 totalCompressedBytes=816; exact block transfer/readback, no decode/re-encode comparison.
+UPLOAD_CREATE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_IMAGE_REQUIREMENTS: format=BC7_UNORM_BLOCK bytes=816 alignment=16 typeBits=0x00000005 chosenDeviceLocal=0
+UPLOAD_IMAGE_ALLOC_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=49 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=49 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+UPLOAD_IMAGE_BIND_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_UNORM_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_UNORM_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=4 levelCount=1 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-upload-src bytes=816 usage=0x1 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-upload-src reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-upload-src type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+BUFFER_BIND_RESULT: BC7-upload-src offset=0 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-readback-dst bytes=816 usage=0x2 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-readback-dst reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-readback-dst type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+BUFFER_BIND_RESULT: BC7-readback-dst offset=0 => VK_SUCCESS (0)
+UPLOAD_MAP_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_FLUSH_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDPOOL_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDBUF_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_BEGIN_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=50 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=50 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=5 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+UPLOAD_END_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_FENCE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=51 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=51 hr=0x00000000 vkFormat=145 extent=24x24x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] BEGIN id=52 hr=0x00000000 vkFormat=145 extent=12x12x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=52 hr=0x00000000 vkFormat=145 extent=12x12x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] BEGIN id=53 hr=0x00000000 vkFormat=145 extent=6x6x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=53 hr=0x80070057 vkFormat=145 extent=6x6x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+DEBUG_UTILS[18]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+[RW-GPU-TEX2D] BEGIN id=54 hr=0x00000000 vkFormat=145 extent=3x3x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=54 hr=0x80070057 vkFormat=145 extent=3x3x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+DEBUG_UTILS[19]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+[RW-GPU-TEX2D] BEGIN id=55 hr=0x00000000 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=55 hr=0x80070057 vkFormat=145 extent=1x1x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+DEBUG_UTILS[20]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+UPLOAD_SUBMIT_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+UPLOAD_WAIT_RESULT: format=BC7_UNORM_BLOCK timeoutNs=15000000000 => VK_SUCCESS (0)
+READBACK_MAP_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+READBACK_INVALIDATE_RESULT: format=BC7_UNORM_BLOCK => VK_SUCCESS (0)
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=0 extent=24x24 bytes=576 offset=0 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=1 extent=12x12 bytes=144 offset=576 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=2 extent=6x6 bytes=64 offset=720 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=3 extent=3x3 bytes=16 offset=784 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_UNORM_BLOCK mip=4 extent=1x1 bytes=16 offset=800 => MISMATCH
+UPLOAD_CASE_FINAL: format=BC7_UNORM_BLOCK => FAIL (real operation result preserved above).
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=0 extent=24x24 blocks=6x6 bytes=576 offset=0 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=1 extent=12x12 blocks=3x3 bytes=144 offset=576 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=2 extent=6x6 blocks=2x2 bytes=64 offset=720 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=3 extent=3x3 blocks=1x1 bytes=16 offset=784 validBC7Mode6Prefix=40
+UPLOAD_LAYOUT: format=BC7_SRGB_BLOCK mip=4 extent=1x1 blocks=1x1 bytes=16 offset=800 validBC7Mode6Prefix=40
+UPLOAD_CASE_BEGIN: format=BC7_SRGB_BLOCK image=24x24 mips=5 totalCompressedBytes=816; exact block transfer/readback, no decode/re-encode comparison.
+UPLOAD_CREATE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_IMAGE_REQUIREMENTS: format=BC7_SRGB_BLOCK bytes=816 alignment=16 typeBits=0x00000005 chosenDeviceLocal=0
+UPLOAD_IMAGE_ALLOC_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=56 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=56 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=97 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+UPLOAD_IMAGE_BIND_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_FULL format=BC7_SRGB_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=0 levelCount=5 => VK_SUCCESS (0)
+VIEW_RESULT: kind=SRV_TAIL format=BC7_SRGB_BLOCK size=24x24-upload mips=5 usage=SAMPLED|TRANSFER_SRC|TRANSFER_DST class=DEVICE_LOCAL upload target baseMip=4 levelCount=1 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-upload-src bytes=816 usage=0x1 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-upload-src reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-upload-src type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+BUFFER_BIND_RESULT: BC7-upload-src offset=0 => VK_SUCCESS (0)
+BUFFER_CREATE_RESULT: BC7-readback-dst bytes=816 usage=0x2 => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: BC7-readback-dst reqBytes=832 alignment=64 typeBits=0x00000005 chosenType=2
+BUFFER_ALLOC_RESULT: BC7-readback-dst type=2 flags=0xE bytes=832 => VK_SUCCESS (0)
+BUFFER_BIND_RESULT: BC7-readback-dst offset=0 => VK_SUCCESS (0)
+UPLOAD_MAP_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_FLUSH_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDPOOL_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_CMDBUF_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_BEGIN_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=57 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=57 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=5 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+UPLOAD_END_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_FENCE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+[RW-GPU-TEX2D] BEGIN id=58 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=58 hr=0x00000000 vkFormat=146 extent=24x24x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] BEGIN id=59 hr=0x00000000 vkFormat=146 extent=12x12x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=59 hr=0x00000000 vkFormat=146 extent=12x12x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] BEGIN id=60 hr=0x00000000 vkFormat=146 extent=6x6x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=60 hr=0x80070057 vkFormat=146 extent=6x6x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+DEBUG_UTILS[21]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+[RW-GPU-TEX2D] BEGIN id=61 hr=0x00000000 vkFormat=146 extent=3x3x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=61 hr=0x80070057 vkFormat=146 extent=3x3x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+DEBUG_UTILS[22]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+[RW-GPU-TEX2D] BEGIN id=62 hr=0x00000000 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=62 hr=0x80070057 vkFormat=146 extent=1x1x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=97 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+DEBUG_UTILS[23]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+CreateTexture2D failed - Initialization of an object could not be completed for implementation-specific reasons.
+UPLOAD_SUBMIT_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+UPLOAD_WAIT_RESULT: format=BC7_SRGB_BLOCK timeoutNs=15000000000 => VK_SUCCESS (0)
+READBACK_MAP_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+READBACK_INVALIDATE_RESULT: format=BC7_SRGB_BLOCK => VK_SUCCESS (0)
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=0 extent=24x24 bytes=576 offset=0 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=1 extent=12x12 bytes=144 offset=576 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=2 extent=6x6 bytes=64 offset=720 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=3 extent=3x3 bytes=16 offset=784 => MISMATCH
+READBACK_MIP_RESULT: format=BC7_SRGB_BLOCK mip=4 extent=1x1 bytes=16 offset=800 => MISMATCH
+UPLOAD_CASE_FINAL: format=BC7_SRGB_BLOCK => FAIL (real operation result preserved above).
+RESULT: vkDeviceWaitIdle => VK_SUCCESS (0)
+BC7_MATRIX_SUMMARY: queries=4 queryFailures=0 creates=48 createFailures=0 allocations=48 allocationFailures=0 binds=48 bindFailures=16 fullViews=34 fullViewFailures=0 tailViews=34 tailViewFailures=0 noDeviceLocal=0 noHostVisibleCoherent=0 uploadCases=2 uploadFailures=2 readbackMipMismatches=10
+DEBUG_SUMMARY: total=23 errors=22 textIntegrity=sane-or-no-messages
+FIRST_DEBUG_ERROR_OPERATION: vkBindImageMemory(BC7 fresh image)
+FINAL: FAIL status=10; FIRST_FAILURE: debug-utils error callback
+X connection to :99 broken (explicit kill or server shutdown).
+X connection to :99 broken (explicit kill or server shutdown).
+LOG_CAPTURE_EXIT: 10

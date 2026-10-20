@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>hd5500bridge.optimizer</packageId>
+  <name>HD5500 Optimizer</name>
+  <author>HD5500 GPU Bridge</author>
+  <supportedVersions>
+    <li>1.7</li>
+  </supportedVersions>
+  <description>RimWorld-side optimizer for slow PCs (built for an Intel HD 5500 laptop running RimWorld 1.7 through the HD5500 GPU Bridge). Version 0.3: (1) measurement - switches on RimWorld's own frame profiler when the bridge launcher asks for it (RW_OPT_PROFILE) and writes where the game's frame time goes, all threads; (2) settings "Maximum zoom-out", "Render thread before job workers" (thread priorities, on by default) and "Frame-rate cap" (Mod settings) - fewer map sections on screen when zoomed far out, measured to be where slow PCs lose frame rate. No patches; default settings change nothing.</description>
+</ModMetaData>

@@ -1,0 +1,116 @@
+/*
+This file belongs to Ashes.
+See LICENSE file in root folder
+*/
+#pragma once
+
+#include "renderer/D3D11Renderer/Command/Commands/D3D11CommandBase.hpp"
+
+#include <memory>
+
+namespace ashes::D3D11_NAMESPACE
+{
+	struct StagingImageEntry;
+
+	struct CopyToStagingProcess
+	{
+		VkBuffer stagingSrc{};
+		VkDeviceMemory stagingSrcMemory{};
+		VkBufferCopy copyToStaging{};
+	};
+
+	struct CopyFromStagingProcess
+	{
+		VkImage stagingDst{};
+		VkDeviceMemory stagingDstMemory{};
+		UINT stagingDstSubresource{};
+		VkImageCopy copyFromStaging{};
+		// v12: keeps the staging image alive while this command exists.
+		std::shared_ptr< StagingImageEntry > stagingOwner;
+	};
+
+	struct MapCopyImage
+	{
+		VkImage dst{};
+		VkDeviceMemory dstMemory{};
+		VkBufferImageCopy mapCopy;
+		D3D11_BOX srcBox{};
+		UINT dstSubresource{};
+		VkSubresourceLayout dstLayout{};
+		Optional< CopyFromStagingProcess > copyFromStaging{};
+	};
+	using MapCopyImageArray = std::vector< MapCopyImage >;
+
+	struct MapCopyProcess
+	{
+		VkBuffer src{};
+		VkDeviceMemory srcMemory{};
+		MapCopyImageArray mapCopyImages{};
+	};
+
+	struct BufferToImageCopyProcess
+	{
+		Optional< CopyToStagingProcess > copyToStaging{};
+		MapCopyProcess mapCopy{};
+	};
+	/**
+	*\brief
+	*	Commande de copie du contenu d'un tampon dans une image.
+	*/
+	class CopyBufferToImageCommand
+		: public CommandBase
+		, public NonCopyable
+	{
+	public:
+		/**
+		*\brief
+		*	Constructeur.
+		*\param[in] copyInfo
+		*	Les informations de copie.
+		*\param[in] src
+		*	Le tampon source.
+		*\param[in] dst
+		*	L'image destination.
+		*/
+		CopyBufferToImageCommand( VkDevice device
+			, ArrayView< VkBufferImageCopy const > const & copyInfo
+			, VkBuffer src
+			, VkImage dst );
+		~CopyBufferToImageCommand()noexcept override;
+		bool destroyOnOwnerThread()const override { return true; }   // v13.69
+
+		void apply( Context & context )const override;
+		CommandPtr clone()const override;
+
+	private:
+		void apply( Context & context
+			, CopyToStagingProcess const & process )const;
+		void apply( Context & context
+			, CopyFromStagingProcess const & process )const;
+		void apply( Context & context
+			, MapCopyProcess const & process )const;
+		void doMapCopy( Context const & context
+			, MapCopyImage const & mapCopy
+			, VkFormat format
+			, D3D11_MAPPED_SUBRESOURCE srcMapped
+			, ObjectMemory const & dst )const;
+		void doCopyToStaging( Context & context
+			, VkDeviceSize srcOffset
+			, VkDeviceSize size
+			, VkBuffer src
+			, VkBuffer staging )const;
+		void doCopyFromStaging( Context & context
+			, VkBufferImageCopy const & copyInfo
+			, VkImage staging
+			, VkImage dst )const;
+
+	private:
+		VkBuffer m_src;
+		VkImage m_dst;
+		std::vector< VkBufferImageCopy > m_copyInfos;
+		DXGI_FORMAT m_format;
+		bool m_srcMappable;
+		bool m_dstMappable;
+		BufferToImageCopyProcess m_process;
+	};
+}

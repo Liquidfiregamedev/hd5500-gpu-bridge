@@ -1,0 +1,67 @@
+Raw Vulkan failure-path probe: supplied loader/ICD only; no Vulkan import library.
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+WARNING: --allow-non-intel-test is sandbox-only and is NOT Intel hardware validation.
+CALL: vkEnumerateInstanceVersion
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0)
+LOADER MAX API: 1.4.362; application requests 1.0.0
+PORTABILITY: enabling advertised VK_KHR_portability_enumeration.
+CALL: vkCreateInstance(api=1.0)
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+RESULT: vkCreateInstance => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(count)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(list)
+RESULT: vkEnumeratePhysicalDevices(list) => VK_SUCCESS (0)
+ADAPTER[0]: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+WARNING: selected non-Intel/software-like adapter; result is sandbox-only, NOT Intel validation.
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0
+KNOWN VALID FORMAT: RGBA8_UNORM optimalFeatures=0x1FC83 sampled-needed=0x1
+PORTABILITY: enabling advertised VK_KHR_portability_subset.
+CALL: vkCreateDevice
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY] stage=BUFFER_BIND_BEGIN parent=00007FFFFE976CC0 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=0 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22455160832 commitAvailable=22455160832 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_BIND_END parent=00007FFFFE976CC0 parentBytes=12544 bindingOffset=0 logicalBytes=12528 retainedParentObjects=1 nativeBufferWidth=12544 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=0 physicalAvailable=22455160832 commitAvailable=22455160832 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+CALL: vkCreateImage(valid RGBA8 8x8x1 mip=1 layer=1 SAMPLED; valid allocator callback returns NULL)
+RESULT: vkCreateImage(refusing allocator) => VK_ERROR_OUT_OF_HOST_MEMORY (-1), output=0000000000000000
+PASS: allocation refusal preserved
+CALL: vkCreateImageView(image=NULL deliberate defensive bad input; tracked allocator)
+VkImageView Allocation: Image view has no device or image - Initialization of an object could not be completed for implementation-specific reasons. (VkResult -3)
+RESULT: vkCreateImageView(NULL image) => VK_ERROR_INITIALIZATION_FAILED (-3), output=0000000000000000; callbacks alloc=1 free=1 realloc=0
+PASS: failed constructor storage freed (wrapper alloc=1 free=1; no exact count assumed for internals)
+CALL: vkCreateImage(valid RGBA8 8x8x1 mip=1 layer=1 SAMPLED; tracked allocator)
+RESULT: vkCreateImage(healthy) => VK_SUCCESS (0)
+REQUIREMENTS: size=256 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(healthy image DEVICE_LOCAL type=0)
+RESULT: vkAllocateMemory(healthy) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(healthy image)
+RESULT: vkBindImageMemory(healthy) => VK_SUCCESS (0)
+CALL: vkCreateImageView(healthy bound image; tracked allocator)
+RESULT: vkCreateImageView(healthy) => VK_SUCCESS (0)
+CALL: vkDestroyImageView(healthy)
+CALL: vkFreeMemory(healthy)
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE89A2B0 parentBytes=256 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=256 nativePeakTextureBytes=256 physicalAvailable=22455160832 commitAvailable=22455160832 memorySnapshotValid=1 hr=0x00000000
+CALL: vkDestroyImage(healthy)
+TRACKED healthy callbacks: alloc=3 free=3 realloc=0
+PASS: healthy resource after failures
+[RW-GPU-FENCE] fenced_submits=0 flushes=0 polls=0 timeouts=0
+[RW-GPU-STAGING] cap=268435456 liveBytes=0 peakBytes=0 entries=0 hits=0 misses=0 evictions=0 uncached=0
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=12544 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=256 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22455160832 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=0 entries=0 hits=0 misses=0 inserts=0 evictions=0 rejected=0
+[RW-GPU-MEMORY] stage=PARENT_FREE_BEGIN parent=00007FFFFE976CC0 parentBytes=12544 bindingOffset=0 logicalBytes=0 retainedParentObjects=1 nativeBufferWidth=0 nativeLiveBufferBytes=12544 nativeLiveBufferCount=1 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=256 physicalAvailable=22455160832 commitAvailable=22455160832 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=BUFFER_RESOURCE_RELEASE parent=00007FFFFE976CC0 parentBytes=12544 bindingOffset=0 logicalBytes=12544 retainedParentObjects=0 nativeBufferWidth=12544 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=256 physicalAvailable=22455160832 commitAvailable=22455160832 memorySnapshotValid=1 hr=0x00000000
+[RW-GPU-MEMORY] stage=VULKAN_BUFFER_DESTROY parent=00007FFFFE976CC0 parentBytes=0 bindingOffset=0 logicalBytes=12528 retainedParentObjects=0 nativeBufferWidth=0 nativeLiveBufferBytes=0 nativeLiveBufferCount=0 nativePeakBufferBytes=12544 nativeLiveTextureBytes=0 nativePeakTextureBytes=256 physicalAvailable=22455160832 commitAvailable=22455160832 memorySnapshotValid=1 hr=0x00000000
+FINAL: FAILURE-PATH PASS
+X connection to :162 broken (explicit kill or server shutdown).
+X connection to :162 broken (explicit kill or server shutdown).

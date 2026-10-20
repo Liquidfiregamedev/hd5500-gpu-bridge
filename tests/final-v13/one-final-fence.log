@@ -1,0 +1,28 @@
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+ADAPTER: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE timestampPeriod=1.000000000 fallback=0
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+FENCE_UNSIGNALED_STATUS: VK_NOT_READY
+FENCE_POST_SUBMIT_STATUS: VK_NOT_READY
+FENCE_ZERO_WAIT: VK_TIMEOUT
+FENCE_WAIT_ALL_ONE_PENDING: VK_TIMEOUT
+QUERY_NOWAIT: VK_SUCCESS q0=53061516449192 avail0=1 q1=53061516479898 avail1=1
+QUERY_WAIT: VK_SUCCESS t0=53061516449192 t1=53061516479898 avail=1/1
+FENCE_REUSE: 125 submits/waits passed
+READBACK: fill pattern verified
+[RW-GPU-FENCE] fenced_submits=127 flushes=126 polls=2270 timeouts=2
+[RW-GPU-STAGING] cap=268435456 liveBytes=0 peakBytes=0 entries=0 hits=0 misses=0 evictions=0 uncached=0
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=16640 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=0 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22013194240 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=0 entries=0 hits=0 misses=0 inserts=0 evictions=0 rejected=0
+[RW-GPU-STATECACHE] hits=0 misses=0 invalidations=128
+FINAL: PASS FenceQueryProbe
+X connection to :162 broken (explicit kill or server shutdown).
+X connection to :162 broken (explicit kill or server shutdown).

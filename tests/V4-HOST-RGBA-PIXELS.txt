@@ -1,0 +1,184 @@
+Ashes D3D11 focused texture upload/readback probe (raw Vulkan; no VMA)
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json
+ICD isolation: VK_ICD_FILENAMES and VK_DRIVER_FILES set in this process only.
+WARNING: --allow-non-intel-test accepts Wine/synthetic/non-Intel only for sandbox integration; NOT HD 5500 validation.
+CALL: vkEnumerateInstanceVersion
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0)
+LOADER MAX API: 1.4.362; application requests 1.0.0
+PORTABILITY: enabling advertised VK_KHR_portability_enumeration.
+DEBUG_UTILS: VK_EXT_debug_utils advertised; enabling callback at instance creation.
+CALL: vkCreateInstance(api=1.0)
+DEBUG_UTILS[1]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: applicationName: "Ashes texture upload probe", applicationVersion: 1, engineName: "standalone", engineVersion: 1, apiVersion: 1.0.0
+DEBUG_UTILS[2]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: Requested 0 instance layer(s):
+DEBUG_UTILS[3]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: Requested 2 instance extension(s):
+DEBUG_UTILS[4]: severity=0x10 type=0x1 code=0 id=Loader Message message=   VK_KHR_portability_enumeration
+DEBUG_UTILS[5]: severity=0x10 type=0x1 code=0 id=Loader Message message=   VK_EXT_debug_utils
+DEBUG_UTILS[6]: severity=0x10 type=0x1 code=0 id=Loader Message message=No valid vk_loader_settings.json file found, no loader settings will be active
+DEBUG_UTILS[7]: severity=0x10 type=0x1 code=0 id=Loader Message message=Portability enumeration bit was set, enumerating portability drivers.
+DEBUG_UTILS[8]: severity=0x10 type=0x1 code=0 id=Loader Message message=windows_get_app_package_manifest_path: Failed to find mapping layers packages by family name
+DEBUG_UTILS[9]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for implicit layer manifest files
+DEBUG_UTILS[10]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[11]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found no files
+DEBUG_UTILS[12]: severity=0x10 type=0x1 code=0 id=Loader Message message=Checking for Layer Manifest files in Registry at HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ImplicitLayers
+DEBUG_UTILS[13]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found no registry files in HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ImplicitLayers
+DEBUG_UTILS[14]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for explicit layer manifest files
+DEBUG_UTILS[15]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[16]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found no files
+DEBUG_UTILS[17]: severity=0x10 type=0x1 code=0 id=Loader Message message=Checking for Layer Manifest files in Registry at HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ExplicitLayers
+DEBUG_UTILS[18]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found no registry files in HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ExplicitLayers
+DEBUG_UTILS[19]: severity=0x100 type=0x1 code=0 id=Loader Message message=windows_read_data_files_in_registry: Registry lookup failed to get layer manifest files.
+DEBUG_UTILS[20]: severity=0x10 type=0x1 code=0 id=Loader Message message=windows_get_app_package_manifest_path: Failed to find mapping layers packages by family name
+DEBUG_UTILS[21]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for driver manifest files
+DEBUG_UTILS[22]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[23]: severity=0x10 type=0x1 code=0 id=Loader Message message=      Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json
+DEBUG_UTILS[24]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found the following files:
+DEBUG_UTILS[25]: severity=0x10 type=0x1 code=0 id=Loader Message message=      Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json
+DEBUG_UTILS[26]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found ICD manifest file Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer_icd.json, version 1.0.1
+DEBUG_UTILS[27]: severity=0x1 type=0x1 code=0 id=Loader Message message=Searching for ICD drivers named .\ashesD3D11Renderer.dll
+DEBUG_UTILS[28]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance layer callstack setup to:
+DEBUG_UTILS[29]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Application>
+DEBUG_UTILS[30]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[31]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Loader>
+DEBUG_UTILS[32]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[33]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Drivers>
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+CALL: vkCreateDebugUtilsMessengerEXT
+RESULT: vkCreateDebugUtilsMessengerEXT => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(count)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(list)
+RESULT: vkEnumeratePhysicalDevices(list) => VK_SUCCESS (0)
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+WARNING: selected synthetic/non-Intel/software-like adapter: sandbox result only, NOT HD 5500 hardware validation.
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0
+MEMORY_TYPE[0]: heap=0 flags=0x1
+MEMORY_TYPE[1]: heap=1 flags=0x6
+MEMORY_TYPE[2]: heap=1 flags=0xE
+FORMAT RGBA8_UNORM: optimalFeatures=0x1FC87 (need sampled=0x1 transferSrc=0x4000 transferDst=0x8000)
+PORTABILITY: enabling advertised VK_KHR_portability_subset.
+CALL: vkCreateDevice
+DEBUG_UTILS[34]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateDevice layer callstack setup to:
+DEBUG_UTILS[35]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Application>
+DEBUG_UTILS[36]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[37]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Loader>
+DEBUG_UTILS[38]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[39]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Device>
+DEBUG_UTILS[40]: severity=0x10 type=0x1 code=0 id=Loader Message message=       Using "NVIDIA GeForce GTX 470 (d3d11)" with driver: "Z:\home\ubuntu\rimworld-gpu-d3d11-v4\package\runtime\ashesD3D11Renderer.dll"
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+CALL: vkCreateImage(sampled-only DEVICE_LOCAL; usage=0x4; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled-only DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled-only DEVICE_LOCAL: size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled-only DEVICE_LOCAL requiredFlags=0x1 type=0 actualFlags=0x1 size=16) [preflight]
+RESULT: vkAllocateMemory(sampled-only DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled-only DEVICE_LOCAL, offset=0) [preflight]
+[RW-GPU-TEX2D] BEGIN id=1 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=1 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0x1 dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+RESULT: vkBindImageMemory(sampled-only DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+CALL: vkCreateImage(sampled|transfer-src|transfer-dst DEVICE_LOCAL; usage=0x7; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled|transfer-src|transfer-dst DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled|transfer-src|transfer-dst DEVICE_LOCAL: size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL requiredFlags=0x1 type=0 actualFlags=0x1 size=16) [preflight]
+RESULT: vkAllocateMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL, offset=0) [preflight]
+[RW-GPU-TEX2D] BEGIN id=2 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=2 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0x1 dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+RESULT: vkBindImageMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+CALL: vkCreateImage(TARGET optimal RGBA8 2x2 sampled|transfer-src|transfer-dst)
+CALL: vkCreateImage(TARGET)
+RESULT: vkCreateImage(TARGET) => VK_SUCCESS (0)
+REQUIREMENTS TARGET_IMAGE: size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(TARGET image requiredFlags=0x6 type=2 flags=0xE bindOffset=4)
+CALL: vkAllocateMemory(TARGET image)
+RESULT: vkAllocateMemory(TARGET image) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(TARGET, offset=4)
+CALL: vkBindImageMemory(TARGET requested offset)
+[RW-GPU-TEX2D] BEGIN id=3 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=3 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+RESULT: vkBindImageMemory(TARGET requested offset) => VK_SUCCESS (0)
+CALL: vkCreateBuffer(upload 128B transfer-src)
+RESULT: vkCreateBuffer(upload 128B transfer-src) => VK_SUCCESS (0)
+REQUIREMENTS UPLOAD: size=128 alignment=64 typeBits=0x00000005; bindOffset=64 allocation=192
+CALL: vkAllocateMemory(upload host-visible coherent type=2 flags=0xE)
+CALL: vkAllocateMemory(upload)
+RESULT: vkAllocateMemory(upload) => VK_SUCCESS (0)
+CALL: vkBindBufferMemory(upload, nonzero memory offset=64)
+CALL: vkBindBufferMemory(upload nonzero offset)
+RESULT: vkBindBufferMemory(upload nonzero offset) => VK_SUCCESS (0)
+CALL: vkMapMemory(upload allocation)
+CALL: vkMapMemory(upload)
+RESULT: vkMapMemory(upload) => VK_SUCCESS (0)
+DATA: wrote 2x2 RGBA8 at logical upload buffer offset=4 with bufferRowLength=4 (16-byte padded rows); byte lanes 8..15 are padding.
+CALL: vkFlushMappedMemoryRanges(upload coherent)
+RESULT: vkFlushMappedMemoryRanges(upload coherent) => VK_SUCCESS (0)
+RESULT: vkUnmapMemory(upload) => void
+CALL: vkCreateBuffer(readback 128B transfer-dst)
+RESULT: vkCreateBuffer(readback 128B transfer-dst) => VK_SUCCESS (0)
+REQUIREMENTS READBACK: size=128 alignment=64 typeBits=0x00000005; bindOffset=64 allocation=192
+CALL: vkAllocateMemory(readback host-visible coherent type=2 flags=0xE)
+CALL: vkAllocateMemory(readback)
+RESULT: vkAllocateMemory(readback) => VK_SUCCESS (0)
+CALL: vkBindBufferMemory(readback, nonzero memory offset=64)
+CALL: vkBindBufferMemory(readback nonzero offset)
+RESULT: vkBindBufferMemory(readback nonzero offset) => VK_SUCCESS (0)
+CALL: vkCreateCommandPool(transfer)
+RESULT: vkCreateCommandPool(transfer) => VK_SUCCESS (0)
+CALL: vkAllocateCommandBuffers
+RESULT: vkAllocateCommandBuffers => VK_SUCCESS (0)
+CALL: vkBeginCommandBuffer(texture upload/readback)
+RESULT: vkBeginCommandBuffer(texture upload/readback) => VK_SUCCESS (0)
+CALL: vkCmdPipelineBarrier(image UNDEFINED -> TRANSFER_DST_OPTIMAL)
+RESULT: vkCmdPipelineBarrier(UNDEFINED->TRANSFER_DST) => recorded
+CALL: vkCmdCopyBufferToImage(upload bufferOffset=4 rowLength=4 imageExtent=2x2) [PRIMARY TARGET]
+[RW-GPU-TEX2D] BEGIN id=4 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=4 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+RESULT: vkCmdCopyBufferToImage => recorded
+CALL: vkCmdPipelineBarrier(image TRANSFER_DST_OPTIMAL -> TRANSFER_SRC_OPTIMAL)
+RESULT: vkCmdPipelineBarrier(TRANSFER_DST->TRANSFER_SRC) => recorded
+CALL: vkCmdCopyImageToBuffer(readback bufferOffset=32 contiguous 16 bytes)
+RESULT: vkCmdCopyImageToBuffer => recorded
+CALL: vkCmdPipelineBarrier(readback TRANSFER_WRITE -> HOST_READ)
+RESULT: vkCmdPipelineBarrier(readback->host) => recorded
+CALL: vkEndCommandBuffer(texture upload/readback)
+RESULT: vkEndCommandBuffer(texture upload/readback) => VK_SUCCESS (0)
+CALL: vkCreateFence(texture upload/readback)
+RESULT: vkCreateFence(texture upload/readback) => VK_SUCCESS (0)
+CALL: vkQueueSubmit(texture upload/readback)
+[RW-GPU-TEX2D] BEGIN id=5 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=5 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=1 vkUsage=0x3 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=3 bind=0x0 cpu=0x30000 misc=0x0 quality=0
+RESULT: vkQueueSubmit(texture upload/readback) => VK_SUCCESS (0)
+CALL: vkWaitForFences(texture upload/readback)
+RESULT: vkWaitForFences(texture upload/readback) => VK_SUCCESS (0)
+CALL: vkMapMemory(readback allocation)
+CALL: vkMapMemory(readback)
+RESULT: vkMapMemory(readback) => VK_SUCCESS (0)
+CALL: vkInvalidateMappedMemoryRanges(readback after fence)
+RESULT: vkInvalidateMappedMemoryRanges(readback after fence) => VK_SUCCESS (0)
+READBACK 16 bytes @ logical buffer offset 32: 11 22 33 44 55 66 77 88 99 AA BB CC DD EE F0 0F
+RESULT: vkUnmapMemory(readback) => void
+PASS: padded/nonzero-offset upload copied to optimal sampled|transfer image and exact contiguous 16-byte readback matched.
+HOST_VISIBLE IMAGE PREFLIGHTS: exercising advertised host-visible image type and nonzero image-memory binding.
+CALL: vkCreateImage(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind); usage=0x4; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind): size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) requiredFlags=0x6 type=2 actualFlags=0xE size=20) [preflight]
+RESULT: vkAllocateMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind), offset=4) [preflight]
+[RW-GPU-TEX2D] BEGIN id=6 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=6 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x4 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+RESULT: vkBindImageMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+CALL: vkCreateImage(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind); usage=0x7; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind): size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind) requiredFlags=0x6 type=2 actualFlags=0xE size=20) [preflight]
+RESULT: vkAllocateMemory(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind), offset=4) [preflight]
+[RW-GPU-TEX2D] BEGIN id=7 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+[RW-GPU-TEX2D] END id=7 hr=0x00000000 vkFormat=37 extent=2x2x1 mips=1 layers=1 samples=1 tiling=0 vkUsage=0x7 vkFlags=0x0 memoryProps=0xE dxgiFormat=27 d3dUsage=0 bind=0x8 cpu=0x0 misc=0x0 quality=0
+RESULT: vkBindImageMemory(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+CALL: vkDeviceWaitIdle
+RESULT: vkDeviceWaitIdle => VK_SUCCESS (0)
+DEBUG SUMMARY: total=40 errors=0 preflightFailures=0 text-integrity=sane-or-no-messages
+FINAL: PASS status=0; exact raw Vulkan texture upload/readback completed.
+X connection to :99 broken (explicit kill or server shutdown).

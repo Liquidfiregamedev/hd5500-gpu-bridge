@@ -1,0 +1,1429 @@
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11BeginRenderPassCommand.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11BeginRenderPassCommand.cpp
+--- v133/Command/Commands/D3D11BeginRenderPassCommand.cpp	2026-10-15 19:06:41.000000000 +0200
++++ v134/Command/Commands/D3D11BeginRenderPassCommand.cpp	2026-10-18 12:10:46.781216237 +0200
+@@ -3,6 +3,7 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11BeginRenderPassCommand.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ #include "Buffer/D3D11BufferView.hpp"
+ #include "Core/D3D11Device.hpp"
+@@ -45,6 +46,28 @@
+ 		auto & views = get( m_frameBuffer )->getAllViews();
+ 		uint32_t clearIndex = 0u;
+ 
++		if ( framediag::enabled() )
++		{
++			std::vector< framediag::PassAttachment > diag;
++			uint32_t diagClear = 0u;
++			for ( auto const & reference : *get( m_renderPass ) )
++			{
++				auto & attachDesc = get( m_renderPass )->getAttachment( reference );
++				framediag::PassAttachment a{};
++				a.view = reference.attachment < views.size() ? views[reference.attachment]->view : nullptr;
++				a.colour = getAspectMask( attachDesc.format ) == VK_IMAGE_ASPECT_COLOR_BIT;
++				a.loadOp = int( attachDesc.loadOp );
++				if ( a.colour && attachDesc.loadOp == VK_ATTACHMENT_LOAD_OP_CLEAR && diagClear < m_rtClearValues.size() )
++				{
++					for ( int c = 0; c < 4; ++c ) a.clear[c] = m_rtClearValues[diagClear].color.float32[c];
++					++diagClear;
++				}
++				diag.push_back( a );
++			}
++			auto const dims = get( m_frameBuffer )->getDimensions();
++			framediag::onPass( diag.data(), diag.size(), dims.width, dims.height );
++		}
++
+ 		for ( auto const & reference : *get( m_renderPass ) )
+ 		{
+ 			auto & attachDesc = get( m_renderPass )->getAttachment( reference );
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11ClearColourCommand.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11ClearColourCommand.cpp
+--- v133/Command/Commands/D3D11ClearColourCommand.cpp	2026-10-15 20:42:22.000000000 +0200
++++ v134/Command/Commands/D3D11ClearColourCommand.cpp	2026-10-18 12:10:46.780523167 +0200
+@@ -3,6 +3,7 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11ClearColourCommand.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ #include "Image/D3D11ImageView.hpp"
+ 
+@@ -101,6 +102,7 @@
+ 	{
+ 		for ( auto const & view : m_views )
+ 		{
++			framediag::onClearView( get( view )->getRenderTargetView(), m_colour.float32, "vkCmdClearColorImage" );
+ 			context.context->ClearRenderTargetView( get( view )->getRenderTargetView()
+ 				, m_colour.float32 );
+ 		}
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11CopyImageCommand.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11CopyImageCommand.cpp
+--- v133/Command/Commands/D3D11CopyImageCommand.cpp	2026-10-17 14:26:06.000000000 +0200
++++ v134/Command/Commands/D3D11CopyImageCommand.cpp	2026-10-18 12:10:46.780910657 +0200
+@@ -3,6 +3,7 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11CopyImageCommand.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ #include "Image/D3D11Image.hpp"
+ #include "Image/D3D11ImageView.hpp"
+@@ -85,6 +86,7 @@
+ 
+ 	void CopyImageCommand::apply( Context & context )const
+ 	{
++		framediag::onCopyTo( get( m_dst )->getResource(), get( m_src )->getResource(), "vkCmdCopyImage" );
+ 		for ( auto layer = 0u; layer < m_copyInfo.srcSubresource.layerCount; ++layer )
+ 		{
+ 			// D3D resource indices include the hidden BC mips. Shadow-memory indices do not.
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawCommand.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawCommand.cpp
+--- v133/Command/Commands/D3D11DrawCommand.cpp	2026-10-15 19:06:41.000000000 +0200
++++ v134/Command/Commands/D3D11DrawCommand.cpp	2026-10-18 12:12:24.032189726 +0200
+@@ -3,6 +3,7 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11DrawCommand.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ namespace ashes::D3D11_NAMESPACE
+ {
+@@ -36,6 +37,8 @@
+ 				, binding.offsets.data() );
+ 		}
+ 
++		framediag::onDraw( *context.context, "draw", m_vtxCount, m_instCount, m_mode );
++
+ 		if ( m_instCount > 1 )
+ 		{
+ 			context.context->DrawInstanced( m_vtxCount, m_instCount, m_firstVertex, m_firstInstance );
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawIndexedCommand.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawIndexedCommand.cpp
+--- v133/Command/Commands/D3D11DrawIndexedCommand.cpp	2026-10-17 16:27:32.000000000 +0200
++++ v134/Command/Commands/D3D11DrawIndexedCommand.cpp	2026-10-18 12:12:24.033014586 +0200
+@@ -3,6 +3,7 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11DrawIndexedCommand.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ #include <atomic>
+ #include <cstdlib>
+ #include <iostream>
+@@ -77,6 +78,8 @@
+ 				, binding.offsets.data() );
+ 		}
+ 
++		framediag::onDraw( *context.context, "indexed", m_indexCount, m_instCount, m_mode );
++
+ 		if ( m_instCount != 1u || m_firstInstance != 0u )
+ 		{
+ 			context.context->DrawIndexedInstanced( m_indexCount
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawIndexedIndirectCommand.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawIndexedIndirectCommand.cpp
+--- v133/Command/Commands/D3D11DrawIndexedIndirectCommand.cpp	2026-10-15 19:06:41.000000000 +0200
++++ v134/Command/Commands/D3D11DrawIndexedIndirectCommand.cpp	2026-10-18 12:12:24.033703826 +0200
+@@ -3,6 +3,7 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11DrawIndexedIndirectCommand.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ #include "Buffer/D3D11Buffer.hpp"
+ 
+@@ -42,6 +43,7 @@
+ 				, binding.offsets.data() );
+ 		}
+ 
++		framediag::onDraw( *context.context, "indexed-indirect", 0u, 0u, m_mode );
+ 		context.context->DrawIndexedInstancedIndirect( get( m_buffer )->getBuffer()
+ 			, m_offset );
+ 	}
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawIndirectCommand.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/Commands/D3D11DrawIndirectCommand.cpp
+--- v133/Command/Commands/D3D11DrawIndirectCommand.cpp	2026-10-15 19:06:41.000000000 +0200
++++ v134/Command/Commands/D3D11DrawIndirectCommand.cpp	2026-10-18 12:12:24.034341613 +0200
+@@ -3,6 +3,7 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11DrawIndirectCommand.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ #include "Buffer/D3D11Buffer.hpp"
+ 
+@@ -40,6 +41,7 @@
+ 				, binding.offsets.data() );
+ 		}
+ 
++		framediag::onDraw( *context.context, "indirect", 0u, 0u, m_mode );
+ 		context.context->DrawInstancedIndirect( get( m_buffer )->getBuffer()
+ 			, m_offset );
+ 	}
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/D3D11CommandBuffer.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/D3D11CommandBuffer.cpp
+--- v133/Command/D3D11CommandBuffer.cpp	2026-10-17 16:28:30.000000000 +0200
++++ v134/Command/D3D11CommandBuffer.cpp	2026-10-18 12:10:58.142556993 +0200
+@@ -63,6 +63,7 @@
+ 
+ #include "ashesd3d11_api.hpp"
+ #include "Miscellaneous/D3D11CommandTrace.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ #include <typeinfo>
+ 
+ namespace ashes::D3D11_NAMESPACE
+@@ -756,6 +757,7 @@
+ 		{
+ 			get( m_device )->requireHealthy( "Blit recording" );
+ 			if ( !srcImage || !dstImage ) throw Exception{ VK_ERROR_INITIALIZATION_FAILED, "Null blit image" };
++			framediag::onBlitRecorded( get( srcImage )->getResource(), get( dstImage )->getResource(), uint32_t( regions.size() ), int( filter ) );
+ 			auto & pipeline = doGetBlitPipeline( get( srcImage )->getFormat(), get( dstImage )->getFormat() );
+ 			m_commands.emplace_back( std::make_unique< BlitImageCommand >( m_commandPool, get( this ), m_device, pipeline, srcImage, dstImage, regions, filter ) );
+ 		}
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Command/D3D11Queue.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Command/D3D11Queue.cpp
+--- v133/Command/D3D11Queue.cpp	2026-10-17 14:29:31.000000000 +0200
++++ v134/Command/D3D11Queue.cpp	2026-10-18 12:10:58.143840563 +0200
+@@ -113,7 +113,7 @@
+ 		VkResult overall = VK_SUCCESS;
+ 		for ( uint32_t i = 0u; i < presentInfo.swapchainCount; ++i )
+ 		{
+-			auto result = get( presentInfo.pSwapchains[i] )->present();
++			auto result = get( presentInfo.pSwapchains[i] )->present( presentInfo.pImageIndices ? presentInfo.pImageIndices[i] : 0u );
+ 			if ( presentInfo.pResults ) presentInfo.pResults[i] = result;
+ 			if ( result != VK_SUCCESS && overall == VK_SUCCESS ) overall = result;
+ 		}
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Core/D3D11SwapChain.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Core/D3D11SwapChain.cpp
+--- v133/Core/D3D11SwapChain.cpp	2026-10-18 11:48:23.702701639 +0200
++++ v134/Core/D3D11SwapChain.cpp	2026-10-18 12:11:26.754272727 +0200
+@@ -10,6 +10,7 @@
+ #include "Sync/D3D11Semaphore.hpp"
+ 
+ #include "ashesd3d11_api.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ #pragma warning( push )
+ #pragma warning( disable: 5262 )
+@@ -726,15 +727,26 @@
+ 			dxDebugName( get( m_swapChainImage )->getResource(), SwapChainImage );
+ 
+ 			m_windowExtent = m_createInfo.imageExtent;
+-			m_image = swapchain::createImage( device
+-				, m_createInfo.imageFormat
+-				, m_windowExtent
+-				, m_deviceMemory );
+-			dxDebugName( get( m_image )->getResource(), SwapChainFakeImage );
+-			m_view = swapchain::createImageView( device
+-				, m_image
+-				, m_createInfo.imageFormat );
+-			dxDebugName( get( m_view )->getRenderTargetView(), SwapChainFakeImageView );
++			auto const imageCount = std::min( std::max( m_createInfo.minImageCount, 1u )
++				, framediag::swapchainImageSetting() );
++
++			for ( uint32_t index = 0u; index < imageCount; ++index )
++			{
++				VkDeviceMemory memory{};
++				auto image = swapchain::createImage( device
++					, m_createInfo.imageFormat
++					, m_windowExtent
++					, memory );
++				m_images.push_back( image );
++				m_deviceMemories.push_back( memory );
++				dxDebugName( get( image )->getResource(), SwapChainFakeImage );
++				auto view = swapchain::createImageView( device
++					, image
++					, m_createInfo.imageFormat );
++				m_views.push_back( view );
++				dxDebugName( get( view )->getRenderTargetView(), SwapChainFakeImageView );
++				framediag::registerSwapImage( get( image )->getResource() );
++			}
+ 			m_frameProbeEnabled = frameprobe::isEnabled();
+ 
+ 			if ( m_frameProbeEnabled )
+@@ -745,8 +757,7 @@
+ 		}
+ 		catch ( std::exception & exc )
+ 		{
+-			deallocate( m_view, get( m_device )->getAllocationCallbacks() );
+-			deallocate( m_image, get( m_device )->getAllocationCallbacks() );
++			doReleaseImages();
+ 			deallocate( m_swapChainImage, get( m_device )->getAllocationCallbacks() );
+ 			safeRelease( m_swapChain );
+ 
+@@ -766,39 +777,88 @@
+ 
+ 	SwapchainKHR::~SwapchainKHR()noexcept
+ 	{
+-		deallocate( m_view, get( m_device )->getAllocationCallbacks() );
+-		deallocate( m_image, get( m_device )->getAllocationCallbacks() );
++		doReleaseImages();
+ 		deallocate( m_swapChainImage, get( m_device )->getAllocationCallbacks() );
+ 		safeRelease( m_swapChain );
+ 	}
+ 
++	void SwapchainKHR::doReleaseImages()noexcept
++	{
++		for ( auto & view : m_views )
++		{
++			deallocate( view, get( m_device )->getAllocationCallbacks() );
++		}
++
++		for ( auto & image : m_images )
++		{
++			if ( image )
++			{
++				framediag::unregisterSwapImage( get( image )->getResource() );
++			}
++
++			deallocate( image, get( m_device )->getAllocationCallbacks() );
++		}
++
++		for ( auto & memory : m_deviceMemories )
++		{
++			deallocate( memory, get( m_device )->getAllocationCallbacks() );
++		}
++
++		m_views.clear();
++		m_images.clear();
++		m_deviceMemories.clear();
++	}
++
+ 	uint32_t SwapchainKHR::getImageCount()const
+ 	{
+-		return 1u;
++		return uint32_t( m_images.size() );
+ 	}
+ 
+ 	VkImageArray SwapchainKHR::getImages()const
+ 	{
+ 		VkImageArray result;
+-		result.emplace_back( m_image );
++
++		for ( auto & image : m_images )
++		{
++			result.emplace_back( image );
++		}
++
+ 		return result;
+ 	}
+ 
+-	VkResult SwapchainKHR::present()const
++	VkResult SwapchainKHR::present( uint32_t imageIndex )const
+ 	{
++		if ( imageIndex >= m_images.size() )
++		{
++			return VK_ERROR_OUT_OF_DATE_KHR;
++		}
++
++		auto const & presentedImage = m_images[imageIndex];
+ 		auto context{ get( m_device )->getImmediateContext() };
+ 		D3D11_BOX srcBox{};
+ 		srcBox.right = m_windowExtent.width;
+ 		srcBox.bottom = m_windowExtent.height;
+ 		srcBox.back = 1u;
+-		auto const frame = ++m_presentCount;
++		++m_presentCount;
++		// v13.4: the probe schedule is global (first 3 presents of the process, then one per
++		// 10 s), not per swapchain. With per-frame swapchain recreation the per-swapchain
++		// schedule captured, and stalled, every single frame.
++		static uint64_t globalPresents{};
++		static uint64_t globalNextTick{};
++		static uint32_t globalTimedCaptures{};
++		auto const frame = ++globalPresents;
+ 		auto const probeThisFrame = m_frameProbeEnabled
+ 			&& frameprobe::shouldCapture( frame
+ 				, frameprobe::getTickMillis()
+-				, m_nextFrameProbeTick
+-				, m_timedFrameProbeCount );
++				, globalNextTick
++				, globalTimedCaptures );
+ 		frameprobe::Capture probe;
+-		auto fake = get( m_image )->getTexture2D();
++		auto fake = get( presentedImage )->getTexture2D();
++		framediag::onPresent( get( m_device )->getDevice()
++			, *context
++			, get( presentedImage )->getResource()
++			, imageIndex
++			, uint32_t( m_images.size() ) );
+ 		auto real = get( m_swapChainImage )->getTexture2D();
+ 
+ 		if ( probeThisFrame )
+@@ -811,7 +871,7 @@
+ 			, 0u
+ 			, 0u
+ 			, 0u
+-			, get( m_image )->getResource()
++			, get( presentedImage )->getResource()
+ 			, 0u
+ 			, &srcBox );
+ 
+@@ -849,7 +909,8 @@
+ 	VkResult SwapchainKHR::acquireNextImage( uint32_t & imageIndex )const
+ 	{
+ 		++m_acquireCount;
+-		imageIndex = 0u;
++		imageIndex = m_nextImage;
++		m_nextImage = m_images.empty() ? 0u : ( m_nextImage + 1u ) % uint32_t( m_images.size() );
+ 		return VK_SUCCESS;
+ 	}
+ 
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Core/D3D11SwapChain.hpp v134/package/source/v13-renderer-source/D3D11Renderer/Core/D3D11SwapChain.hpp
+--- v133/Core/D3D11SwapChain.hpp	2026-10-18 11:48:23.704922667 +0200
++++ v134/Core/D3D11SwapChain.hpp	2026-10-18 12:11:26.754969902 +0200
+@@ -9,6 +9,7 @@
+ #include "renderer/D3D11Renderer/D3D11RendererPrerequisites.hpp"
+ 
+ #include <chrono>
++#include <vector>
+ 
+ namespace ashes::D3D11_NAMESPACE
+ {
+@@ -23,7 +24,7 @@
+ 		uint32_t getImageCount()const;
+ 		VkImageArray getImages()const;
+ 		VkResult acquireNextImage( uint32_t & imageIndex )const;
+-		VkResult present()const;
++		VkResult present( uint32_t imageIndex )const;
+ 
+ 		inline IDXGISwapChain * getSwapChain()const
+ 		{
+@@ -64,6 +65,7 @@
+ 
+ 	private:
+ 		void doInitPresentParameters();
++		void doReleaseImages()noexcept;
+ 
+ 	private:
+ 		VkDevice m_device;
+@@ -77,9 +79,11 @@
+ 		uint32_t m_currentBuffer{};
+ 		IDXGISwapChain * m_swapChain{ nullptr };
+ 		VkImage m_swapChainImage{};
+-		VkImage m_image{};
+-		VkDeviceMemory m_deviceMemory{};
+-		VkImageView m_view{};
++		// v13.4: 1..3 Vulkan-visible images (RW_HD5500_SWAPCHAIN_IMAGES); index 0 is the v13.3 image.
++		std::vector< VkImage > m_images;
++		std::vector< VkDeviceMemory > m_deviceMemories;
++		std::vector< VkImageView > m_views;
++		mutable uint32_t m_nextImage{};
+ 		VkExtent2D m_swapchainExtent;
+ 		VkExtent2D m_windowExtent;
+ 		// Opt-in only (RW_HD5500_FRAME_PROBE=1); mutable because present() is const.
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Core/D3D11Win32Surface.cpp v134/package/source/v13-renderer-source/D3D11Renderer/Core/D3D11Win32Surface.cpp
+--- v133/Core/D3D11Win32Surface.cpp	2026-10-17 15:05:57.000000000 +0200
++++ v134/Core/D3D11Win32Surface.cpp	2026-10-18 12:10:58.143262915 +0200
+@@ -5,6 +5,7 @@
+ #if !defined( Ashes_UWP )
+ 
+ #include "Core/D3D11Surface.hpp"
++#include "Miscellaneous/D3D11FrameDiag.hpp"
+ 
+ #include "Core/D3D11DisplayMode.hpp"
+ #include "Core/D3D11PhysicalDevice.hpp"
+@@ -42,7 +43,8 @@
+ 			, std::map< VkFormat, DXGI_MODE_DESC > & matchingDescs )
+ 		{
+ 			capabilities.minImageCount = 1u;
+-			capabilities.maxImageCount = 1u;
++			// v13.4 A/B switch: RW_HD5500_SWAPCHAIN_IMAGES=1..3 (default 1 = v13.3 behaviour).
++			capabilities.maxImageCount = framediag::swapchainImageSetting();
+ 			capabilities.currentExtent.width = ~0u;
+ 			capabilities.currentExtent.height = ~0u;
+ 			capabilities.minImageExtent = { ~0u, ~0u };
+diff -ruN v133/package/source/v13-renderer-source/D3D11Renderer/Miscellaneous/D3D11FrameDiag.hpp v134/package/source/v13-renderer-source/D3D11Renderer/Miscellaneous/D3D11FrameDiag.hpp
+--- v133/Miscellaneous/D3D11FrameDiag.hpp	1970-01-01 01:00:00.000000000 +0100
++++ v134/Miscellaneous/D3D11FrameDiag.hpp	2026-10-18 12:10:27.531325751 +0200
+@@ -0,0 +1,1000 @@
++/*
++v13.4 frame-composition diagnostics for the HD5500 bridge (diagnostic only).
++
++Answers "what lands in the swapchain image?" for a bounded set of frames:
++  - every draw / render pass / clear / copy that targets a swapchain image, with the
++    full D3D11 pipeline state at draw time (RTV, viewport, scissor, raster, blend,
++    depth-stencil, shaders, pixel-shader SRVs);
++  - a compact list of the first off-screen draws and passes;
++  - per-frame totals;
++  - on dump frames: full-frame statistics and a downscaled BMP of the swapchain image,
++    of the textures sampled by the last draw into the swapchain, and of the last
++    off-screen render target.
++
++Enabled only with RW_HD5500_FRAME_DIAG=1. BMPs are written only when
++RW_HD5500_FRAME_DUMP_DIR names a directory. Nothing here changes rendering:
++the only device work is CopySubresourceRegion into private staging textures on dump frames.
++
++RW_HD5500_SWAPCHAIN_IMAGES=1..3 (default 1) is read here too; it is a separate,
++behaviour-changing A/B switch used by the surface caps and the swapchain.
++*/
++#pragma once
++
++#include <d3d11.h>
++#include <windows.h>
++
++#include <algorithm>
++#include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <cstring>
++#include <mutex>
++#include <string>
++#include <vector>
++
++namespace ashes::D3D11_NAMESPACE::framediag
++{
++	inline bool readFlag( char const * name )
++	{
++		char value[ 4u ]{};
++		auto const length = ::GetEnvironmentVariableA( name, value, DWORD( sizeof( value ) ) );
++		return length == 1u && value[ 0 ] == '1';
++	}
++
++	inline bool enabled()
++	{
++		static bool const result = readFlag( "RW_HD5500_FRAME_DIAG" );
++		return result;
++	}
++
++	inline std::string const & dumpDir()
++	{
++		static std::string const result = []()
++		{
++			char buffer[ 1024u ]{};
++			auto const length = ::GetEnvironmentVariableA( "RW_HD5500_FRAME_DUMP_DIR", buffer, DWORD( sizeof( buffer ) ) );
++			return ( length > 0u && length < sizeof( buffer ) )
++				? std::string( buffer, length )
++				: std::string{};
++		}();
++		return result;
++	}
++
++	// Number of images a swapchain may expose (A/B switch). Default 1 = v13.3 behaviour.
++	inline uint32_t swapchainImageSetting()
++	{
++		static uint32_t const result = []()
++		{
++			char value[ 4u ]{};
++			auto const length = ::GetEnvironmentVariableA( "RW_HD5500_SWAPCHAIN_IMAGES", value, DWORD( sizeof( value ) ) );
++			if ( length == 1u && value[ 0 ] >= '1' && value[ 0 ] <= '3' )
++			{
++				return uint32_t( value[ 0 ] - '0' );
++			}
++			return 1u;
++		}();
++		return result;
++	}
++
++	inline void emit( std::string const & line )
++	{
++		// One complete write per line so std::clog traffic cannot split it.
++		std::string text = line;
++		text += '\n';
++		std::fwrite( text.data(), 1u, text.size(), stderr );
++		std::fflush( stderr );
++	}
++
++	template< typename ... Args >
++	inline std::string fmt( char const * format, Args ... args )
++	{
++		char buffer[ 1536u ];
++		auto const written = std::snprintf( buffer, sizeof( buffer ), format, args ... );
++		if ( written < 0 )
++		{
++			return {};
++		}
++		return std::string( buffer, size_t( std::min( written, int( sizeof( buffer ) - 1 ) ) ) );
++	}
++
++	template< typename T >
++	inline void release( T *& object )
++	{
++		if ( object )
++		{
++			object->Release();
++			object = nullptr;
++		}
++	}
++
++	struct Target
++	{
++		ID3D11Resource * resource{};
++		UINT subresource{};
++		DXGI_FORMAT viewFormat{ DXGI_FORMAT_UNKNOWN };
++
++		void reset()
++		{
++			release( resource );
++			subresource = 0u;
++			viewFormat = DXGI_FORMAT_UNKNOWN;
++		}
++
++		void set( ID3D11Resource * res, UINT sub, DXGI_FORMAT format )
++		{
++			if ( res )
++			{
++				res->AddRef();
++			}
++			reset();
++			resource = res;
++			subresource = sub;
++			viewFormat = format;
++		}
++	};
++
++	struct State
++	{
++		std::mutex mutex;
++		std::vector< ID3D11Resource * > swapImages; // not AddRef'd; registered by the swapchain
++		uint64_t frame{ 1u };
++		bool trace{ true };
++		bool dump{ false };
++		uint32_t draws{};
++		uint32_t swapDraws{};
++		uint32_t otherDraws{};
++		uint32_t swapPasses{};
++		uint32_t otherPasses{};
++		uint32_t swapClears{};
++		uint32_t swapCopies{};
++		uint32_t swapLines{};
++		uint32_t otherLines{};
++		uint32_t passLines{};
++		uint32_t blitRecordLines{};
++		Target lastSwapSrv[ 2u ];
++		Target lastOther;
++	};
++
++	inline State & state()
++	{
++		static State result;
++		return result;
++	}
++
++	inline bool isTraceFrame( uint64_t frame )
++	{
++		static uint64_t const frames[]{ 1, 2, 3, 5, 10, 20, 30, 60, 100, 150, 200, 300, 450, 600, 900, 1200, 1800, 2400, 3600 };
++		return std::find( std::begin( frames ), std::end( frames ), frame ) != std::end( frames );
++	}
++
++	inline bool isDumpFrame( uint64_t frame )
++	{
++		static uint64_t const frames[]{ 3, 10, 30, 100, 200, 450, 900, 1800, 3600 };
++		return std::find( std::begin( frames ), std::end( frames ), frame ) != std::end( frames );
++	}
++
++	inline bool isSwap( State const & s, ID3D11Resource * resource )
++	{
++		return resource
++			&& std::find( s.swapImages.begin(), s.swapImages.end(), resource ) != s.swapImages.end();
++	}
++
++	inline void registerSwapImage( ID3D11Resource * resource )
++	{
++		if ( !resource )
++		{
++			return;
++		}
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		if ( !isSwap( s, resource ) )
++		{
++			s.swapImages.push_back( resource );
++		}
++	}
++
++	inline void unregisterSwapImage( ID3D11Resource * resource )
++	{
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		s.swapImages.erase( std::remove( s.swapImages.begin(), s.swapImages.end(), resource ), s.swapImages.end() );
++	}
++
++	inline bool texSize( ID3D11Resource * resource, UINT & width, UINT & height, UINT & format, UINT & mips )
++	{
++		width = height = format = mips = 0u;
++		ID3D11Texture2D * texture{};
++		if ( !resource
++			|| FAILED( resource->QueryInterface( __uuidof( ID3D11Texture2D ), reinterpret_cast< void ** >( &texture ) ) )
++			|| !texture )
++		{
++			return false;
++		}
++		D3D11_TEXTURE2D_DESC desc{};
++		texture->GetDesc( &desc );
++		texture->Release();
++		width = desc.Width;
++		height = desc.Height;
++		format = UINT( desc.Format );
++		mips = desc.MipLevels;
++		return true;
++	}
++
++	inline UINT rtvSubresource( ID3D11RenderTargetView * view, DXGI_FORMAT & viewFormat, ID3D11Resource * resource )
++	{
++		D3D11_RENDER_TARGET_VIEW_DESC desc{};
++		view->GetDesc( &desc );
++		viewFormat = desc.Format;
++		UINT w, h, f, mips;
++		texSize( resource, w, h, f, mips );
++		mips = std::max( mips, 1u );
++		switch ( desc.ViewDimension )
++		{
++		case D3D11_RTV_DIMENSION_TEXTURE2D:
++			return desc.Texture2D.MipSlice;
++		case D3D11_RTV_DIMENSION_TEXTURE2DARRAY:
++			return D3D11CalcSubresource( desc.Texture2DArray.MipSlice, desc.Texture2DArray.FirstArraySlice, mips );
++		default:
++			return 0u;
++		}
++	}
++
++	inline bool srvSubresource( ID3D11ShaderResourceView * view, UINT & subresource, DXGI_FORMAT & viewFormat, ID3D11Resource * resource )
++	{
++		D3D11_SHADER_RESOURCE_VIEW_DESC desc{};
++		view->GetDesc( &desc );
++		viewFormat = desc.Format;
++		UINT w, h, f, mips;
++		texSize( resource, w, h, f, mips );
++		mips = std::max( mips, 1u );
++		switch ( desc.ViewDimension )
++		{
++		case D3D11_SRV_DIMENSION_TEXTURE2D:
++			subresource = desc.Texture2D.MostDetailedMip;
++			return true;
++		case D3D11_SRV_DIMENSION_TEXTURE2DARRAY:
++			subresource = D3D11CalcSubresource( desc.Texture2DArray.MostDetailedMip, desc.Texture2DArray.FirstArraySlice, mips );
++			return true;
++		default:
++			return false;
++		}
++	}
++
++	// ---------------------------------------------------------------- draw-time state
++
++	inline std::string describeState( ID3D11DeviceContext * ctx, ID3D11RenderTargetView * const * rtvs, ID3D11DepthStencilView * dsv, int slot )
++	{
++		std::string out;
++		UINT rtvCount = 0u;
++		for ( UINT i = 0u; i < 8u; ++i )
++		{
++			rtvCount += rtvs[ i ] ? 1u : 0u;
++		}
++		{
++			D3D11_RENDER_TARGET_VIEW_DESC rd{};
++			ID3D11Resource * res{};
++			UINT w = 0u, h = 0u, f = 0u, mips = 0u;
++			if ( slot >= 0 && rtvs[ slot ] )
++			{
++				rtvs[ slot ]->GetDesc( &rd );
++				rtvs[ slot ]->GetResource( &res );
++				texSize( res, w, h, f, mips );
++				release( res );
++			}
++			out += fmt( " rt{slot=%d,viewFmt=%u,resFmt=%u,res=%ux%u,dim=%u,rtvs=%u}", slot, UINT( rd.Format ), f, w, h, UINT( rd.ViewDimension ), rtvCount );
++		}
++		if ( dsv )
++		{
++			D3D11_DEPTH_STENCIL_VIEW_DESC dd{};
++			dsv->GetDesc( &dd );
++			out += fmt( " dsv{fmt=%u,flags=%u}", UINT( dd.Format ), UINT( dd.Flags ) );
++		}
++		else
++		{
++			out += " dsv{none}";
++		}
++		{
++			D3D11_VIEWPORT vps[ D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE ]{};
++			UINT count = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
++			ctx->RSGetViewports( &count, vps );
++			if ( count )
++			{
++				out += fmt( " vp{n=%u,%.1f,%.1f,%.1fx%.1f,z=%.2f..%.2f}", count, vps[ 0 ].TopLeftX, vps[ 0 ].TopLeftY, vps[ 0 ].Width, vps[ 0 ].Height, vps[ 0 ].MinDepth, vps[ 0 ].MaxDepth );
++			}
++			else
++			{
++				out += " vp{n=0}";
++			}
++			D3D11_RECT rects[ D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE ]{};
++			count = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
++			ctx->RSGetScissorRects( &count, rects );
++			if ( count )
++			{
++				out += fmt( " sc{n=%u,%ld,%ld,%ld,%ld}", count, rects[ 0 ].left, rects[ 0 ].top, rects[ 0 ].right, rects[ 0 ].bottom );
++			}
++			else
++			{
++				out += " sc{n=0}";
++			}
++		}
++		{
++			ID3D11RasterizerState * rs{};
++			ctx->RSGetState( &rs );
++			if ( rs )
++			{
++				D3D11_RASTERIZER_DESC d{};
++				rs->GetDesc( &d );
++				out += fmt( " rs{fill=%u,cull=%u,ccw=%d,scissor=%d,clip=%d,bias=%d}", UINT( d.FillMode ), UINT( d.CullMode ), int( d.FrontCounterClockwise ), int( d.ScissorEnable ), int( d.DepthClipEnable ), d.DepthBias );
++				release( rs );
++			}
++			else
++			{
++				out += " rs{default}";
++			}
++		}
++		{
++			ID3D11BlendState * bs{};
++			FLOAT factor[ 4 ]{};
++			UINT mask = 0u;
++			ctx->OMGetBlendState( &bs, factor, &mask );
++			if ( bs )
++			{
++				D3D11_BLEND_DESC d{};
++				bs->GetDesc( &d );
++				auto const & t = d.RenderTarget[ ( d.IndependentBlendEnable && slot > 0 ) ? slot : 0 ];
++				out += fmt( " bs{a2c=%d,ind=%d,blend=%d,src=%u,dst=%u,op=%u,srcA=%u,dstA=%u,opA=%u,mask=0x%X}", int( d.AlphaToCoverageEnable ), int( d.IndependentBlendEnable ), int( t.BlendEnable ), UINT( t.SrcBlend ), UINT( t.DestBlend ), UINT( t.BlendOp ), UINT( t.SrcBlendAlpha ), UINT( t.DestBlendAlpha ), UINT( t.BlendOpAlpha ), UINT( t.RenderTargetWriteMask ) );
++				release( bs );
++			}
++			else
++			{
++				out += " bs{default}";
++			}
++			out += fmt( " sampleMask=0x%X", mask );
++		}
++		{
++			ID3D11DepthStencilState * ds{};
++			UINT ref = 0u;
++			ctx->OMGetDepthStencilState( &ds, &ref );
++			if ( ds )
++			{
++				D3D11_DEPTH_STENCIL_DESC d{};
++				ds->GetDesc( &d );
++				out += fmt( " ds{depth=%d,write=%u,func=%u,stencil=%d,ref=%u}", int( d.DepthEnable ), UINT( d.DepthWriteMask ), UINT( d.DepthFunc ), int( d.StencilEnable ), ref );
++				release( ds );
++			}
++			else
++			{
++				out += " ds{default}";
++			}
++		}
++		{
++			ID3D11VertexShader * vs{};
++			ID3D11PixelShader * ps{};
++			ID3D11GeometryShader * gs{};
++			ID3D11InputLayout * il{};
++			ctx->VSGetShader( &vs, nullptr, nullptr );
++			ctx->PSGetShader( &ps, nullptr, nullptr );
++			ctx->GSGetShader( &gs, nullptr, nullptr );
++			ctx->IAGetInputLayout( &il );
++			out += fmt( " sh{vs=%d,ps=%d,gs=%d,il=%d}", vs ? 1 : 0, ps ? 1 : 0, gs ? 1 : 0, il ? 1 : 0 );
++			release( vs );
++			release( ps );
++			release( gs );
++			release( il );
++		}
++		{
++			ID3D11ShaderResourceView * srvs[ 4 ]{};
++			ctx->PSGetShaderResources( 0u, 4u, srvs );
++			out += " srv{";
++			for ( UINT i = 0u; i < 4u; ++i )
++			{
++				if ( !srvs[ i ] )
++				{
++					out += fmt( "%s%u:-", i ? "," : "", i );
++					continue;
++				}
++				D3D11_SHADER_RESOURCE_VIEW_DESC d{};
++				srvs[ i ]->GetDesc( &d );
++				ID3D11Resource * res{};
++				srvs[ i ]->GetResource( &res );
++				UINT w = 0u, h = 0u, f = 0u, mips = 0u;
++				texSize( res, w, h, f, mips );
++				out += fmt( "%s%u:fmt=%u/%u:%ux%u:mips=%u:dim=%u%s", i ? "," : "", i, UINT( d.Format ), f, w, h, mips, UINT( d.ViewDimension ), isSwap( state(), res ) ? ":SWAP" : "" );
++				release( res );
++				release( srvs[ i ] );
++			}
++			out += "}";
++			ID3D11Buffer * cbs[ 4 ]{};
++			ctx->PSGetConstantBuffers( 0u, 4u, cbs );
++			UINT cbCount = 0u;
++			for ( auto & cb : cbs )
++			{
++				cbCount += cb ? 1u : 0u;
++				release( cb );
++			}
++			ID3D11SamplerState * samplers[ 2 ]{};
++			ctx->PSGetSamplers( 0u, 2u, samplers );
++			out += fmt( " psCb=%u samplers=%d%d", cbCount, samplers[ 0 ] ? 1 : 0, samplers[ 1 ] ? 1 : 0 );
++			release( samplers[ 0 ] );
++			release( samplers[ 1 ] );
++		}
++		return out;
++	}
++
++	inline void onDraw( ID3D11DeviceContext * ctx, char const * kind, uint32_t count, uint32_t instances, D3D11_PRIMITIVE_TOPOLOGY topology )
++	{
++		if ( !enabled() || !ctx )
++		{
++			return;
++		}
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		if ( !s.trace )
++		{
++			return;
++		}
++		++s.draws;
++		ID3D11RenderTargetView * rtvs[ 8 ]{};
++		ID3D11DepthStencilView * dsv{};
++		ctx->OMGetRenderTargets( 8u, rtvs, &dsv );
++		ID3D11Resource * resources[ 8 ]{};
++		int swapSlot = -1;
++		for ( int i = 0; i < 8; ++i )
++		{
++			if ( rtvs[ i ] )
++			{
++				rtvs[ i ]->GetResource( &resources[ i ] );
++				if ( swapSlot < 0 && isSwap( s, resources[ i ] ) )
++				{
++					swapSlot = i;
++				}
++			}
++		}
++
++		if ( swapSlot >= 0 )
++		{
++			++s.swapDraws;
++			if ( s.swapLines < 24u )
++			{
++				++s.swapLines;
++				emit( fmt( "RW_HD5500_FRAME_DIAG draw-swap frame=%llu i=%u kind=%s count=%u inst=%u topo=%u", (unsigned long long)s.frame, s.draws, kind, count, instances, UINT( topology ) )
++					+ describeState( ctx, rtvs, dsv, swapSlot ) );
++			}
++			if ( s.dump )
++			{
++				ID3D11ShaderResourceView * srvs[ 2 ]{};
++				ctx->PSGetShaderResources( 0u, 2u, srvs );
++				for ( UINT i = 0u; i < 2u; ++i )
++				{
++					s.lastSwapSrv[ i ].reset();
++					if ( srvs[ i ] )
++					{
++						ID3D11Resource * res{};
++						srvs[ i ]->GetResource( &res );
++						UINT sub = 0u;
++						DXGI_FORMAT viewFormat{};
++						if ( res && srvSubresource( srvs[ i ], sub, viewFormat, res ) )
++						{
++							s.lastSwapSrv[ i ].set( res, sub, viewFormat );
++						}
++						release( res );
++						release( srvs[ i ] );
++					}
++				}
++			}
++		}
++		else
++		{
++			++s.otherDraws;
++			if ( s.otherLines < 8u )
++			{
++				++s.otherLines;
++				emit( fmt( "RW_HD5500_FRAME_DIAG draw-offscreen frame=%llu i=%u kind=%s count=%u inst=%u topo=%u", (unsigned long long)s.frame, s.draws, kind, count, instances, UINT( topology ) )
++					+ describeState( ctx, rtvs, dsv, rtvs[ 0 ] ? 0 : -1 ) );
++			}
++			if ( s.dump && rtvs[ 0 ] && resources[ 0 ] )
++			{
++				DXGI_FORMAT viewFormat{};
++				auto const sub = rtvSubresource( rtvs[ 0 ], viewFormat, resources[ 0 ] );
++				s.lastOther.set( resources[ 0 ], sub, viewFormat );
++			}
++		}
++
++		for ( int i = 0; i < 8; ++i )
++		{
++			release( resources[ i ] );
++			release( rtvs[ i ] );
++		}
++		release( dsv );
++	}
++
++	// ---------------------------------------------------------------- passes, clears, copies
++
++	struct PassAttachment
++	{
++		ID3D11View * view{};
++		bool colour{};
++		int loadOp{};
++		float clear[ 4 ]{};
++	};
++
++	inline void onPass( PassAttachment const * attachments, size_t count, UINT width, UINT height )
++	{
++		if ( !enabled() )
++		{
++			return;
++		}
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		if ( !s.trace )
++		{
++			return;
++		}
++		int swapIndex = -1;
++		for ( size_t i = 0u; i < count; ++i )
++		{
++			ID3D11Resource * res{};
++			if ( attachments[ i ].view )
++			{
++				attachments[ i ].view->GetResource( &res );
++			}
++			if ( swapIndex < 0 && attachments[ i ].colour && isSwap( s, res ) )
++			{
++				swapIndex = int( i );
++			}
++			release( res );
++		}
++		if ( swapIndex >= 0 )
++		{
++			++s.swapPasses;
++			if ( attachments[ swapIndex ].loadOp == 1 ) // VK_ATTACHMENT_LOAD_OP_CLEAR
++			{
++				++s.swapClears;
++			}
++		}
++		else
++		{
++			++s.otherPasses;
++		}
++		if ( s.passLines >= 16u )
++		{
++			return;
++		}
++		++s.passLines;
++		std::string line = fmt( "RW_HD5500_FRAME_DIAG pass frame=%llu target=%s fb=%ux%u attachments=%u", (unsigned long long)s.frame, swapIndex >= 0 ? "SWAP" : "offscreen", width, height, UINT( count ) );
++		for ( size_t i = 0u; i < count; ++i )
++		{
++			ID3D11Resource * res{};
++			if ( attachments[ i ].view )
++			{
++				attachments[ i ].view->GetResource( &res );
++			}
++			UINT w = 0u, h = 0u, f = 0u, mips = 0u;
++			texSize( res, w, h, f, mips );
++			release( res );
++			auto const & a = attachments[ i ];
++			line += fmt( " [%u:%s,fmt=%u,%ux%u,load=%d", UINT( i ), a.colour ? "col" : "ds", f, w, h, a.loadOp );
++			if ( a.loadOp == 1 )
++			{
++				line += fmt( ",clear=%.3f,%.3f,%.3f,%.3f", a.clear[ 0 ], a.clear[ 1 ], a.clear[ 2 ], a.clear[ 3 ] );
++			}
++			line += "]";
++		}
++		emit( line );
++	}
++
++	inline void onClearView( ID3D11View * view, FLOAT const * colour, char const * source )
++	{
++		if ( !enabled() || !view )
++		{
++			return;
++		}
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		if ( !s.trace )
++		{
++			return;
++		}
++		ID3D11Resource * res{};
++		view->GetResource( &res );
++		if ( isSwap( s, res ) )
++		{
++			++s.swapClears;
++			emit( fmt( "RW_HD5500_FRAME_DIAG clear-swap frame=%llu source=%s colour=%.3f,%.3f,%.3f,%.3f", (unsigned long long)s.frame, source, colour ? colour[ 0 ] : -1.f, colour ? colour[ 1 ] : -1.f, colour ? colour[ 2 ] : -1.f, colour ? colour[ 3 ] : -1.f ) );
++		}
++		release( res );
++	}
++
++	inline void onCopyTo( ID3D11Resource * dst, ID3D11Resource * src, char const * source )
++	{
++		if ( !enabled() || !dst )
++		{
++			return;
++		}
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		if ( !s.trace || !isSwap( s, dst ) )
++		{
++			return;
++		}
++		++s.swapCopies;
++		UINT w = 0u, h = 0u, f = 0u, mips = 0u;
++		texSize( src, w, h, f, mips );
++		emit( fmt( "RW_HD5500_FRAME_DIAG copy-swap frame=%llu source=%s src=%ux%u,fmt=%u,mips=%u", (unsigned long long)s.frame, source, w, h, f, mips ) );
++	}
++
++	// Record-time: vkCmdBlitImage whose destination is a swapchain image (any frame, bounded).
++	inline void onBlitRecorded( ID3D11Resource * src, ID3D11Resource * dst, uint32_t regions, int filter )
++	{
++		if ( !enabled() || !dst )
++		{
++			return;
++		}
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		if ( !isSwap( s, dst ) || s.blitRecordLines >= 24u )
++		{
++			return;
++		}
++		++s.blitRecordLines;
++		UINT w = 0u, h = 0u, f = 0u, mips = 0u;
++		texSize( src, w, h, f, mips );
++		emit( fmt( "RW_HD5500_FRAME_DIAG blit-to-swap-recorded frame=%llu src=%ux%u,fmt=%u regions=%u filter=%d", (unsigned long long)s.frame, w, h, f, regions, filter ) );
++	}
++
++	// ---------------------------------------------------------------- pixel dumps
++
++	inline float halfToFloat( uint16_t h )
++	{
++		uint32_t const sign = ( h >> 15 ) & 1u;
++		int32_t exponent = ( h >> 10 ) & 0x1F;
++		uint32_t mantissa = h & 0x3FF;
++		float value;
++		if ( exponent == 0 )
++		{
++			value = std::ldexp( float( mantissa ), -24 );
++		}
++		else if ( exponent == 31 )
++		{
++			value = mantissa ? 0.0f : 65504.0f;
++		}
++		else
++		{
++			value = std::ldexp( float( mantissa | 0x400 ), exponent - 25 );
++		}
++		return sign ? -value : value;
++	}
++
++	inline float smallFloat( uint32_t bits, uint32_t mantissaBits )
++	{
++		uint32_t const exponent = bits >> mantissaBits;
++		uint32_t const mantissa = bits & ( ( 1u << mantissaBits ) - 1u );
++		if ( exponent == 0u )
++		{
++			return std::ldexp( float( mantissa ), -14 - int( mantissaBits ) );
++		}
++		if ( exponent == 31u )
++		{
++			return 65504.0f;
++		}
++		return std::ldexp( float( mantissa | ( 1u << mantissaBits ) ), int( exponent ) - 15 - int( mantissaBits ) );
++	}
++
++	inline uint8_t toByte( float v )
++	{
++		if ( !( v > 0.0f ) )
++		{
++			return 0u;
++		}
++		if ( v >= 1.0f )
++		{
++			return 255u;
++		}
++		return uint8_t( v * 255.0f + 0.5f );
++	}
++
++	// Decodes one pixel to RGBA8. Returns false for unsupported formats.
++	inline bool decode( DXGI_FORMAT format, uint8_t const * p, uint8_t * rgba )
++	{
++		switch ( format )
++		{
++		case DXGI_FORMAT_R8G8B8A8_TYPELESS:
++		case DXGI_FORMAT_R8G8B8A8_UNORM:
++		case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
++		case DXGI_FORMAT_R8G8B8A8_UINT:
++			rgba[ 0 ] = p[ 0 ]; rgba[ 1 ] = p[ 1 ]; rgba[ 2 ] = p[ 2 ]; rgba[ 3 ] = p[ 3 ];
++			return true;
++		case DXGI_FORMAT_B8G8R8A8_TYPELESS:
++		case DXGI_FORMAT_B8G8R8A8_UNORM:
++		case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
++			rgba[ 0 ] = p[ 2 ]; rgba[ 1 ] = p[ 1 ]; rgba[ 2 ] = p[ 0 ]; rgba[ 3 ] = p[ 3 ];
++			return true;
++		case DXGI_FORMAT_B8G8R8X8_TYPELESS:
++		case DXGI_FORMAT_B8G8R8X8_UNORM:
++		case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
++			rgba[ 0 ] = p[ 2 ]; rgba[ 1 ] = p[ 1 ]; rgba[ 2 ] = p[ 0 ]; rgba[ 3 ] = 255u;
++			return true;
++		case DXGI_FORMAT_R10G10B10A2_TYPELESS:
++		case DXGI_FORMAT_R10G10B10A2_UNORM:
++		{
++			uint32_t v;
++			std::memcpy( &v, p, 4u );
++			rgba[ 0 ] = uint8_t( ( v & 0x3FFu ) >> 2 );
++			rgba[ 1 ] = uint8_t( ( ( v >> 10 ) & 0x3FFu ) >> 2 );
++			rgba[ 2 ] = uint8_t( ( ( v >> 20 ) & 0x3FFu ) >> 2 );
++			rgba[ 3 ] = uint8_t( ( v >> 30 ) * 85u );
++			return true;
++		}
++		case DXGI_FORMAT_R16G16B16A16_TYPELESS:
++		case DXGI_FORMAT_R16G16B16A16_FLOAT:
++		{
++			uint16_t v[ 4 ];
++			std::memcpy( v, p, 8u );
++			for ( int i = 0; i < 4; ++i )
++			{
++				rgba[ i ] = toByte( halfToFloat( v[ i ] ) );
++			}
++			return true;
++		}
++		case DXGI_FORMAT_R16G16B16A16_UNORM:
++		{
++			uint16_t v[ 4 ];
++			std::memcpy( v, p, 8u );
++			for ( int i = 0; i < 4; ++i )
++			{
++				rgba[ i ] = uint8_t( v[ i ] >> 8 );
++			}
++			return true;
++		}
++		case DXGI_FORMAT_R11G11B10_FLOAT:
++		{
++			uint32_t v;
++			std::memcpy( &v, p, 4u );
++			rgba[ 0 ] = toByte( smallFloat( v & 0x7FFu, 6u ) );
++			rgba[ 1 ] = toByte( smallFloat( ( v >> 11 ) & 0x7FFu, 6u ) );
++			rgba[ 2 ] = toByte( smallFloat( ( v >> 22 ) & 0x3FFu, 5u ) );
++			rgba[ 3 ] = 255u;
++			return true;
++		}
++		case DXGI_FORMAT_R32G32B32A32_FLOAT:
++		{
++			float v[ 4 ];
++			std::memcpy( v, p, 16u );
++			for ( int i = 0; i < 4; ++i )
++			{
++				rgba[ i ] = toByte( v[ i ] );
++			}
++			return true;
++		}
++		case DXGI_FORMAT_R8_UNORM:
++		case DXGI_FORMAT_A8_UNORM:
++			rgba[ 0 ] = rgba[ 1 ] = rgba[ 2 ] = p[ 0 ]; rgba[ 3 ] = 255u;
++			return true;
++		case DXGI_FORMAT_R8G8_UNORM:
++			rgba[ 0 ] = p[ 0 ]; rgba[ 1 ] = p[ 1 ]; rgba[ 2 ] = 0u; rgba[ 3 ] = 255u;
++			return true;
++		default:
++			return false;
++		}
++	}
++
++	inline UINT bytesPerPixel( DXGI_FORMAT format )
++	{
++		switch ( format )
++		{
++		case DXGI_FORMAT_R8_UNORM:
++		case DXGI_FORMAT_A8_UNORM:
++			return 1u;
++		case DXGI_FORMAT_R8G8_UNORM:
++			return 2u;
++		case DXGI_FORMAT_R16G16B16A16_TYPELESS:
++		case DXGI_FORMAT_R16G16B16A16_FLOAT:
++		case DXGI_FORMAT_R16G16B16A16_UNORM:
++			return 8u;
++		case DXGI_FORMAT_R32G32B32A32_FLOAT:
++			return 16u;
++		default:
++			return 4u;
++		}
++	}
++
++	inline bool writeBmp( std::string const & path, std::vector< uint8_t > const & rgba, UINT width, UINT height )
++	{
++		UINT const step = std::max( 1u, ( width + 639u ) / 640u );
++		UINT const ow = std::max( 1u, width / step );
++		UINT const oh = std::max( 1u, height / step );
++		UINT const rowBytes = ( ow * 3u + 3u ) & ~3u;
++		UINT const imageBytes = rowBytes * oh;
++		uint8_t header[ 54 ]{};
++		auto put32 = [&header]( size_t offset, uint32_t value )
++		{
++			std::memcpy( header + offset, &value, 4u );
++		};
++		header[ 0 ] = 'B';
++		header[ 1 ] = 'M';
++		put32( 2, 54u + imageBytes );
++		put32( 10, 54u );
++		put32( 14, 40u );
++		put32( 18, ow );
++		put32( 22, oh );
++		header[ 26 ] = 1u;
++		header[ 28 ] = 24u;
++		put32( 34, imageBytes );
++		put32( 38, 2835u );
++		put32( 42, 2835u );
++		FILE * file = nullptr;
++		if ( fopen_s( &file, path.c_str(), "wb" ) != 0 || !file )
++		{
++			return false;
++		}
++		std::fwrite( header, 1u, sizeof( header ), file );
++		std::vector< uint8_t > row( rowBytes, 0u );
++		for ( UINT y = 0u; y < oh; ++y )
++		{
++			UINT const sy = ( oh - 1u - y ) * step; // BMP rows are bottom-up
++			for ( UINT x = 0u; x < ow; ++x )
++			{
++				auto const * px = rgba.data() + ( size_t( sy ) * width + size_t( x ) * step ) * 4u;
++				row[ x * 3u + 0u ] = px[ 2 ];
++				row[ x * 3u + 1u ] = px[ 1 ];
++				row[ x * 3u + 2u ] = px[ 0 ];
++			}
++			std::fwrite( row.data(), 1u, rowBytes, file );
++		}
++		std::fclose( file );
++		return true;
++	}
++
++	// Caller holds the state mutex.
++	inline void dumpTarget( ID3D11Device * device, ID3D11DeviceContext * ctx, ID3D11Resource * resource, UINT subresource, DXGI_FORMAT viewFormat, uint64_t frame, char const * tag )
++	{
++		if ( !resource )
++		{
++			emit( fmt( "RW_HD5500_FRAME_DIAG dump frame=%llu tag=%s none", (unsigned long long)frame, tag ) );
++			return;
++		}
++		ID3D11Texture2D * texture{};
++		if ( FAILED( resource->QueryInterface( __uuidof( ID3D11Texture2D ), reinterpret_cast< void ** >( &texture ) ) ) || !texture )
++		{
++			emit( fmt( "RW_HD5500_FRAME_DIAG dump frame=%llu tag=%s not-texture2d", (unsigned long long)frame, tag ) );
++			return;
++		}
++		D3D11_TEXTURE2D_DESC desc{};
++		texture->GetDesc( &desc );
++		UINT const mips = std::max( desc.MipLevels, 1u );
++		UINT const mip = subresource % mips;
++		UINT const width = std::max( 1u, desc.Width >> mip );
++		UINT const height = std::max( 1u, desc.Height >> mip );
++		DXGI_FORMAT const format = viewFormat != DXGI_FORMAT_UNKNOWN ? viewFormat : desc.Format;
++		std::string head = fmt( "RW_HD5500_FRAME_DIAG dump frame=%llu tag=%s res=%ux%u mip=%u sub=%u resFmt=%u viewFmt=%u samples=%u", (unsigned long long)frame, tag, width, height, mip, subresource, UINT( desc.Format ), UINT( viewFormat ), desc.SampleDesc.Count );
++		uint8_t const zero[ 16 ]{};
++		uint8_t probe[ 4 ];
++		if ( desc.SampleDesc.Count != 1u || !decode( format, zero, probe ) )
++		{
++			emit( head + " decoded=0 (unsupported format or MSAA)" );
++			texture->Release();
++			return;
++		}
++		D3D11_TEXTURE2D_DESC stagingDesc = desc;
++		stagingDesc.Width = width;
++		stagingDesc.Height = height;
++		stagingDesc.MipLevels = 1u;
++		stagingDesc.ArraySize = 1u;
++		stagingDesc.Usage = D3D11_USAGE_STAGING;
++		stagingDesc.BindFlags = 0u;
++		stagingDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
++		stagingDesc.MiscFlags = 0u;
++		ID3D11Texture2D * staging{};
++		HRESULT hr = device->CreateTexture2D( &stagingDesc, nullptr, &staging );
++		if ( FAILED( hr ) || !staging )
++		{
++			emit( head + fmt( " decoded=0 stagingHr=0x%08lX", (unsigned long)hr ) );
++			texture->Release();
++			return;
++		}
++		ctx->CopySubresourceRegion( staging, 0u, 0u, 0u, 0u, texture, subresource, nullptr );
++		D3D11_MAPPED_SUBRESOURCE mapped{};
++		hr = ctx->Map( staging, 0u, D3D11_MAP_READ, 0u, &mapped );
++		if ( FAILED( hr ) || !mapped.pData )
++		{
++			emit( head + fmt( " decoded=0 mapHr=0x%08lX", (unsigned long)hr ) );
++			staging->Release();
++			texture->Release();
++			return;
++		}
++		UINT const bpp = bytesPerPixel( format );
++		std::vector< uint8_t > rgba( size_t( width ) * height * 4u );
++		uint64_t nonBlack = 0u;
++		uint64_t sum[ 3 ]{};
++		UINT minX = width, minY = height, maxX = 0u, maxY = 0u;
++		uint8_t alphaMin = 255u, alphaMax = 0u;
++		uint32_t firstPixel = 0u;
++		bool uniform = true;
++		for ( UINT y = 0u; y < height; ++y )
++		{
++			auto const * row = static_cast< uint8_t const * >( mapped.pData ) + size_t( y ) * mapped.RowPitch;
++			for ( UINT x = 0u; x < width; ++x )
++			{
++				auto * out = rgba.data() + ( size_t( y ) * width + x ) * 4u;
++				decode( format, row + size_t( x ) * bpp, out );
++				uint32_t packed;
++				std::memcpy( &packed, out, 4u );
++				if ( x == 0u && y == 0u )
++				{
++					firstPixel = packed;
++				}
++				else if ( packed != firstPixel )
++				{
++					uniform = false;
++				}
++				alphaMin = std::min( alphaMin, out[ 3 ] );
++				alphaMax = std::max( alphaMax, out[ 3 ] );
++				sum[ 0 ] += out[ 0 ];
++				sum[ 1 ] += out[ 1 ];
++				sum[ 2 ] += out[ 2 ];
++				if ( out[ 0 ] | out[ 1 ] | out[ 2 ] )
++				{
++					++nonBlack;
++					minX = std::min( minX, x );
++					minY = std::min( minY, y );
++					maxX = std::max( maxX, x );
++					maxY = std::max( maxY, y );
++				}
++			}
++		}
++		ctx->Unmap( staging, 0u );
++		staging->Release();
++		texture->Release();
++		uint64_t const total = uint64_t( width ) * height;
++		std::string line = head + fmt( " decoded=1 nonBlack=%llu/%llu (%.2f%%) uniform=%d first=%02X%02X%02X%02X alpha=%u..%u meanRGB=%.1f,%.1f,%.1f",
++			(unsigned long long)nonBlack, (unsigned long long)total, total ? 100.0 * double( nonBlack ) / double( total ) : 0.0,
++			uniform ? 1 : 0,
++			UINT( firstPixel & 0xFF ), UINT( ( firstPixel >> 8 ) & 0xFF ), UINT( ( firstPixel >> 16 ) & 0xFF ), UINT( firstPixel >> 24 ),
++			UINT( alphaMin ), UINT( alphaMax ),
++			total ? double( sum[ 0 ] ) / double( total ) : 0.0, total ? double( sum[ 1 ] ) / double( total ) : 0.0, total ? double( sum[ 2 ] ) / double( total ) : 0.0 );
++		if ( nonBlack )
++		{
++			line += fmt( " bbox=%u,%u..%u,%u", minX, minY, maxX, maxY );
++		}
++		auto const & dir = dumpDir();
++		if ( !dir.empty() )
++		{
++			auto const path = dir + fmt( "\\frame%05llu-%s.bmp", (unsigned long long)frame, tag );
++			line += writeBmp( path, rgba, width, height ) ? ( " file=" + path ) : std::string( " file=WRITE-FAILED" );
++		}
++		emit( line );
++	}
++
++	inline void onPresent( ID3D11Device * device, ID3D11DeviceContext * ctx, ID3D11Resource * presented, uint32_t imageIndex, uint32_t imageCount )
++	{
++		if ( !enabled() || !device || !ctx )
++		{
++			return;
++		}
++		auto & s = state();
++		std::lock_guard< std::mutex > lock{ s.mutex };
++		if ( s.trace )
++		{
++			emit( fmt( "RW_HD5500_FRAME_DIAG frame-summary frame=%llu draws=%u swapDraws=%u offscreenDraws=%u swapPasses=%u offscreenPasses=%u swapClears=%u swapCopies=%u image=%u/%u",
++				(unsigned long long)s.frame, s.draws, s.swapDraws, s.otherDraws, s.swapPasses, s.otherPasses, s.swapClears, s.swapCopies, imageIndex, imageCount ) );
++		}
++		if ( s.dump )
++		{
++			dumpTarget( device, ctx, presented, 0u, DXGI_FORMAT_UNKNOWN, s.frame, "swapchain" );
++			dumpTarget( device, ctx, s.lastSwapSrv[ 0 ].resource, s.lastSwapSrv[ 0 ].subresource, s.lastSwapSrv[ 0 ].viewFormat, s.frame, "swapdraw-srv0" );
++			if ( s.lastSwapSrv[ 1 ].resource )
++			{
++				dumpTarget( device, ctx, s.lastSwapSrv[ 1 ].resource, s.lastSwapSrv[ 1 ].subresource, s.lastSwapSrv[ 1 ].viewFormat, s.frame, "swapdraw-srv1" );
++			}
++			dumpTarget( device, ctx, s.lastOther.resource, s.lastOther.subresource, s.lastOther.viewFormat, s.frame, "last-offscreen-rt" );
++		}
++		s.lastSwapSrv[ 0 ].reset();
++		s.lastSwapSrv[ 1 ].reset();
++		s.lastOther.reset();
++		s.draws = s.swapDraws = s.otherDraws = s.swapPasses = s.otherPasses = s.swapClears = s.swapCopies = 0u;
++		s.swapLines = s.otherLines = s.passLines = 0u;
++		++s.frame;
++		s.trace = isTraceFrame( s.frame );
++		s.dump = s.trace && isDumpFrame( s.frame );
++	}
++}

@@ -1,0 +1,11 @@
+#version 450
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+layout(set = 0, binding = 5) uniform usampler2D src;
+layout(set = 0, binding = 1, std430) buffer Output { uint data[]; } outbuf;
+void main() {
+    uvec2 p = gl_GlobalInvocationID.xy;
+    if (p.x < 8 && p.y < 8) {
+        uvec4 v = texelFetch(src, ivec2(p), 0);
+        outbuf.data[p.y * 8 + p.x] = v.x | (v.y << 8) | (v.z << 16) | (v.w << 24);
+    }
+}

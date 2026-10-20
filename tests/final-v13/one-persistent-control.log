@@ -1,0 +1,61 @@
+LargeBC7MenuBackgroundProbe (v12)
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+MODE: default (decode fallback enabled)
+WARNING: --allow-non-intel-test relaxes only the Intel vendor gate (sandbox integration). This is not HD 5500 evidence.
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+RESULT: vkCreateInstance => VK_SUCCESS (0)
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE family=0 maxImageDimension2D=16384
+MEMORY_HEAP[0]: size=25604128768 flags=0x1
+MEMORY_HEAP[1]: size=12802211840 flags=0x0
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+QUERY: BC7_UNORM sampled|transfer => VK_SUCCESS maxExtent=16384x16384 maxMips=15 samples=0x1
+CASE PASS: query-bc7-limit-16384 BC7_UNORM sampled|transfer => VK_SUCCESS maxExtent=16384x16384 maxMips=15 samples=0x1
+CASE PASS: query-bc7-storage-refused BC7_UNORM +storage => VK_ERROR_FORMAT_NOT_SUPPORTED
+CASE PASS: query-bc6h-not-extended BC6H_UFLOAT (not decodable) => VK_ERROR_FORMAT_NOT_SUPPORTED maxExtent=0x0
+CASE PASS: features-bc7-conservative BC7_UNORM optimalFeatures=0xD401 bufferFeatures=0x0
+IMAGE_CREATE: control-src format=37 8x4 mips=1 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: control-src bytes=128 align=4 bits=0x5 type=0
+IMAGE_BIND: control-src => VK_SUCCESS (0)
+END: control-upload => VK_SUCCESS (0)
+SUBMIT: control-upload => VK_SUCCESS (0)
+WAIT: control-upload => VK_SUCCESS (0)
+END: control-direct-readback => VK_SUCCESS (0)
+SUBMIT: control-direct-readback => VK_SUCCESS (0)
+WAIT: control-direct-readback => VK_SUCCESS (0)
+CASE PASS: control-rgba8-direct-readback upload=VK_SUCCESS readback=1 first=3,10,17,24 want=3,10,17,24
+IMAGE_CREATE: control-dst format=37 8x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: control-dst bytes=128 align=4 bits=0x5 type=0
+IMAGE_BIND: control-dst => VK_SUCCESS (0)
+END: control-blit-1to1 => VK_SUCCESS (0)
+SUBMIT: control-blit-1to1 => VK_SUCCESS (0)
+WAIT: control-blit-1to1 => VK_SUCCESS (0)
+CASE PASS: control-rgba8-blit-1to1 first=3,10,17,24 want=3,10,17,24
+IMAGE_CREATE: control-dst format=37 8x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: control-dst bytes=128 align=4 bits=0x5 type=0
+IMAGE_BIND: control-dst => VK_SUCCESS (0)
+END: control-blit-2x => VK_SUCCESS (0)
+SUBMIT: control-blit-2x => VK_SUCCESS (0)
+WAIT: control-blit-2x => VK_SUCCESS (0)
+CASE PASS: control-rgba8-blit-2x-upscale first=3,10,17,24 want=3,10,17,24
+RESULT: vkDeviceWaitIdle => VK_SUCCESS (0)
+[RW-GPU-FENCE] fenced_submits=4 flushes=2 polls=22 timeouts=0
+[RW-GPU-STAGING] cap=268435456 liveBytes=128 peakBytes=128 entries=1 hits=0 misses=1 evictions=0 uncached=0
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=12928 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=640 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=22619111424 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=2224 entries=1 hits=1 misses=1 inserts=1 evictions=0 rejected=0
+[RW-GPU-STATECACHE] hits=0 misses=6 invalidations=6
+SUMMARY: cases=7 failures=0
+FINAL: PASS status=0; 7 large-BC7 cases passed (decode fallback).
+X connection to :162 broken (explicit kill or server shutdown).
+X connection to :162 broken (explicit kill or server shutdown).

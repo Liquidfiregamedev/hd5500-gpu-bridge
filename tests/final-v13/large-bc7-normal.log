@@ -1,0 +1,413 @@
+LargeBC7MenuBackgroundProbe (v12)
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v13\package\runtime\ashesD3D11Renderer_icd.json
+MODE: default (decode fallback enabled)
+WARNING: --allow-non-intel-test relaxes only the Intel vendor gate (sandbox integration). This is not HD 5500 evidence.
+[RW-GPU-MEMORY-HEAPS] adapter="NVIDIA GeForce GTX 470" vendor=0x10DE device=0x06CD dedicatedVideo=25604128768 dedicatedSystem=0 sharedSystem=12802211840 uma=0 heap0DeviceLocal=25604128768 heap1HostVisible=12802211840 source=dxgi-adapter-desc VK_EXT_memory_budget=not-exposed
+[RW-GPU-CAPS] stage=format-trial vkFormat=2 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=3 dxgi=115 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=6 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=7 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=8 dxgi=86 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=104 dxgi=7 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x80070057 result=image-features-withdrawn
+[RW-GPU-CAPS] stage=format-trial vkFormat=123 dxgi=67 mippedRtvSrvHr=0x80070057 singleMipSrvHr=0x00000000 result=image-features-withdrawn
+RESULT: vkCreateInstance => VK_SUCCESS (0)
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE family=0 maxImageDimension2D=16384
+MEMORY_HEAP[0]: size=25604128768 flags=0x1
+MEMORY_HEAP[1]: size=12802211840 flags=0x0
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+[RW-GPU-MEMORY-BUDGET] stage=device-create source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+QUERY: BC7_UNORM sampled|transfer => VK_SUCCESS maxExtent=16384x16384 maxMips=15 samples=0x1
+CASE PASS: query-bc7-limit-16384 BC7_UNORM sampled|transfer => VK_SUCCESS maxExtent=16384x16384 maxMips=15 samples=0x1
+CASE PASS: query-bc7-storage-refused BC7_UNORM +storage => VK_ERROR_FORMAT_NOT_SUPPORTED
+CASE PASS: query-bc6h-not-extended BC6H_UFLOAT (not decodable) => VK_ERROR_FORMAT_NOT_SUPPORTED maxExtent=0x0
+CASE PASS: features-bc7-conservative BC7_UNORM optimalFeatures=0xD401 bufferFeatures=0x0
+MENU_BG: logical 5333x3000 BC7_UNORM mips=13 payloadBytes=21350624 mip0Bytes=16008000 (v11 native would be 21332x12000)
+IMAGE_CREATE: menu-bg-A format=145 5333x3000 mips=13 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: menu-bg-A bytes=21350624 align=16 bits=0x5 type=0
+[RW-GPU-DIAG] kind=bc-representation-decoded sig=c308e2d73c049192 count=1 vkFormat=145 logical=5333x3000 mips=13 layers=1 usage=0x7 flags=0x0 tiling=0 samples=1 representation=decoded-rgba8 prefixedNative=21332x12000 limit=16384 decodable=1 fallbackEnabled=1 logicalBcBytes=21350624 decodedRgba8Bytes=85321012
+IMAGE_BIND: menu-bg-A => VK_SUCCESS (0)
+CASE PASS: menu-bg-create-bind-5333x3000-13mips create=VK_SUCCESS bind=VK_SUCCESS
+END: menu-bg-upload-all-13-mips => VK_SUCCESS (0)
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=7caed5f2d21970db count=1 vkFormat=145 logical=5333x3000 level=0 nativeSubresource=0 offset=0,0 extent=5333x3000 blocks=1334x750 decodeMicros=296824
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=afe527dd0773fdfd count=1 vkFormat=145 logical=5333x3000 level=1 nativeSubresource=1 offset=0,0 extent=2666x1500 blocks=667x375 decodeMicros=73697
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=f397ad173f5f80d3 count=1 vkFormat=145 logical=5333x3000 level=2 nativeSubresource=2 offset=0,0 extent=1333x750 blocks=334x188 decodeMicros=20233
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=21085789e139b744 count=1 vkFormat=145 logical=5333x3000 level=3 nativeSubresource=3 offset=0,0 extent=666x375 blocks=167x94 decodeMicros=4400
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=41d5c0281956cad2 count=1 vkFormat=145 logical=5333x3000 level=4 nativeSubresource=4 offset=0,0 extent=333x187 blocks=84x47 decodeMicros=1199
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=ab32acdc02d36749 count=1 vkFormat=145 logical=5333x3000 level=5 nativeSubresource=5 offset=0,0 extent=166x93 blocks=42x24 decodeMicros=260
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=b947b7309109be4c count=1 vkFormat=145 logical=5333x3000 level=6 nativeSubresource=6 offset=0,0 extent=83x46 blocks=21x12 decodeMicros=92
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=7dbbe9a4817996ee count=1 vkFormat=145 logical=5333x3000 level=7 nativeSubresource=7 offset=0,0 extent=41x23 blocks=11x6 decodeMicros=19
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=1b4b40fffd878990 count=1 vkFormat=145 logical=5333x3000 level=8 nativeSubresource=8 offset=0,0 extent=20x11 blocks=5x3 decodeMicros=9
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=6ebfabbaf456da91 count=1 vkFormat=145 logical=5333x3000 level=9 nativeSubresource=9 offset=0,0 extent=10x5 blocks=3x2 decodeMicros=3
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=475e2f2fb1d8833a count=1 vkFormat=145 logical=5333x3000 level=10 nativeSubresource=10 offset=0,0 extent=5x2 blocks=2x1 decodeMicros=4
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=9e1238847ff654bf count=1 vkFormat=145 logical=5333x3000 level=11 nativeSubresource=11 offset=0,0 extent=2x1 blocks=1x1 decodeMicros=2
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=5ef5278736f0fd8b count=1 vkFormat=145 logical=5333x3000 level=12 nativeSubresource=12 offset=0,0 extent=1x1 blocks=1x1 decodeMicros=2
+SUBMIT: menu-bg-upload-all-13-mips => VK_SUCCESS (0)
+WAIT: menu-bg-upload-all-13-mips => VK_SUCCESS (0)
+CASE PASS: menu-bg-upload-13-mips => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 5333x3000 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=63996000 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-sampled-mip0 => VK_SUCCESS (0)
+SUBMIT: menu-bg-sampled-mip0 => VK_SUCCESS (0)
+WAIT: menu-bg-sampled-mip0 => VK_SUCCESS (0)
+CASE PASS: menu-bg-sampled-mip0 mip=0 extent=5333x3000 texels=15999000 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 2666x1500 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=15996000 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-sampled-mip1 => VK_SUCCESS (0)
+SUBMIT: menu-bg-sampled-mip1 => VK_SUCCESS (0)
+WAIT: menu-bg-sampled-mip1 => VK_SUCCESS (0)
+CASE PASS: menu-bg-sampled-mip1 mip=1 extent=2666x1500 texels=3999000 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 10x5 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=200 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-sampled-mip9 => VK_SUCCESS (0)
+SUBMIT: menu-bg-sampled-mip9 => VK_SUCCESS (0)
+WAIT: menu-bg-sampled-mip9 => VK_SUCCESS (0)
+CASE PASS: menu-bg-sampled-mip9 mip=9 extent=10x5 texels=50 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 2x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=8 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-sampled-mip11 => VK_SUCCESS (0)
+SUBMIT: menu-bg-sampled-mip11 => VK_SUCCESS (0)
+WAIT: menu-bg-sampled-mip11 => VK_SUCCESS (0)
+CASE PASS: menu-bg-sampled-mip11 mip=11 extent=2x1 texels=2 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 1x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=4 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-sampled-mip12 => VK_SUCCESS (0)
+SUBMIT: menu-bg-sampled-mip12 => VK_SUCCESS (0)
+WAIT: menu-bg-sampled-mip12 => VK_SUCCESS (0)
+CASE PASS: menu-bg-sampled-mip12 mip=12 extent=1x1 texels=1 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: menu-bg-B format=145 5333x3000 mips=13 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: menu-bg-B bytes=21350624 align=16 bits=0x5 type=0
+IMAGE_BIND: menu-bg-B => VK_SUCCESS (0)
+CASE PASS: menu-bg-second-image-create-bind VK_SUCCESS
+END: menu-bg-B-quadrants-and-copy => VK_SUCCESS (0)
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=dfa60228df07934e count=1 vkFormat=145 logical=5333x3000 level=0 nativeSubresource=0 offset=0,0 extent=2664x1496 blocks=666x374 decodeMicros=72611
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=d2bfa8424a5134dd count=1 vkFormat=145 logical=5333x3000 level=0 nativeSubresource=0 offset=2664,0 extent=2669x1496 blocks=668x374 decodeMicros=108259
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=99ed5c63fe272615 count=1 vkFormat=145 logical=5333x3000 level=0 nativeSubresource=0 offset=0,1496 extent=2664x1504 blocks=666x376 decodeMicros=77238
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=68ebaaa8d3254122 count=1 vkFormat=145 logical=5333x3000 level=0 nativeSubresource=0 offset=2664,1496 extent=2669x1504 blocks=668x376 decodeMicros=78648
+SUBMIT: menu-bg-B-quadrants-and-copy => VK_SUCCESS (0)
+WAIT: menu-bg-B-quadrants-and-copy => VK_SUCCESS (0)
+CASE PASS: menu-bg-partial-upload-and-copy-submit 4 quadrant regions (rowLength=5336) + mip1 + vkCmdCopyImage mip9 decoded->decoded => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 5333x3000 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=63996000 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-quadrant-upload-mip0 => VK_SUCCESS (0)
+SUBMIT: menu-bg-quadrant-upload-mip0 => VK_SUCCESS (0)
+WAIT: menu-bg-quadrant-upload-mip0 => VK_SUCCESS (0)
+CASE PASS: menu-bg-quadrant-upload-mip0 mip=0 extent=5333x3000 texels=15999000 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 2666x1500 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=15996000 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-tight-upload-mip1 => VK_SUCCESS (0)
+SUBMIT: menu-bg-tight-upload-mip1 => VK_SUCCESS (0)
+WAIT: menu-bg-tight-upload-mip1 => VK_SUCCESS (0)
+CASE PASS: menu-bg-tight-upload-mip1 mip=1 extent=2666x1500 texels=3999000 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 10x5 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=200 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: menu-bg-decoded-copy-mip9 => VK_SUCCESS (0)
+SUBMIT: menu-bg-decoded-copy-mip9 => VK_SUCCESS (0)
+WAIT: menu-bg-decoded-copy-mip9 => VK_SUCCESS (0)
+CASE PASS: menu-bg-decoded-copy-mip9 mip=9 extent=10x5 texels=50 badTexels=0 maxChannelDiff=0 compare=exact
+[RW-GPU-DIAG] kind=bc-decoded-readback-rejected sig=b2d6fe24016e1be5 count=1 src=145:5333x3000 representation=decoded-rgba8 result=VK_ERROR_FORMAT_NOT_SUPPORTED
+Image to buffer copy recording failed: vkCmdCopyImageToBuffer from a decoded BC image - A requested format is not supported on this device.
+CASE PASS: menu-bg-readback-refused vkEndCommandBuffer after vkCmdCopyImageToBuffer(decoded) => VK_ERROR_FORMAT_NOT_SUPPORTED (-11)
+IMAGE_CREATE: boundary-4095x4-native-prefix2(16380) format=145 4095x4 mips=12 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: boundary-4095x4-native-prefix2(16380) bytes=32768 align=16 bits=0x5 type=0
+IMAGE_BIND: boundary-4095x4-native-prefix2(16380) => VK_SUCCESS (0)
+END: boundary-4095x4-native-prefix2(16380) => VK_SUCCESS (0)
+SUBMIT: boundary-4095x4-native-prefix2(16380) => VK_SUCCESS (0)
+WAIT: boundary-4095x4-native-prefix2(16380) => VK_SUCCESS (0)
+CASE PASS: boundary-4095x4-native-prefix2(16380) mips=12 create/bind/upload => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 4095x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=65520 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-4095x4-native-prefix2(16380)-mip0 => VK_SUCCESS (0)
+SUBMIT: boundary-4095x4-native-prefix2(16380)-mip0 => VK_SUCCESS (0)
+WAIT: boundary-4095x4-native-prefix2(16380)-mip0 => VK_SUCCESS (0)
+CASE PASS: boundary-4095x4-native-prefix2(16380)-mip0 mip=0 extent=4095x4 texels=16380 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 1x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=4 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-4095x4-native-prefix2(16380)-mip11 => VK_SUCCESS (0)
+SUBMIT: boundary-4095x4-native-prefix2(16380)-mip11 => VK_SUCCESS (0)
+WAIT: boundary-4095x4-native-prefix2(16380)-mip11 => VK_SUCCESS (0)
+CASE PASS: boundary-4095x4-native-prefix2(16380)-mip11 mip=11 extent=1x1 texels=1 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: boundary-4097x4-decoded(16388>16384) format=145 4097x4 mips=13 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: boundary-4097x4-decoded(16388>16384) bytes=32800 align=16 bits=0x5 type=0
+[RW-GPU-DIAG] kind=bc-representation-decoded sig=d0aac738e14d225b count=1 vkFormat=145 logical=4097x4 mips=13 layers=1 usage=0x7 flags=0x0 tiling=0 samples=1 representation=decoded-rgba8 prefixedNative=16388x16 limit=16384 decodable=1 fallbackEnabled=1 logicalBcBytes=32800 decodedRgba8Bytes=90124
+IMAGE_BIND: boundary-4097x4-decoded(16388>16384) => VK_SUCCESS (0)
+END: boundary-4097x4-decoded(16388>16384) => VK_SUCCESS (0)
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=44d22b6fb1d7cee3 count=1 vkFormat=145 logical=4097x4 level=0 nativeSubresource=0 offset=0,0 extent=4097x4 blocks=1025x1 decodeMicros=292
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=c7b50d5127673b3d count=1 vkFormat=145 logical=4097x4 level=1 nativeSubresource=1 offset=0,0 extent=2048x2 blocks=512x1 decodeMicros=147
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=c1411347db742439 count=1 vkFormat=145 logical=4097x4 level=2 nativeSubresource=2 offset=0,0 extent=1024x1 blocks=256x1 decodeMicros=60
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=ee1d6e2dfae7c99e count=1 vkFormat=145 logical=4097x4 level=3 nativeSubresource=3 offset=0,0 extent=512x1 blocks=128x1 decodeMicros=31
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=978ead2677bcd7bc count=1 vkFormat=145 logical=4097x4 level=4 nativeSubresource=4 offset=0,0 extent=256x1 blocks=64x1 decodeMicros=15
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=370568f8d67b6d32 count=1 vkFormat=145 logical=4097x4 level=5 nativeSubresource=5 offset=0,0 extent=128x1 blocks=32x1 decodeMicros=7
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=8f264fa5c6130421 count=1 vkFormat=145 logical=4097x4 level=6 nativeSubresource=6 offset=0,0 extent=64x1 blocks=16x1 decodeMicros=4
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=cf6856db5b9ad030 count=1 vkFormat=145 logical=4097x4 level=7 nativeSubresource=7 offset=0,0 extent=32x1 blocks=8x1 decodeMicros=3
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=bc9de7b605f985bf count=1 vkFormat=145 logical=4097x4 level=8 nativeSubresource=8 offset=0,0 extent=16x1 blocks=4x1 decodeMicros=2
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=56ab83cfd93fd676 count=1 vkFormat=145 logical=4097x4 level=9 nativeSubresource=9 offset=0,0 extent=8x1 blocks=2x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=6c05c45e38c20da9 count=1 vkFormat=145 logical=4097x4 level=10 nativeSubresource=10 offset=0,0 extent=4x1 blocks=1x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=c81dd265f629ca1e count=1 vkFormat=145 logical=4097x4 level=11 nativeSubresource=11 offset=0,0 extent=2x1 blocks=1x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=029cd7b67294158a count=1 vkFormat=145 logical=4097x4 level=12 nativeSubresource=12 offset=0,0 extent=1x1 blocks=1x1 decodeMicros=1
+SUBMIT: boundary-4097x4-decoded(16388>16384) => VK_SUCCESS (0)
+WAIT: boundary-4097x4-decoded(16388>16384) => VK_SUCCESS (0)
+CASE PASS: boundary-4097x4-decoded(16388>16384) mips=13 create/bind/upload => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 4097x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=65552 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-4097x4-decoded(16388>16384)-mip0 => VK_SUCCESS (0)
+SUBMIT: boundary-4097x4-decoded(16388>16384)-mip0 => VK_SUCCESS (0)
+WAIT: boundary-4097x4-decoded(16388>16384)-mip0 => VK_SUCCESS (0)
+CASE PASS: boundary-4097x4-decoded(16388>16384)-mip0 mip=0 extent=4097x4 texels=16388 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 1x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=4 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-4097x4-decoded(16388>16384)-mip12 => VK_SUCCESS (0)
+SUBMIT: boundary-4097x4-decoded(16388>16384)-mip12 => VK_SUCCESS (0)
+WAIT: boundary-4097x4-decoded(16388>16384)-mip12 => VK_SUCCESS (0)
+CASE PASS: boundary-4097x4-decoded(16388>16384)-mip12 mip=12 extent=1x1 texels=1 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: boundary-8190x4-native-prefix1(16380) format=145 8190x4 mips=13 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: boundary-8190x4-native-prefix1(16380) bytes=65536 align=16 bits=0x5 type=0
+IMAGE_BIND: boundary-8190x4-native-prefix1(16380) => VK_SUCCESS (0)
+END: boundary-8190x4-native-prefix1(16380) => VK_SUCCESS (0)
+SUBMIT: boundary-8190x4-native-prefix1(16380) => VK_SUCCESS (0)
+WAIT: boundary-8190x4-native-prefix1(16380) => VK_SUCCESS (0)
+CASE PASS: boundary-8190x4-native-prefix1(16380) mips=13 create/bind/upload => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 8190x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=131040 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-8190x4-native-prefix1(16380)-mip0 => VK_SUCCESS (0)
+SUBMIT: boundary-8190x4-native-prefix1(16380)-mip0 => VK_SUCCESS (0)
+WAIT: boundary-8190x4-native-prefix1(16380)-mip0 => VK_SUCCESS (0)
+CASE PASS: boundary-8190x4-native-prefix1(16380)-mip0 mip=0 extent=8190x4 texels=32760 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 1x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=4 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-8190x4-native-prefix1(16380)-mip12 => VK_SUCCESS (0)
+SUBMIT: boundary-8190x4-native-prefix1(16380)-mip12 => VK_SUCCESS (0)
+WAIT: boundary-8190x4-native-prefix1(16380)-mip12 => VK_SUCCESS (0)
+CASE PASS: boundary-8190x4-native-prefix1(16380)-mip12 mip=12 extent=1x1 texels=1 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: boundary-8194x4-decoded(16388>16384) format=145 8194x4 mips=14 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: boundary-8194x4-decoded(16388>16384) bytes=65584 align=16 bits=0x5 type=0
+[RW-GPU-DIAG] kind=bc-representation-decoded sig=600e21f673d9044b count=1 vkFormat=145 logical=8194x4 mips=14 layers=1 usage=0x7 flags=0x0 tiling=0 samples=1 representation=decoded-rgba8 prefixedNative=16388x8 limit=16384 decodable=1 fallbackEnabled=1 logicalBcBytes=65584 decodedRgba8Bytes=180260
+IMAGE_BIND: boundary-8194x4-decoded(16388>16384) => VK_SUCCESS (0)
+END: boundary-8194x4-decoded(16388>16384) => VK_SUCCESS (0)
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=632af8efc47971d3 count=1 vkFormat=145 logical=8194x4 level=0 nativeSubresource=0 offset=0,0 extent=8194x4 blocks=2049x1 decodeMicros=570
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=226c54473edd9137 count=1 vkFormat=145 logical=8194x4 level=1 nativeSubresource=1 offset=0,0 extent=4097x2 blocks=1025x1 decodeMicros=232
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=49c351c355cf405e count=1 vkFormat=145 logical=8194x4 level=2 nativeSubresource=2 offset=0,0 extent=2048x1 blocks=512x1 decodeMicros=118
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=9241ffc892b3f543 count=1 vkFormat=145 logical=8194x4 level=3 nativeSubresource=3 offset=0,0 extent=1024x1 blocks=256x1 decodeMicros=58
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=477e170f323c2eea count=1 vkFormat=145 logical=8194x4 level=4 nativeSubresource=4 offset=0,0 extent=512x1 blocks=128x1 decodeMicros=31
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=b548cdcbff802eaa count=1 vkFormat=145 logical=8194x4 level=5 nativeSubresource=5 offset=0,0 extent=256x1 blocks=64x1 decodeMicros=18
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=13e00a6d9df7d6c2 count=1 vkFormat=145 logical=8194x4 level=6 nativeSubresource=6 offset=0,0 extent=128x1 blocks=32x1 decodeMicros=14
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=35935fd3eeb43e53 count=1 vkFormat=145 logical=8194x4 level=7 nativeSubresource=7 offset=0,0 extent=64x1 blocks=16x1 decodeMicros=5
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=4b94bddf1666c28c count=1 vkFormat=145 logical=8194x4 level=8 nativeSubresource=8 offset=0,0 extent=32x1 blocks=8x1 decodeMicros=3
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=b9b0e97ceba620cd count=1 vkFormat=145 logical=8194x4 level=9 nativeSubresource=9 offset=0,0 extent=16x1 blocks=4x1 decodeMicros=2
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=38bf1c39b1721f06 count=1 vkFormat=145 logical=8194x4 level=10 nativeSubresource=10 offset=0,0 extent=8x1 blocks=2x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=1272d48c616347db count=1 vkFormat=145 logical=8194x4 level=11 nativeSubresource=11 offset=0,0 extent=4x1 blocks=1x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=217e7b472d7e2f6a count=1 vkFormat=145 logical=8194x4 level=12 nativeSubresource=12 offset=0,0 extent=2x1 blocks=1x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=2056f85bfa576c78 count=1 vkFormat=145 logical=8194x4 level=13 nativeSubresource=13 offset=0,0 extent=1x1 blocks=1x1 decodeMicros=1
+SUBMIT: boundary-8194x4-decoded(16388>16384) => VK_SUCCESS (0)
+WAIT: boundary-8194x4-decoded(16388>16384) => VK_SUCCESS (0)
+CASE PASS: boundary-8194x4-decoded(16388>16384) mips=14 create/bind/upload => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 8194x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=131104 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-8194x4-decoded(16388>16384)-mip0 => VK_SUCCESS (0)
+SUBMIT: boundary-8194x4-decoded(16388>16384)-mip0 => VK_SUCCESS (0)
+WAIT: boundary-8194x4-decoded(16388>16384)-mip0 => VK_SUCCESS (0)
+CASE PASS: boundary-8194x4-decoded(16388>16384)-mip0 mip=0 extent=8194x4 texels=32776 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 1x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=4 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-8194x4-decoded(16388>16384)-mip13 => VK_SUCCESS (0)
+SUBMIT: boundary-8194x4-decoded(16388>16384)-mip13 => VK_SUCCESS (0)
+WAIT: boundary-8194x4-decoded(16388>16384)-mip13 => VK_SUCCESS (0)
+CASE PASS: boundary-8194x4-decoded(16388>16384)-mip13 mip=13 extent=1x1 texels=1 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: boundary-16383x4-decoded(odd) format=145 16383x4 mips=14 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: boundary-16383x4-decoded(odd) bytes=131072 align=16 bits=0x5 type=0
+[RW-GPU-DIAG] kind=bc-representation-decoded sig=a5ef110cfeb3ea23 count=1 vkFormat=145 logical=16383x4 mips=14 layers=1 usage=0x7 flags=0x0 tiling=0 samples=1 representation=decoded-rgba8 prefixedNative=65532x16 limit=16384 decodable=1 fallbackEnabled=1 logicalBcBytes=131072 decodedRgba8Bytes=360368
+IMAGE_BIND: boundary-16383x4-decoded(odd) => VK_SUCCESS (0)
+END: boundary-16383x4-decoded(odd) => VK_SUCCESS (0)
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=1048c41a0231b3a7 count=1 vkFormat=145 logical=16383x4 level=0 nativeSubresource=0 offset=0,0 extent=16383x4 blocks=4096x1 decodeMicros=1203
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=4f63c693431fbb50 count=1 vkFormat=145 logical=16383x4 level=1 nativeSubresource=1 offset=0,0 extent=8191x2 blocks=2048x1 decodeMicros=477
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=875011ff161e8724 count=1 vkFormat=145 logical=16383x4 level=2 nativeSubresource=2 offset=0,0 extent=4095x1 blocks=1024x1 decodeMicros=249
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=fbcf1508610d3f1d count=1 vkFormat=145 logical=16383x4 level=3 nativeSubresource=3 offset=0,0 extent=2047x1 blocks=512x1 decodeMicros=116
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=2200f6a6680a445a count=1 vkFormat=145 logical=16383x4 level=4 nativeSubresource=4 offset=0,0 extent=1023x1 blocks=256x1 decodeMicros=59
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=5690cd560b22c64d count=1 vkFormat=145 logical=16383x4 level=5 nativeSubresource=5 offset=0,0 extent=511x1 blocks=128x1 decodeMicros=30
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=292ff12f361802b5 count=1 vkFormat=145 logical=16383x4 level=6 nativeSubresource=6 offset=0,0 extent=255x1 blocks=64x1 decodeMicros=15
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=65aa8a2d196a60e4 count=1 vkFormat=145 logical=16383x4 level=7 nativeSubresource=7 offset=0,0 extent=127x1 blocks=32x1 decodeMicros=8
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=d28159c9505d96db count=1 vkFormat=145 logical=16383x4 level=8 nativeSubresource=8 offset=0,0 extent=63x1 blocks=16x1 decodeMicros=4
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=ad06962b4d6bc16a count=1 vkFormat=145 logical=16383x4 level=9 nativeSubresource=9 offset=0,0 extent=31x1 blocks=8x1 decodeMicros=3
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=e9f5071b81ed4629 count=1 vkFormat=145 logical=16383x4 level=10 nativeSubresource=10 offset=0,0 extent=15x1 blocks=4x1 decodeMicros=2
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=0df248f26bae9770 count=1 vkFormat=145 logical=16383x4 level=11 nativeSubresource=11 offset=0,0 extent=7x1 blocks=2x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=9ce89fce90a07143 count=1 vkFormat=145 logical=16383x4 level=12 nativeSubresource=12 offset=0,0 extent=3x1 blocks=1x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=7ac68bdbbbfd7f50 count=1 vkFormat=145 logical=16383x4 level=13 nativeSubresource=13 offset=0,0 extent=1x1 blocks=1x1 decodeMicros=1
+SUBMIT: boundary-16383x4-decoded(odd) => VK_SUCCESS (0)
+WAIT: boundary-16383x4-decoded(odd) => VK_SUCCESS (0)
+CASE PASS: boundary-16383x4-decoded(odd) mips=14 create/bind/upload => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 16383x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=262128 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-16383x4-decoded(odd)-mip0 => VK_SUCCESS (0)
+SUBMIT: boundary-16383x4-decoded(odd)-mip0 => VK_SUCCESS (0)
+WAIT: boundary-16383x4-decoded(odd)-mip0 => VK_SUCCESS (0)
+CASE PASS: boundary-16383x4-decoded(odd)-mip0 mip=0 extent=16383x4 texels=65532 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 1x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=4 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-16383x4-decoded(odd)-mip13 => VK_SUCCESS (0)
+SUBMIT: boundary-16383x4-decoded(odd)-mip13 => VK_SUCCESS (0)
+WAIT: boundary-16383x4-decoded(odd)-mip13 => VK_SUCCESS (0)
+CASE PASS: boundary-16383x4-decoded(odd)-mip13 mip=13 extent=1x1 texels=1 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: boundary-16384x4-native-prefix0 format=145 16384x4 mips=15 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: boundary-16384x4-native-prefix0 bytes=131088 align=16 bits=0x5 type=0
+IMAGE_BIND: boundary-16384x4-native-prefix0 => VK_SUCCESS (0)
+END: boundary-16384x4-native-prefix0 => VK_SUCCESS (0)
+SUBMIT: boundary-16384x4-native-prefix0 => VK_SUCCESS (0)
+WAIT: boundary-16384x4-native-prefix0 => VK_SUCCESS (0)
+CASE PASS: boundary-16384x4-native-prefix0 mips=15 create/bind/upload => VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 16384x4 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=262144 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-16384x4-native-prefix0-mip0 => VK_SUCCESS (0)
+SUBMIT: boundary-16384x4-native-prefix0-mip0 => VK_SUCCESS (0)
+WAIT: boundary-16384x4-native-prefix0-mip0 => VK_SUCCESS (0)
+CASE PASS: boundary-16384x4-native-prefix0-mip0 mip=0 extent=16384x4 texels=65536 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: verify-destination format=37 1x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=4 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: boundary-16384x4-native-prefix0-mip14 => VK_SUCCESS (0)
+SUBMIT: boundary-16384x4-native-prefix0-mip14 => VK_SUCCESS (0)
+WAIT: boundary-16384x4-native-prefix0-mip14 => VK_SUCCESS (0)
+CASE PASS: boundary-16384x4-native-prefix0-mip14 mip=14 extent=1x1 texels=1 badTexels=0 maxChannelDiff=0 compare=exact
+IMAGE_CREATE: srgb-4097x8 format=146 4097x8 mips=13 usage=0x7 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: srgb-4097x8 bytes=49200 align=16 bits=0x5 type=0
+[RW-GPU-DIAG] kind=bc-representation-decoded sig=a577f3a431de2094 count=1 vkFormat=146 logical=4097x8 mips=13 layers=1 usage=0x7 flags=0x0 tiling=0 samples=1 representation=decoded-rgba8 prefixedNative=16388x32 limit=16384 decodable=1 fallbackEnabled=1 logicalBcBytes=49200 decodedRgba8Bytes=176156
+IMAGE_BIND: srgb-4097x8 => VK_SUCCESS (0)
+END: srgb-4097x8-upload => VK_SUCCESS (0)
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=6957f405e4c585a0 count=1 vkFormat=146 logical=4097x8 level=0 nativeSubresource=0 offset=0,0 extent=4097x8 blocks=1025x2 decodeMicros=496
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=a62a7a9926266934 count=1 vkFormat=146 logical=4097x8 level=1 nativeSubresource=1 offset=0,0 extent=2048x4 blocks=512x1 decodeMicros=143
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=ccae70896f784a85 count=1 vkFormat=146 logical=4097x8 level=2 nativeSubresource=2 offset=0,0 extent=1024x2 blocks=256x1 decodeMicros=61
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=2a82d3825eeb1645 count=1 vkFormat=146 logical=4097x8 level=3 nativeSubresource=3 offset=0,0 extent=512x1 blocks=128x1 decodeMicros=33
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=965b82b329655393 count=1 vkFormat=146 logical=4097x8 level=4 nativeSubresource=4 offset=0,0 extent=256x1 blocks=64x1 decodeMicros=16
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=fc1dbdd5db5c9d1d count=1 vkFormat=146 logical=4097x8 level=5 nativeSubresource=5 offset=0,0 extent=128x1 blocks=32x1 decodeMicros=8
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=9ec3e033db0f272e count=1 vkFormat=146 logical=4097x8 level=6 nativeSubresource=6 offset=0,0 extent=64x1 blocks=16x1 decodeMicros=4
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=5e81d8fe45875b1f count=1 vkFormat=146 logical=4097x8 level=7 nativeSubresource=7 offset=0,0 extent=32x1 blocks=8x1 decodeMicros=3
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=91f367023d3f6170 count=1 vkFormat=146 logical=4097x8 level=8 nativeSubresource=8 offset=0,0 extent=16x1 blocks=4x1 decodeMicros=2
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=d73eac09c7e254d9 count=1 vkFormat=146 logical=4097x8 level=9 nativeSubresource=9 offset=0,0 extent=8x1 blocks=2x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=c1e46b7b68601da6 count=1 vkFormat=146 logical=4097x8 level=10 nativeSubresource=10 offset=0,0 extent=4x1 blocks=1x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=65cc5d73aaf86131 count=1 vkFormat=146 logical=4097x8 level=11 nativeSubresource=11 offset=0,0 extent=2x1 blocks=1x1 decodeMicros=1
+[RW-GPU-DIAG] kind=bc-decoded-upload sig=2b4d58232e8e15c5 count=1 vkFormat=146 logical=4097x8 level=12 nativeSubresource=12 offset=0,0 extent=1x1 blocks=1x1 decodeMicros=1
+SUBMIT: srgb-4097x8-upload => VK_SUCCESS (0)
+WAIT: srgb-4097x8-upload => VK_SUCCESS (0)
+CASE PASS: srgb-decoded-create-upload VK_SUCCESS
+IMAGE_CREATE: verify-destination format=37 4097x8 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=131104 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: srgb-decoded-sampled-mip0 => VK_SUCCESS (0)
+SUBMIT: srgb-decoded-sampled-mip0 => VK_SUCCESS (0)
+WAIT: srgb-decoded-sampled-mip0 => VK_SUCCESS (0)
+CASE PASS: srgb-decoded-sampled-mip0 mip=0 extent=4097x8 texels=32776 badTexels=0 maxChannelDiff=1 compare=srgb-linearised(tol=1)
+IMAGE_CREATE: verify-destination format=37 512x1 mips=1 usage=0x13 => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: verify-destination bytes=2048 align=4 bits=0x5 type=0
+IMAGE_BIND: verify-destination => VK_SUCCESS (0)
+END: srgb-decoded-sampled-mip3 => VK_SUCCESS (0)
+SUBMIT: srgb-decoded-sampled-mip3 => VK_SUCCESS (0)
+WAIT: srgb-decoded-sampled-mip3 => VK_SUCCESS (0)
+CASE PASS: srgb-decoded-sampled-mip3 mip=3 extent=512x1 texels=512 badTexels=0 maxChannelDiff=1 compare=srgb-linearised(tol=1)
+RESULT: vkDeviceWaitIdle => VK_SUCCESS (0)
+[RW-GPU-FENCE] fenced_submits=31 flushes=9 polls=122 timeouts=0
+[RW-GPU-STAGING] cap=268435456 liveBytes=229392 peakBytes=229392 entries=3 hits=37 misses=3 evictions=0 uncached=0
+[RW-GPU-MEMORY-BUDGET] stage=device-destroy source=IDXGIAdapter3::QueryVideoMemoryInfo localBudget=25604128768 localUsage=0 nonLocalBudget=0 nonLocalUsage=0
+[RW-GPU-MEMORY-SUMMARY] stage=device-destroy liveBufferBytes=12544 liveBufferCount=1 peakBufferBytes=64008832 liveTextureBytes=0 liveTextureCount=0 peakTextureBytes=362630024 liveDecodedBcBytes=0 liveDecodedBcCount=0 physicalAvailable=21801074688 memorySnapshotValid=1 note=texture-bytes-are-estimates-from-native-descriptors
+[RW-GPU-DIAG-SUMMARY] signatures=77 overflow=0
+[RW-GPU-DIAG-SUMMARY] kind=bc-representation-decoded sig=c308e2d73c049192 count=2
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=7caed5f2d21970db count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=afe527dd0773fdfd count=2
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=f397ad173f5f80d3 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=21085789e139b744 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=41d5c0281956cad2 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=ab32acdc02d36749 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=b947b7309109be4c count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=7dbbe9a4817996ee count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=1b4b40fffd878990 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=6ebfabbaf456da91 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=475e2f2fb1d8833a count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=9e1238847ff654bf count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=5ef5278736f0fd8b count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=dfa60228df07934e count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=d2bfa8424a5134dd count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=99ed5c63fe272615 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=68ebaaa8d3254122 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-readback-rejected sig=b2d6fe24016e1be5 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-representation-decoded sig=d0aac738e14d225b count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=44d22b6fb1d7cee3 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=c7b50d5127673b3d count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=c1411347db742439 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=ee1d6e2dfae7c99e count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=978ead2677bcd7bc count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=370568f8d67b6d32 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=8f264fa5c6130421 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=cf6856db5b9ad030 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=bc9de7b605f985bf count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=56ab83cfd93fd676 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=6c05c45e38c20da9 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=c81dd265f629ca1e count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=029cd7b67294158a count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-representation-decoded sig=600e21f673d9044b count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=632af8efc47971d3 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=226c54473edd9137 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=49c351c355cf405e count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=9241ffc892b3f543 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=477e170f323c2eea count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=b548cdcbff802eaa count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=13e00a6d9df7d6c2 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=35935fd3eeb43e53 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=4b94bddf1666c28c count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=b9b0e97ceba620cd count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=38bf1c39b1721f06 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=1272d48c616347db count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=217e7b472d7e2f6a count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=2056f85bfa576c78 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-representation-decoded sig=a5ef110cfeb3ea23 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=1048c41a0231b3a7 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=4f63c693431fbb50 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=875011ff161e8724 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=fbcf1508610d3f1d count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=2200f6a6680a445a count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=5690cd560b22c64d count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=292ff12f361802b5 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=65aa8a2d196a60e4 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=d28159c9505d96db count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=ad06962b4d6bc16a count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=e9f5071b81ed4629 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=0df248f26bae9770 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=9ce89fce90a07143 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=7ac68bdbbbfd7f50 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-representation-decoded sig=a577f3a431de2094 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=6957f405e4c585a0 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=a62a7a9926266934 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=ccae70896f784a85 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=2a82d3825eeb1645 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=965b82b329655393 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=fc1dbdd5db5c9d1d count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=9ec3e033db0f272e count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=5e81d8fe45875b1f count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=91f367023d3f6170 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=d73eac09c7e254d9 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=c1e46b7b68601da6 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=65cc5d73aaf86131 count=1
+[RW-GPU-DIAG-SUMMARY] kind=bc-decoded-upload sig=2b4d58232e8e15c5 count=1
+[RW-GPU-SHADERCACHE] enabled=1 cap=33554432 bytes=2224 entries=1 hits=21 misses=1 inserts=1 evictions=0 rejected=0
+[RW-GPU-STATECACHE] hits=0 misses=132 invalidations=75
+SUMMARY: cases=38 failures=0
+FINAL: PASS status=0; 38 large-BC7 cases passed (decode fallback).
+X connection to :143 broken (explicit kill or server shutdown).

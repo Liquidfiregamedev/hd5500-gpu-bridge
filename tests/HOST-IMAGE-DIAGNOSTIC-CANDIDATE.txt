@@ -1,0 +1,109 @@
+Ashes D3D11 focused texture upload/readback probe (raw Vulkan; no VMA)
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11\test-runtime\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v3\package\runtime\ashesD3D11Renderer_icd.json
+ICD isolation: VK_ICD_FILENAMES and VK_DRIVER_FILES set in this process only.
+WARNING: --allow-non-intel-test accepts Wine/synthetic/non-Intel only for sandbox integration; NOT HD 5500 validation.
+CALL: vkEnumerateInstanceVersion
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0)
+LOADER MAX API: 1.4.362; application requests 1.0.0
+PORTABILITY: enabling advertised VK_KHR_portability_enumeration.
+DEBUG_UTILS: VK_EXT_debug_utils advertised; enabling callback at instance creation.
+CALL: vkCreateInstance(api=1.0)
+DEBUG_UTILS[1]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: applicationName: "Ashes texture upload probe", applicationVersion: 1, engineName: "standalone", engineVersion: 1, apiVersion: 1.0.0
+DEBUG_UTILS[2]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: Requested 0 instance layer(s):
+DEBUG_UTILS[3]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance: Requested 2 instance extension(s):
+DEBUG_UTILS[4]: severity=0x10 type=0x1 code=0 id=Loader Message message=   VK_KHR_portability_enumeration
+DEBUG_UTILS[5]: severity=0x10 type=0x1 code=0 id=Loader Message message=   VK_EXT_debug_utils
+DEBUG_UTILS[6]: severity=0x10 type=0x1 code=0 id=Loader Message message=No valid vk_loader_settings.json file found, no loader settings will be active
+DEBUG_UTILS[7]: severity=0x10 type=0x1 code=0 id=Loader Message message=Portability enumeration bit was set, enumerating portability drivers.
+DEBUG_UTILS[8]: severity=0x10 type=0x1 code=0 id=Loader Message message=windows_get_app_package_manifest_path: Failed to find mapping layers packages by family name
+DEBUG_UTILS[9]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for implicit layer manifest files
+DEBUG_UTILS[10]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[11]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found no files
+DEBUG_UTILS[12]: severity=0x10 type=0x1 code=0 id=Loader Message message=Checking for Layer Manifest files in Registry at HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ImplicitLayers
+DEBUG_UTILS[13]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found no registry files in HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ImplicitLayers
+DEBUG_UTILS[14]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for explicit layer manifest files
+DEBUG_UTILS[15]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[16]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found no files
+DEBUG_UTILS[17]: severity=0x10 type=0x1 code=0 id=Loader Message message=Checking for Layer Manifest files in Registry at HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ExplicitLayers
+DEBUG_UTILS[18]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found no registry files in HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\ExplicitLayers
+DEBUG_UTILS[19]: severity=0x100 type=0x1 code=0 id=Loader Message message=windows_read_data_files_in_registry: Registry lookup failed to get layer manifest files.
+DEBUG_UTILS[20]: severity=0x10 type=0x1 code=0 id=Loader Message message=windows_get_app_package_manifest_path: Failed to find mapping layers packages by family name
+DEBUG_UTILS[21]: severity=0x10 type=0x1 code=0 id=Loader Message message=Searching for driver manifest files
+DEBUG_UTILS[22]: severity=0x10 type=0x1 code=0 id=Loader Message message=   In following locations:
+DEBUG_UTILS[23]: severity=0x10 type=0x1 code=0 id=Loader Message message=      Z:\home\ubuntu\rimworld-gpu-d3d11-v3\package\runtime\ashesD3D11Renderer_icd.json
+DEBUG_UTILS[24]: severity=0x10 type=0x1 code=0 id=Loader Message message=   Found the following files:
+DEBUG_UTILS[25]: severity=0x10 type=0x1 code=0 id=Loader Message message=      Z:\home\ubuntu\rimworld-gpu-d3d11-v3\package\runtime\ashesD3D11Renderer_icd.json
+DEBUG_UTILS[26]: severity=0x10 type=0x1 code=0 id=Loader Message message=Found ICD manifest file Z:\home\ubuntu\rimworld-gpu-d3d11-v3\package\runtime\ashesD3D11Renderer_icd.json, version 1.0.1
+DEBUG_UTILS[27]: severity=0x1 type=0x1 code=0 id=Loader Message message=Searching for ICD drivers named .\ashesD3D11Renderer.dll
+DEBUG_UTILS[28]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateInstance layer callstack setup to:
+DEBUG_UTILS[29]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Application>
+DEBUG_UTILS[30]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[31]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Loader>
+DEBUG_UTILS[32]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[33]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Drivers>
+RESULT: vkCreateInstance(api=1.0) => VK_SUCCESS (0)
+CALL: vkCreateDebugUtilsMessengerEXT
+RESULT: vkCreateDebugUtilsMessengerEXT => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(count)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(list)
+RESULT: vkEnumeratePhysicalDevices(list) => VK_SUCCESS (0)
+ADAPTER[0]: name=NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE device=0x06CD type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+WARNING: selected synthetic/non-Intel/software-like adapter: sandbox result only, NOT HD 5500 hardware validation.
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0
+MEMORY_TYPE[0]: heap=0 flags=0x1
+MEMORY_TYPE[1]: heap=1 flags=0x6
+MEMORY_TYPE[2]: heap=1 flags=0xE
+FORMAT RGBA8_UNORM: optimalFeatures=0x1FC87 (need sampled=0x1 transferSrc=0x4000 transferDst=0x8000)
+PORTABILITY: enabling advertised VK_KHR_portability_subset.
+CALL: vkCreateDevice
+DEBUG_UTILS[34]: severity=0x10 type=0x1 code=0 id=Loader Message message=vkCreateDevice layer callstack setup to:
+DEBUG_UTILS[35]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Application>
+DEBUG_UTILS[36]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[37]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Loader>
+DEBUG_UTILS[38]: severity=0x10 type=0x1 code=0 id=Loader Message message=     ||
+DEBUG_UTILS[39]: severity=0x10 type=0x1 code=0 id=Loader Message message=   <Device>
+DEBUG_UTILS[40]: severity=0x10 type=0x1 code=0 id=Loader Message message=       Using "NVIDIA GeForce GTX 470 (d3d11)" with driver: "Z:\home\ubuntu\rimworld-gpu-d3d11-v3\package\runtime\ashesD3D11Renderer.dll"
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+CALL: vkCreateImage(sampled-only DEVICE_LOCAL; usage=0x4; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled-only DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled-only DEVICE_LOCAL: size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled-only DEVICE_LOCAL requiredFlags=0x1 type=0 actualFlags=0x1 size=16) [preflight]
+RESULT: vkAllocateMemory(sampled-only DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled-only DEVICE_LOCAL, offset=0) [preflight]
+RESULT: vkBindImageMemory(sampled-only DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+CALL: vkCreateImage(sampled|transfer-src|transfer-dst DEVICE_LOCAL; usage=0x7; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled|transfer-src|transfer-dst DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled|transfer-src|transfer-dst DEVICE_LOCAL: size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL requiredFlags=0x1 type=0 actualFlags=0x1 size=16) [preflight]
+RESULT: vkAllocateMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL, offset=0) [preflight]
+RESULT: vkBindImageMemory(sampled|transfer-src|transfer-dst DEVICE_LOCAL preflight) => VK_SUCCESS (0)
+MODE: --host-visible-preflight-first selected; host-visible image isolates precede primary upload.
+HOST_VISIBLE IMAGE PREFLIGHTS: exercising advertised host-visible image type and nonzero image-memory binding.
+CALL: vkCreateImage(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind); usage=0x4; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind): size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) requiredFlags=0x6 type=2 actualFlags=0xE size=20) [preflight]
+RESULT: vkAllocateMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind), offset=4) [preflight]
+DEBUG_UTILS[41]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [LockMemory]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+RESULT: vkBindImageMemory(sampled-only HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+CALL: vkCreateImage(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind); usage=0x7; optimal RGBA8 2x2) [preflight]
+RESULT: vkCreateImage(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+REQUIREMENTS sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind): size=16 alignment=4 typeBits=0x00000005
+CALL: vkAllocateMemory(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind) requiredFlags=0x6 type=2 actualFlags=0xE size=20) [preflight]
+RESULT: vkAllocateMemory(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind) preflight) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled|transfer-src|transfer-dst HOST_VISIBLE|HOST_COHERENT (nonzero image bind), offset=4) [preflight]
+DEBUG_UTILS[42]: severity=0x1000 type=0x1 code=-2147024809 id=VALIDATION message=Condition failed: Error calling [CreateTexture2D]: 80070057
+    Direct3D: An invalid parameter was passed to the returning function.
+    Windows: Invalid window handle.
+
+wine: Unhandled page fault on read access to 0000000000000000 at address 00006FFFF92490BF (thread 0110), starting debugger...
+X connection to :99 broken (explicit kill or server shutdown).
+X connection to :99 broken (explicit kill or server shutdown).

@@ -1,0 +1,11 @@
+=== concise import DLLs ===
+ashesD3D11Renderer.dll:
+D3DCOMPILER_47.dll
+KERNEL32.dll
+USER32.dll
+d3d11.dll
+dxgi.dll
+ashes-1.dll:
+KERNEL32.dll
+=== static CRT import assertion ===
+PASS: no VCRUNTIME/MSVCP/UCRTBASE imports in staged DLLs

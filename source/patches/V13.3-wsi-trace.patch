@@ -1,0 +1,397 @@
+diff -ruN orig/Core/D3D11SwapChain.cpp new/Core/D3D11SwapChain.cpp
+--- orig/Core/D3D11SwapChain.cpp	2026-10-18 09:15:08.129836833 +0000
++++ new/Core/D3D11SwapChain.cpp	2026-10-18 09:15:27.182800577 +0000
+@@ -182,6 +182,13 @@
+ 				case DXGI_FORMAT_B5G6R5_UNORM:
+ 				case DXGI_FORMAT_B5G5R5A1_UNORM:
+ 					return 2u;
++				// v13.3: swapchain images are created TYPELESS (e.g. format 90 =
++				// B8G8R8A8_TYPELESS). Without these cases the frame probe refused to
++				// create its staging copy (E_INVALIDARG) and never captured a frame.
++				case DXGI_FORMAT_R8G8B8A8_TYPELESS:
++				case DXGI_FORMAT_B8G8R8A8_TYPELESS:
++				case DXGI_FORMAT_B8G8R8X8_TYPELESS:
++				case DXGI_FORMAT_R10G10B10A2_TYPELESS:
+ 				case DXGI_FORMAT_R8G8B8A8_UNORM:
+ 				case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+ 				case DXGI_FORMAT_R8G8B8A8_UINT:
+@@ -203,6 +210,7 @@
+ 				case DXGI_FORMAT_R32_UINT:
+ 				case DXGI_FORMAT_R32_SINT:
+ 					return 4u;
++				case DXGI_FORMAT_R16G16B16A16_TYPELESS:
+ 				case DXGI_FORMAT_R16G16B16A16_FLOAT:
+ 				case DXGI_FORMAT_R16G16B16A16_UNORM:
+ 				case DXGI_FORMAT_R16G16B16A16_UINT:
+@@ -232,11 +240,48 @@
+ 				return hash;
+ 			}
+ 
++			// Formats in the same typeless group may legally be copied into each
++			// other with CopySubresourceRegion (TYPELESS fake image -> UNORM backbuffer).
++			static DXGI_FORMAT getCopyFamily( DXGI_FORMAT format )
++			{
++				switch ( format )
++				{
++				case DXGI_FORMAT_R8G8B8A8_TYPELESS:
++				case DXGI_FORMAT_R8G8B8A8_UNORM:
++				case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
++				case DXGI_FORMAT_R8G8B8A8_UINT:
++				case DXGI_FORMAT_R8G8B8A8_SNORM:
++				case DXGI_FORMAT_R8G8B8A8_SINT:
++					return DXGI_FORMAT_R8G8B8A8_TYPELESS;
++				case DXGI_FORMAT_B8G8R8A8_TYPELESS:
++				case DXGI_FORMAT_B8G8R8A8_UNORM:
++				case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
++					return DXGI_FORMAT_B8G8R8A8_TYPELESS;
++				case DXGI_FORMAT_B8G8R8X8_TYPELESS:
++				case DXGI_FORMAT_B8G8R8X8_UNORM:
++				case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
++					return DXGI_FORMAT_B8G8R8X8_TYPELESS;
++				case DXGI_FORMAT_R10G10B10A2_TYPELESS:
++				case DXGI_FORMAT_R10G10B10A2_UNORM:
++				case DXGI_FORMAT_R10G10B10A2_UINT:
++					return DXGI_FORMAT_R10G10B10A2_TYPELESS;
++				case DXGI_FORMAT_R16G16B16A16_TYPELESS:
++				case DXGI_FORMAT_R16G16B16A16_FLOAT:
++				case DXGI_FORMAT_R16G16B16A16_UNORM:
++				case DXGI_FORMAT_R16G16B16A16_UINT:
++				case DXGI_FORMAT_R16G16B16A16_SNORM:
++				case DXGI_FORMAT_R16G16B16A16_SINT:
++					return DXGI_FORMAT_R16G16B16A16_TYPELESS;
++				default:
++					return format;
++				}
++			}
++
+ 			static bool isCopyCompatible( D3D11_TEXTURE2D_DESC const & fakeDesc
+ 				, D3D11_TEXTURE2D_DESC const & realDesc
+ 				, D3D11_BOX const & box )
+ 			{
+-				return fakeDesc.Format == realDesc.Format
++				return getCopyFamily( fakeDesc.Format ) == getCopyFamily( realDesc.Format )
+ 					&& fakeDesc.SampleDesc.Count == realDesc.SampleDesc.Count
+ 					&& fakeDesc.SampleDesc.Quality == realDesc.SampleDesc.Quality
+ 					&& fakeDesc.MipLevels > 0u
+@@ -803,6 +848,7 @@
+ 
+ 	VkResult SwapchainKHR::acquireNextImage( uint32_t & imageIndex )const
+ 	{
++		++m_acquireCount;
+ 		imageIndex = 0u;
+ 		return VK_SUCCESS;
+ 	}
+diff -ruN orig/Core/D3D11SwapChain.hpp new/Core/D3D11SwapChain.hpp
+--- orig/Core/D3D11SwapChain.hpp	2026-10-18 09:15:08.129893168 +0000
++++ new/Core/D3D11SwapChain.hpp	2026-10-18 09:15:27.182941939 +0000
+@@ -8,6 +8,8 @@
+ 
+ #include "renderer/D3D11Renderer/D3D11RendererPrerequisites.hpp"
+ 
++#include <chrono>
++
+ namespace ashes::D3D11_NAMESPACE
+ {
+ 	class SwapchainKHR
+@@ -33,6 +35,33 @@
+ 			return m_device;
+ 		}
+ 
++		// v13.3 WSI lifecycle diagnostics (read-only accessors).
++		uint64_t getPresentCount()const
++		{
++			return m_presentCount;
++		}
++
++		uint64_t getAcquireCount()const
++		{
++			return m_acquireCount;
++		}
++
++		uint64_t getLifetimeMillis()const
++		{
++			return uint64_t( std::chrono::duration_cast< std::chrono::milliseconds >(
++				std::chrono::steady_clock::now() - m_createdAt ).count() );
++		}
++
++		VkExtent2D getWindowExtent()const
++		{
++			return m_windowExtent;
++		}
++
++		VkExtent2D getSwapchainExtent()const
++		{
++			return m_swapchainExtent;
++		}
++
+ 	private:
+ 		void doInitPresentParameters();
+ 
+@@ -58,5 +87,7 @@
+ 		mutable uint64_t m_presentCount{};
+ 		mutable uint64_t m_nextFrameProbeTick{};
+ 		mutable uint32_t m_timedFrameProbeCount{};
++		mutable uint64_t m_acquireCount{};
++		std::chrono::steady_clock::time_point m_createdAt{ std::chrono::steady_clock::now() };
+ 	};
+ }
+diff -ruN orig/ash_direct3d11.cpp new/ash_direct3d11.cpp
+--- orig/ash_direct3d11.cpp	2026-10-18 09:15:08.133738017 +0000
++++ new/ash_direct3d11.cpp	2026-10-18 09:16:14.805500670 +0000
+@@ -15,6 +15,9 @@
+ #pragma warning( push )
+ #pragma warning( disable: 5262 )
+ #include <iostream>
++#include <atomic>
++#include <chrono>
++#include <mutex>
+ #pragma warning( pop )
+ 
+ #pragma GCC diagnostic ignored "-Wmissing-declarations"
+@@ -2324,12 +2327,93 @@
+ 		return VK_SUCCESS;
+ 	}
+ 
++	// ---------------------------------------------------------------------
++	// v13.3 WSI lifecycle trace (always on, bounded, low volume).
++	// Purpose: the 2026-10-18 10:41 laptop run created 97 swapchains and each
++	// one presented exactly once. These lines record what the game asked for,
++	// what the bridge answered, and how long each swapchain lived, so the
++	// trigger for the recreation loop can be identified from one run.
++	// Output goes to std::clog (captured as game.stderr.txt by the launcher).
++	// ---------------------------------------------------------------------
++	namespace wsitrace
++	{
++		static constexpr uint32_t MaxLines = 600u;
++
++		static bool take( std::atomic< uint32_t > & counter )
++		{
++			return counter.fetch_add( 1u, std::memory_order_relaxed ) < MaxLines;
++		}
++
++		static uint64_t nowMillis()
++		{
++			return uint64_t( std::chrono::duration_cast< std::chrono::milliseconds >(
++				std::chrono::steady_clock::now().time_since_epoch() ).count() );
++		}
++
++		static std::atomic< uint32_t > capsLines{};
++		static std::atomic< uint64_t > capsCalls{};
++		static std::atomic< uint32_t > createLines{};
++		static std::atomic< uint64_t > createSeq{};
++		static std::atomic< uint32_t > destroyLines{};
++		static std::atomic< uint32_t > imagesLines{};
++		static std::atomic< uint32_t > presentLines{};
++		static std::atomic< uint32_t > acquireLines{};
++
++		static std::mutex capsMutex;
++		static VkSurfaceCapabilitiesKHR lastCaps{};
++		static bool haveLastCaps{};
++
++		static bool sameCaps( VkSurfaceCapabilitiesKHR const & lhs
++			, VkSurfaceCapabilitiesKHR const & rhs )
++		{
++			return lhs.minImageCount == rhs.minImageCount
++				&& lhs.maxImageCount == rhs.maxImageCount
++				&& lhs.currentExtent.width == rhs.currentExtent.width
++				&& lhs.currentExtent.height == rhs.currentExtent.height
++				&& lhs.minImageExtent.width == rhs.minImageExtent.width
++				&& lhs.minImageExtent.height == rhs.minImageExtent.height
++				&& lhs.maxImageExtent.width == rhs.maxImageExtent.width
++				&& lhs.maxImageExtent.height == rhs.maxImageExtent.height
++				&& lhs.supportedUsageFlags == rhs.supportedUsageFlags
++				&& lhs.currentTransform == rhs.currentTransform;
++		}
++
++		static void logCaps( VkSurfaceCapabilitiesKHR const & caps, VkSurfaceKHR surface )
++		{
++			auto const call = capsCalls.fetch_add( 1u, std::memory_order_relaxed ) + 1u;
++			bool changed{};
++			{
++				std::lock_guard< std::mutex > lock{ capsMutex };
++				changed = !haveLastCaps || !sameCaps( caps, lastCaps );
++				lastCaps = caps;
++				haveLastCaps = true;
++			}
++
++			// Log the first few calls and every change; otherwise only the count
++			// (reported at swapchain create/destroy) is kept.
++			if ( ( call <= 5u || changed ) && take( capsLines ) )
++			{
++				std::clog << "RW_HD5500_WSI caps call=" << call
++					<< " t=" << nowMillis()
++					<< " surface=" << uint64_t( surface )
++					<< " changed=" << uint32_t( changed )
++					<< " imageCount=" << caps.minImageCount << ".." << caps.maxImageCount
++					<< " current=" << caps.currentExtent.width << "x" << caps.currentExtent.height
++					<< " min=" << caps.minImageExtent.width << "x" << caps.minImageExtent.height
++					<< " max=" << caps.maxImageExtent.width << "x" << caps.maxImageExtent.height
++					<< " usage=0x" << std::hex << caps.supportedUsageFlags << std::dec
++					<< std::endl;
++			}
++		}
++	}
++
+ 	VkResult VKAPI_CALL vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
+ 		VkPhysicalDevice physicalDevice,
+ 		VkSurfaceKHR surface,
+ 		VkSurfaceCapabilitiesKHR * pSurfaceCapabilities )
+ 	{
+ 		*pSurfaceCapabilities = get( surface )->getCapabilities( physicalDevice );
++		wsitrace::logCaps( *pSurfaceCapabilities, surface );
+ 		return VK_SUCCESS;
+ 	}
+ 
+@@ -2387,10 +2471,46 @@
+ 		VkSwapchainKHR * pSwapchain )
+ 	{
+ 		assert( pSwapchain );
+-		return allocate( *pSwapchain
++		auto const seq = wsitrace::createSeq.fetch_add( 1u, std::memory_order_relaxed ) + 1u;
++		auto const result = allocate( *pSwapchain
+ 			, pAllocator
+ 			, device
+ 			, *pCreateInfo );
++
++		if ( wsitrace::take( wsitrace::createLines ) )
++		{
++			std::clog << "RW_HD5500_WSI create seq=" << seq
++				<< " t=" << wsitrace::nowMillis()
++				<< " result=" << int32_t( result )
++				<< " handle=" << uint64_t( result == VK_SUCCESS ? *pSwapchain : VkSwapchainKHR{} )
++				<< " old=" << uint64_t( pCreateInfo->oldSwapchain )
++				<< " surface=" << uint64_t( pCreateInfo->surface )
++				<< " minImageCount=" << pCreateInfo->minImageCount
++				<< " extent=" << pCreateInfo->imageExtent.width << "x" << pCreateInfo->imageExtent.height
++				<< " format=" << int32_t( pCreateInfo->imageFormat )
++				<< " colorSpace=" << int32_t( pCreateInfo->imageColorSpace )
++				<< " usage=0x" << std::hex << pCreateInfo->imageUsage << std::dec
++				<< " presentMode=" << int32_t( pCreateInfo->presentMode )
++				<< " compositeAlpha=0x" << std::hex << uint32_t( pCreateInfo->compositeAlpha )
++				<< " preTransform=0x" << uint32_t( pCreateInfo->preTransform ) << std::dec
++				<< " clipped=" << pCreateInfo->clipped
++				<< " sharing=" << int32_t( pCreateInfo->imageSharingMode )
++				<< " pNext=" << ( pCreateInfo->pNext ? 1 : 0 )
++				<< " capsCallsSoFar=" << wsitrace::capsCalls.load( std::memory_order_relaxed );
++
++			if ( result == VK_SUCCESS )
++			{
++				auto const window = get( *pSwapchain )->getWindowExtent();
++				auto const wrapper = get( *pSwapchain )->getSwapchainExtent();
++				std::clog << " bridgeImages=" << get( *pSwapchain )->getImageCount()
++					<< " window=" << window.width << "x" << window.height
++					<< " wrapper=" << wrapper.width << "x" << wrapper.height;
++			}
++
++			std::clog << std::endl;
++		}
++
++		return result;
+ 	}
+ 
+ 	void VKAPI_CALL vkDestroySwapchainKHR(
+@@ -2398,6 +2518,18 @@
+ 		VkSwapchainKHR swapchain,
+ 		const VkAllocationCallbacks * pAllocator )
+ 	{
++		if ( swapchain != VK_NULL_HANDLE
++			&& wsitrace::take( wsitrace::destroyLines ) )
++		{
++			std::clog << "RW_HD5500_WSI destroy t=" << wsitrace::nowMillis()
++				<< " handle=" << uint64_t( swapchain )
++				<< " lifetimeMs=" << get( swapchain )->getLifetimeMillis()
++				<< " acquires=" << get( swapchain )->getAcquireCount()
++				<< " presents=" << get( swapchain )->getPresentCount()
++				<< " capsCallsSoFar=" << wsitrace::capsCalls.load( std::memory_order_relaxed )
++				<< std::endl;
++		}
++
+ 		deallocate( swapchain, pAllocator );
+ 	}
+ 
+@@ -2408,8 +2540,18 @@
+ 		VkImage * pSwapchainImages )
+ 	{
+ 		auto result = get( swapchain )->getImages();
++		auto const requested = pSwapchainImages ? *pSwapchainImageCount : 0u;
+ 		*pSwapchainImageCount = uint32_t( result.size() );
+ 
++		if ( wsitrace::take( wsitrace::imagesLines ) )
++		{
++			std::clog << "RW_HD5500_WSI images handle=" << uint64_t( swapchain )
++				<< " query=" << ( pSwapchainImages ? "list" : "count" )
++				<< " callerCapacity=" << requested
++				<< " returned=" << result.size()
++				<< std::endl;
++		}
++
+ 		if ( pSwapchainImages )
+ 		{
+ 			for ( auto & image : result )
+@@ -2430,16 +2572,64 @@
+ 		[[maybe_unused]] VkFence fence,
+ 		uint32_t * pImageIndex )
+ 	{
+-		return get( swapchain )->acquireNextImage( *pImageIndex );
++		auto const result = get( swapchain )->acquireNextImage( *pImageIndex );
++
++		// Only the first acquires of each swapchain matter for the loop question.
++		if ( get( swapchain )->getAcquireCount() <= 3u
++			&& wsitrace::take( wsitrace::acquireLines ) )
++		{
++			std::clog << "RW_HD5500_WSI acquire handle=" << uint64_t( swapchain )
++				<< " n=" << get( swapchain )->getAcquireCount()
++				<< " timeout=" << timeout
++				<< " semaphore=" << ( semaphore != VK_NULL_HANDLE ? 1 : 0 )
++				<< " fence=" << ( fence != VK_NULL_HANDLE ? 1 : 0 )
++				<< " result=" << int32_t( result )
++				<< std::endl;
++		}
++
++		return result;
+ 	}
+ 
+ 	VkResult VKAPI_CALL vkQueuePresentKHR(
+ 		VkQueue queue,
+ 		const VkPresentInfoKHR * pPresentInfo )
+ 	{
+-		return checkedResult( [&]() -> VkResult {
++		auto const result = checkedResult( [&]() -> VkResult {
+ 		return get( queue )->present( *pPresentInfo );
+ 		} );
++
++		bool interesting = result != VK_SUCCESS;
++
++		for ( uint32_t i = 0u; i < pPresentInfo->swapchainCount; ++i )
++		{
++			auto const sc = pPresentInfo->pSwapchains[i];
++			interesting = interesting
++				|| ( pPresentInfo->pResults && pPresentInfo->pResults[i] != VK_SUCCESS )
++				|| ( sc != VK_NULL_HANDLE && get( sc )->getPresentCount() <= 3u );
++		}
++
++		if ( interesting && wsitrace::take( wsitrace::presentLines ) )
++		{
++			std::clog << "RW_HD5500_WSI present t=" << wsitrace::nowMillis()
++				<< " result=" << int32_t( result )
++				<< " swapchains=" << pPresentInfo->swapchainCount
++				<< " waitSemaphores=" << pPresentInfo->waitSemaphoreCount
++				<< " pNext=" << ( pPresentInfo->pNext ? 1 : 0 );
++
++			for ( uint32_t i = 0u; i < pPresentInfo->swapchainCount; ++i )
++			{
++				auto const sc = pPresentInfo->pSwapchains[i];
++				std::clog << " [" << i << "]{handle=" << uint64_t( sc )
++					<< ",image=" << ( pPresentInfo->pImageIndices ? pPresentInfo->pImageIndices[i] : ~0u )
++					<< ",n=" << ( sc != VK_NULL_HANDLE ? get( sc )->getPresentCount() : 0u )
++					<< ",result=" << ( pPresentInfo->pResults ? int32_t( pPresentInfo->pResults[i] ) : 0 )
++					<< "}";
++			}
++
++			std::clog << std::endl;
++		}
++
++		return result;
+ 	}
+ 
+ #endif

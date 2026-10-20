@@ -1,0 +1,402 @@
+AtlasBatchProbe v11 raw Vulkan standalone
+LOADER: Z:\home\ubuntu\rimworld-gpu-d3d11-v11\package\compat-loader\vulkan-1.dll
+ICD: Z:\home\ubuntu\rimworld-gpu-d3d11-v11\package\runtime\ashesD3D11Renderer_icd.json
+CONFIG: atlas=4096x4096 bytes=67108864 tiles=32 multi-region=yes mip-layer=yes clone-secondary=no
+ORIGINAL ATLAS REPRESENTATION: RGBA8_UNORM, usage=TRANSFER_SRC|TRANSFER_DST|SAMPLED (explicitly NO STORAGE).
+WARNING: --allow-non-intel-test is sandbox-only; a non-Intel/software result is NOT HD 5500 validation.
+CALL: vkEnumerateInstanceVersion
+RESULT: vkEnumerateInstanceVersion => VK_SUCCESS (0)
+LOADER MAX API: 1.4.362; application requests 1.0.0
+PORTABILITY: enabling advertised VK_KHR_portability_enumeration.
+CALL: vkCreateInstance(api=1.0)
+RESULT: vkCreateInstance => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(count)
+RESULT: vkEnumeratePhysicalDevices(count) => VK_SUCCESS (0)
+CALL: vkEnumeratePhysicalDevices(list)
+RESULT: vkEnumeratePhysicalDevices(list) => VK_SUCCESS (0)
+ADAPTER[0]: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE type=DISCRETE_GPU
+QUEUE[0]: flags=0xFFFFFFFF count=8
+WARNING: selected non-Intel/software-like adapter; test output is sandbox-only.
+SELECTED: NVIDIA GeForce GTX 470 (d3d11) vendor=0x10DE queueFamily=0
+FORMAT RGBA8 optimalFeatures=0x1FC87 required=0xCC01 (no STORAGE requirement)
+PORTABILITY: enabling advertised VK_KHR_portability_subset.
+CALL: vkCreateDevice(api=1.0 queue)
+[RW-GPU-D3D-INIT] hardwareCreateHr=0x00000000 nativeDebug=0 featureLevel=0xB100
+RESULT: vkCreateDevice => VK_SUCCESS (0)
+CALL: vkGetDeviceQueue(family=0,index=0)
+RESULT: vkGetDeviceQueue => non-null queue
+CALL: vkCreateImage(sampled source (no storage), RGBA8, 11x9 mips=1 layers=1 usage=0x7)
+RESULT: vkCreateImage => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: sampled source (no storage) bytes=396 alignment=4 typeBits=0x00000005 deviceLocalType=0
+CALL: vkAllocateMemory(sampled source (no storage), DEVICE_LOCAL)
+RESULT: vkAllocateMemory(image) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(sampled source (no storage))
+RESULT: vkBindImageMemory => VK_SUCCESS (0)
+CALL: vkCreateImage(ORIGINAL large atlas (no storage), RGBA8, 4096x4096 mips=1 layers=1 usage=0x7)
+RESULT: vkCreateImage => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: ORIGINAL large atlas (no storage) bytes=67108864 alignment=4 typeBits=0x00000005 deviceLocalType=0
+CALL: vkAllocateMemory(ORIGINAL large atlas (no storage), DEVICE_LOCAL)
+RESULT: vkAllocateMemory(image) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(ORIGINAL large atlas (no storage))
+RESULT: vkBindImageMemory => VK_SUCCESS (0)
+CALL: vkCreateImage(separate mip/layer image (no storage), RGBA8, 64x48 mips=2 layers=2 usage=0x7)
+RESULT: vkCreateImage => VK_SUCCESS (0)
+IMAGE_REQUIREMENTS: separate mip/layer image (no storage) bytes=30720 alignment=4 typeBits=0x00000005 deviceLocalType=0
+CALL: vkAllocateMemory(separate mip/layer image (no storage), DEVICE_LOCAL)
+RESULT: vkAllocateMemory(image) => VK_SUCCESS (0)
+CALL: vkBindImageMemory(separate mip/layer image (no storage))
+RESULT: vkBindImageMemory => VK_SUCCESS (0)
+CALL: vkCreateBuffer(full-atlas real upload staging, bytes=67139980 usage=0x1)
+RESULT: vkCreateBuffer => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: full-atlas real upload staging bytes=67140032 alignment=64 typeBits=0x00000005 hostCoherentType=2
+CALL: vkAllocateMemory(full-atlas real upload staging, HOST_VISIBLE|HOST_COHERENT)
+RESULT: vkAllocateMemory(buffer) => VK_SUCCESS (0)
+CALL: vkBindBufferMemory(full-atlas real upload staging)
+RESULT: vkBindBufferMemory => VK_SUCCESS (0)
+CALL: vkCreateBuffer(full-atlas exact readback, bytes=67139980 usage=0x2)
+RESULT: vkCreateBuffer => VK_SUCCESS (0)
+BUFFER_REQUIREMENTS: full-atlas exact readback bytes=67140032 alignment=64 typeBits=0x00000005 hostCoherentType=2
+CALL: vkAllocateMemory(full-atlas exact readback, HOST_VISIBLE|HOST_COHERENT)
+RESULT: vkAllocateMemory(buffer) => VK_SUCCESS (0)
+CALL: vkBindBufferMemory(full-atlas exact readback)
+RESULT: vkBindBufferMemory => VK_SUCCESS (0)
+CALL: vkMapMemory(upload staging full atlas)
+RESULT: vkMapMemory(upload) => VK_SUCCESS (0)
+CALL: vkFlushMappedMemoryRanges(upload staging)
+RESULT: vkFlushMappedMemoryRanges(upload) => VK_SUCCESS (0)
+UPLOAD CONTENT: real full 4096x4096 RGBA8 sentinel upload (67108864 bytes), plus distinctive 11x9 source pixels and 2-mip/2-layer neighbor image.
+CALL: vkCreateCommandPool(batch)
+RESULT: vkCreateCommandPool => VK_SUCCESS (0)
+CALL: vkAllocateCommandBuffers(public worker)
+RESULT: vkAllocateCommandBuffers(worker) => VK_SUCCESS (0)
+BATCH FIRST: recording 32 tiles BEFORE submit; first 3 are one real multi-region call, remaining calls are individual; atlas allocation remains original no-STORAGE representation.
+CALL: vkBeginCommandBuffer(primary worker)
+RESULT: vkBeginCommandBuffer(worker) => VK_SUCCESS (0)
+CALL: vkCmdPipelineBarrier(source UNDEFINED->TRANSFER_DST)
+RESULT: vkCmdPipelineBarrier(source UNDEFINED->TRANSFER_DST) => recorded
+CALL: vkCmdPipelineBarrier(original atlas UNDEFINED->TRANSFER_DST)
+RESULT: vkCmdPipelineBarrier(original atlas UNDEFINED->TRANSFER_DST) => recorded
+CALL: vkCmdCopyBufferToImage(real full atlas sentinel upload)
+RESULT: vkCmdCopyBufferToImage(full atlas) => recorded
+CALL: vkCmdCopyBufferToImage(distinctive 11x9 source upload)
+RESULT: vkCmdCopyBufferToImage(source) => recorded
+CALL: vkCmdPipelineBarrier(source TRANSFER_DST->TRANSFER_SRC)
+RESULT: vkCmdPipelineBarrier(source TRANSFER_DST->TRANSFER_SRC) => recorded
+CALL: vkCmdPipelineBarrier(atlas upload write->blit writes)
+RESULT: vkCmdPipelineBarrier(atlas upload write->blit writes) => recorded
+CALL: vkCmdBlitImage(MULTI_REGION same original atlas destination, 3 disjoint nonzero/corner regions, NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=1 id=1 atlas=4096x4096x1 scratch=4094x4094x1 bbox=1,1 mip=0 layers=0+1 payloadBytes=67043344 liveBytes=67043344 peakBytes=67043344 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(MULTI_REGION) => recorded; validates local coordinates rather than destination bounding box.
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(4080,4084 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=2 id=2 atlas=4096x4096x1 scratch=15x11x1 bbox=4080,4084 mip=0 layers=0+1 payloadBytes=660 liveBytes=67044004 peakBytes=67044004 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(32,32 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=3 id=3 atlas=4096x4096x1 scratch=13x9x1 bbox=32,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=67044472 peakBytes=67044472 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(605,32 15x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=4 id=4 atlas=4096x4096x1 scratch=15x9x1 bbox=605,32 mip=0 layers=0+1 payloadBytes=540 liveBytes=67045012 peakBytes=67045012 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1180,32 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=5 id=5 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=67045584 peakBytes=67045584 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1753,32 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=6 id=6 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,32 mip=0 layers=0+1 payloadBytes=660 liveBytes=67046244 peakBytes=67046244 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(2328,32 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=7 id=7 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=67046712 peakBytes=67046712 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(2901,32 15x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=8 id=8 atlas=4096x4096x1 scratch=15x9x1 bbox=2901,32 mip=0 layers=0+1 payloadBytes=540 liveBytes=67047252 peakBytes=67047252 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(3476,32 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=9 id=9 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=67047824 peakBytes=67047824 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(4049,32 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=10 id=10 atlas=4096x4096x1 scratch=15x11x1 bbox=4049,32 mip=0 layers=0+1 payloadBytes=660 liveBytes=67048484 peakBytes=67048484 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(32,606 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=11 id=11 atlas=4096x4096x1 scratch=13x9x1 bbox=32,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=67048952 peakBytes=67048952 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(605,606 15x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=12 id=12 atlas=4096x4096x1 scratch=15x9x1 bbox=605,606 mip=0 layers=0+1 payloadBytes=540 liveBytes=67049492 peakBytes=67049492 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1180,606 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=13 id=13 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=67050064 peakBytes=67050064 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1753,606 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=14 id=14 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,606 mip=0 layers=0+1 payloadBytes=660 liveBytes=67050724 peakBytes=67050724 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(2328,606 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=15 id=15 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=67051192 peakBytes=67051192 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(2901,606 15x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=16 id=16 atlas=4096x4096x1 scratch=15x9x1 bbox=2901,606 mip=0 layers=0+1 payloadBytes=540 liveBytes=67051732 peakBytes=67051732 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(3476,606 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=17 id=17 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=67052304 peakBytes=67052304 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(4049,606 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=18 id=18 atlas=4096x4096x1 scratch=15x11x1 bbox=4049,606 mip=0 layers=0+1 payloadBytes=660 liveBytes=67052964 peakBytes=67052964 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(32,1181 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=19 id=19 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=67053432 peakBytes=67053432 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(605,1181 15x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=20 id=20 atlas=4096x4096x1 scratch=15x9x1 bbox=605,1181 mip=0 layers=0+1 payloadBytes=540 liveBytes=67053972 peakBytes=67053972 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1180,1180 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=21 id=21 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=67054544 peakBytes=67054544 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1753,1180 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=22 id=22 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,1180 mip=0 layers=0+1 payloadBytes=660 liveBytes=67055204 peakBytes=67055204 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(2328,1181 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=23 id=23 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=67055672 peakBytes=67055672 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(2901,1181 15x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=24 id=24 atlas=4096x4096x1 scratch=15x9x1 bbox=2901,1181 mip=0 layers=0+1 payloadBytes=540 liveBytes=67056212 peakBytes=67056212 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(3476,1180 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=25 id=25 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=67056784 peakBytes=67056784 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(4049,1180 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=26 id=26 atlas=4096x4096x1 scratch=15x11x1 bbox=4049,1180 mip=0 layers=0+1 payloadBytes=660 liveBytes=67057444 peakBytes=67057444 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(32,1756 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=27 id=27 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1756 mip=0 layers=0+1 payloadBytes=468 liveBytes=67057912 peakBytes=67057912 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(605,1756 15x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=28 id=28 atlas=4096x4096x1 scratch=15x9x1 bbox=605,1756 mip=0 layers=0+1 payloadBytes=540 liveBytes=67058452 peakBytes=67058452 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1180,1755 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=29 id=29 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1755 mip=0 layers=0+1 payloadBytes=572 liveBytes=67059024 peakBytes=67059024 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdBlitImage(batch individual src=(1,1 9x7) dst=(1753,1755 15x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=30 id=30 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,1755 mip=0 layers=0+1 payloadBytes=660 liveBytes=67059684 peakBytes=67059684 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(batch individual) => recorded
+CALL: vkCmdPipelineBarrier(mip-layer image UNDEFINED->TRANSFER_DST)
+RESULT: vkCmdPipelineBarrier(mip-layer image UNDEFINED->TRANSFER_DST) => recorded
+CALL: vkCmdCopyBufferToImage(mip-layer all 4 selected/neighbor subresources)
+RESULT: vkCmdCopyBufferToImage(mip-layer) => recorded
+CALL: vkCmdPipelineBarrier(mip-layer upload write->blit writes)
+RESULT: vkCmdPipelineBarrier(mip-layer upload write->blit writes) => recorded
+CALL: vkCmdBlitImage(mip=1 layer=1 nonzero origin src=(1,1 9x7) dst=(5,4 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=31 id=31 atlas=64x48x1 scratch=13x11x1 bbox=5,4 mip=1 layers=1+1 payloadBytes=572 liveBytes=67060256 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(mip=1 layer=1 nonzero origin) => recorded
+CALL: vkCmdPipelineBarrier(mip-layer all subresources TRANSFER_DST->TRANSFER_SRC)
+RESULT: vkCmdPipelineBarrier(mip-layer all subresources TRANSFER_DST->TRANSFER_SRC) => recorded
+CALL: vkCmdCopyImageToBuffer(mip-layer selected mip/layer plus all neighbors)
+RESULT: vkCmdCopyImageToBuffer(mip-layer all) => recorded
+CALL: vkCmdPipelineBarrier(mip-layer readback TRANSFER_WRITE->HOST_READ)
+RESULT: vkCmdPipelineBarrier(mip-layer readback TRANSFER_WRITE->HOST_READ) => recorded
+CALL: vkCmdPipelineBarrier(atlas blits TRANSFER_DST->TRANSFER_SRC)
+RESULT: vkCmdPipelineBarrier(atlas blits TRANSFER_DST->TRANSFER_SRC) => recorded
+CALL: vkCmdCopyImageToBuffer(first atlas exact readback, complete 4096x4096 atlas)
+RESULT: vkCmdCopyImageToBuffer(first atlas exact readback) => recorded
+CALL: vkCmdPipelineBarrier(first atlas readback TRANSFER_WRITE->HOST_READ)
+RESULT: vkCmdPipelineBarrier(first atlas readback TRANSFER_WRITE->HOST_READ) => recorded
+CALL: vkEndCommandBuffer(worker)
+RESULT: vkEndCommandBuffer(worker) => VK_SUCCESS (0)
+CALL: vkCreateFence(batch)
+RESULT: vkCreateFence => VK_SUCCESS (0)
+CALL: vkQueueSubmit(batch)
+[RW-GPU-MAP] fallback #1 dim=3 sub=0 requestedMap=3 usage=0 cpu=0x0 bind=0x20 misc=0x0 format=27 bytes=0 size=64x48x1 mips=2 array=1 samples=1:0
+[RW-GPU-MAP] fallback #2 dim=3 sub=1 requestedMap=3 usage=0 cpu=0x0 bind=0x20 misc=0x0 format=27 bytes=0 size=64x48x1 mips=2 array=1 samples=1:0
+[RW-GPU-MAP] fallback #3 dim=3 sub=0 requestedMap=3 usage=0 cpu=0x0 bind=0x20 misc=0x0 format=27 bytes=0 size=64x48x1 mips=2 array=1 samples=1:0
+[RW-GPU-MAP] fallback #4 dim=3 sub=1 requestedMap=3 usage=0 cpu=0x0 bind=0x20 misc=0x0 format=27 bytes=0 size=64x48x1 mips=2 array=1 samples=1:0
+RESULT: vkQueueSubmit => VK_SUCCESS (0)
+CALL: vkWaitForFences(batch,30s)
+RESULT: vkWaitForFences => VK_SUCCESS (0)
+CALL: vkMapMemory(readback complete atlas FIRST)
+RESULT: vkMapMemory(readback) => VK_SUCCESS (0)
+CALL: vkInvalidateMappedMemoryRanges(readback FIRST)
+RESULT: vkInvalidateMappedMemoryRanges(readback) => VK_SUCCESS (0)
+ATLAS_FIRST_FULL_PIXEL_CHECK: PASS
+CALL: vkMapMemory(readback mip/layer)
+RESULT: vkMapMemory(mip-layer readback) => VK_SUCCESS (0)
+CALL: vkInvalidateMappedMemoryRanges(mip/layer readback)
+RESULT: vkInvalidateMappedMemoryRanges(mip-layer) => VK_SUCCESS (0)
+ATLAS_MIP_LAYER_FULL_PIXEL_CHECK: PASS
+[ATLAS-BATCH-TIMING] batch=first tiles=32 recordMs=112.039 submitWaitMs=476.404 verifyMs=685.415 totalMs=1273.858 diagnosticOnly=yes
+CALL: vkResetCommandPool(after first fence, public command buffers retained)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=1 atlas=4096x4096x1 scratch=4094x4094x1 bbox=1,1 mip=0 layers=0+1 payloadBytes=67043344 liveBytes=16912 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=2 atlas=4096x4096x1 scratch=15x11x1 bbox=4080,4084 mip=0 layers=0+1 payloadBytes=660 liveBytes=16252 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=3 atlas=4096x4096x1 scratch=13x9x1 bbox=32,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=15784 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=4 atlas=4096x4096x1 scratch=15x9x1 bbox=605,32 mip=0 layers=0+1 payloadBytes=540 liveBytes=15244 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=5 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=14672 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=6 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,32 mip=0 layers=0+1 payloadBytes=660 liveBytes=14012 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=7 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=13544 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=8 atlas=4096x4096x1 scratch=15x9x1 bbox=2901,32 mip=0 layers=0+1 payloadBytes=540 liveBytes=13004 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=9 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=12432 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=10 atlas=4096x4096x1 scratch=15x11x1 bbox=4049,32 mip=0 layers=0+1 payloadBytes=660 liveBytes=11772 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=11 atlas=4096x4096x1 scratch=13x9x1 bbox=32,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=11304 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=12 atlas=4096x4096x1 scratch=15x9x1 bbox=605,606 mip=0 layers=0+1 payloadBytes=540 liveBytes=10764 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=13 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=10192 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=14 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,606 mip=0 layers=0+1 payloadBytes=660 liveBytes=9532 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=15 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=9064 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=16 atlas=4096x4096x1 scratch=15x9x1 bbox=2901,606 mip=0 layers=0+1 payloadBytes=540 liveBytes=8524 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=17 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=7952 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=18 atlas=4096x4096x1 scratch=15x11x1 bbox=4049,606 mip=0 layers=0+1 payloadBytes=660 liveBytes=7292 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=19 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=6824 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=20 atlas=4096x4096x1 scratch=15x9x1 bbox=605,1181 mip=0 layers=0+1 payloadBytes=540 liveBytes=6284 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=21 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=5712 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=22 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,1180 mip=0 layers=0+1 payloadBytes=660 liveBytes=5052 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=23 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=4584 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=24 atlas=4096x4096x1 scratch=15x9x1 bbox=2901,1181 mip=0 layers=0+1 payloadBytes=540 liveBytes=4044 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=25 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=3472 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=26 atlas=4096x4096x1 scratch=15x11x1 bbox=4049,1180 mip=0 layers=0+1 payloadBytes=660 liveBytes=2812 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=27 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1756 mip=0 layers=0+1 payloadBytes=468 liveBytes=2344 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=28 atlas=4096x4096x1 scratch=15x9x1 bbox=605,1756 mip=0 layers=0+1 payloadBytes=540 liveBytes=1804 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=29 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1755 mip=0 layers=0+1 payloadBytes=572 liveBytes=1232 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=30 atlas=4096x4096x1 scratch=15x11x1 bbox=1753,1755 mip=0 layers=0+1 payloadBytes=660 liveBytes=572 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=31 id=31 atlas=64x48x1 scratch=13x11x1 bbox=5,4 mip=1 layers=1+1 payloadBytes=572 liveBytes=0 peakBytes=67060256 mode=compact reason=common-mip-bbox stage=final-release-zero
+RESULT: vkResetCommandPool => VK_SUCCESS (0)
+ATLAS_POOL_RESET_REUSE: PASS
+BATCH SECOND: reusing command pool and retained public command-buffer handle after first fence.
+CALL: vkBeginCommandBuffer(primary worker)
+RESULT: vkBeginCommandBuffer(worker) => VK_SUCCESS (0)
+CALL: vkCmdPipelineBarrier(second batch atlas TRANSFER_SRC->TRANSFER_DST)
+RESULT: vkCmdPipelineBarrier(second batch atlas TRANSFER_SRC->TRANSFER_DST) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(1,1 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=32 id=32 atlas=4096x4096x1 scratch=13x9x1 bbox=1,1 mip=0 layers=0+1 payloadBytes=468 liveBytes=468 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(1,4084 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=33 id=33 atlas=4096x4096x1 scratch=13x11x1 bbox=1,4084 mip=0 layers=0+1 payloadBytes=572 liveBytes=1040 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(32,32 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=34 id=34 atlas=4096x4096x1 scratch=13x9x1 bbox=32,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=1508 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(1180,32 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=35 id=35 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=2080 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(2328,32 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=36 id=36 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=2548 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(3476,32 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=37 id=37 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=3120 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(32,606 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=38 id=38 atlas=4096x4096x1 scratch=13x9x1 bbox=32,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=3588 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(1180,606 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=39 id=39 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=4160 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(2328,606 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=40 id=40 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=4628 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(3476,606 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=41 id=41 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=5200 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(32,1181 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=42 id=42 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=5668 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(1180,1180 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=43 id=43 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=6240 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(2328,1181 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=44 id=44 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=6708 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(3476,1180 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=45 id=45 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=7280 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(32,1756 13x9) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=46 id=46 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1756 mip=0 layers=0+1 payloadBytes=468 liveBytes=7748 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+CALL: vkCmdBlitImage(second-batch update src=(0,0 9x7) dst=(1180,1755 13x11) NEAREST)
+[RW-GPU-BLIT-SCRATCH] event=alloc allocationCount=47 id=47 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1755 mip=0 layers=0+1 payloadBytes=572 liveBytes=8320 peakBytes=67060256 mode=compact reason=common-mip-bbox
+RESULT: vkCmdBlitImage(second-batch update) => recorded
+BATCH SECOND: recorded 16 real individual update blits; all other first-batch tiles must remain unchanged.
+CALL: vkCmdPipelineBarrier(second batch atlas TRANSFER_DST->TRANSFER_SRC)
+RESULT: vkCmdPipelineBarrier(second batch atlas TRANSFER_DST->TRANSFER_SRC) => recorded
+CALL: vkCmdCopyImageToBuffer(second atlas exact readback, complete 4096x4096 atlas)
+RESULT: vkCmdCopyImageToBuffer(second atlas exact readback) => recorded
+CALL: vkCmdPipelineBarrier(second atlas readback TRANSFER_WRITE->HOST_READ)
+RESULT: vkCmdPipelineBarrier(second atlas readback TRANSFER_WRITE->HOST_READ) => recorded
+CALL: vkEndCommandBuffer(worker)
+RESULT: vkEndCommandBuffer(worker) => VK_SUCCESS (0)
+CALL: vkCreateFence(batch)
+RESULT: vkCreateFence => VK_SUCCESS (0)
+CALL: vkQueueSubmit(batch)
+RESULT: vkQueueSubmit => VK_SUCCESS (0)
+CALL: vkWaitForFences(batch,30s)
+RESULT: vkWaitForFences => VK_SUCCESS (0)
+CALL: vkMapMemory(readback complete atlas SECOND)
+RESULT: vkMapMemory(readback) => VK_SUCCESS (0)
+CALL: vkInvalidateMappedMemoryRanges(readback SECOND)
+RESULT: vkInvalidateMappedMemoryRanges(readback) => VK_SUCCESS (0)
+ATLAS_SECOND_FULL_PIXEL_CHECK: PASS
+[ATLAS-BATCH-TIMING] batch=second tiles=32 recordMs=0.765 submitWaitMs=183.293 verifyMs=596.423 totalMs=780.481 diagnosticOnly=yes
+CALL: vkDeviceWaitIdle(cleanup)
+RESULT: vkDeviceWaitIdle(cleanup) => VK_SUCCESS (0)
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=32 atlas=4096x4096x1 scratch=13x9x1 bbox=1,1 mip=0 layers=0+1 payloadBytes=468 liveBytes=7852 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=33 atlas=4096x4096x1 scratch=13x11x1 bbox=1,4084 mip=0 layers=0+1 payloadBytes=572 liveBytes=7280 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=34 atlas=4096x4096x1 scratch=13x9x1 bbox=32,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=6812 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=35 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=6240 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=36 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,32 mip=0 layers=0+1 payloadBytes=468 liveBytes=5772 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=37 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,32 mip=0 layers=0+1 payloadBytes=572 liveBytes=5200 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=38 atlas=4096x4096x1 scratch=13x9x1 bbox=32,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=4732 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=39 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=4160 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=40 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,606 mip=0 layers=0+1 payloadBytes=468 liveBytes=3692 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=41 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,606 mip=0 layers=0+1 payloadBytes=572 liveBytes=3120 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=42 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=2652 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=43 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=2080 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=44 atlas=4096x4096x1 scratch=13x9x1 bbox=2328,1181 mip=0 layers=0+1 payloadBytes=468 liveBytes=1612 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=45 atlas=4096x4096x1 scratch=13x11x1 bbox=3476,1180 mip=0 layers=0+1 payloadBytes=572 liveBytes=1040 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=46 atlas=4096x4096x1 scratch=13x9x1 bbox=32,1756 mip=0 layers=0+1 payloadBytes=468 liveBytes=572 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-GPU-BLIT-SCRATCH] event=release allocationCount=47 id=47 atlas=4096x4096x1 scratch=13x11x1 bbox=1180,1755 mip=0 layers=0+1 payloadBytes=572 liveBytes=0 peakBytes=67060256 mode=compact reason=common-mip-bbox
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+[RW-HD5500-IMAGE-LIFETIME] IMAGE_RESOURCE_RELEASE
+FINAL: ATLAS BATCH PASS
+X connection to :99 broken (explicit kill or server shutdown).
+X connection to :99 broken (explicit kill or server shutdown).

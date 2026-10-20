@@ -1,0 +1,1603 @@
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.cpp v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.cpp	2026-10-17 14:30:26.882486992 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.cpp	2026-10-17 14:30:26.811467962 +0000
+@@ -14,6 +14,8 @@
+ 
+ #include "ashesd3d11_api.hpp"
+ 
++#include <limits>
++
+ namespace ashes::D3D11_NAMESPACE
+ {
+ 	namespace binddesc
+@@ -786,13 +788,54 @@
+ 			}
+ 		}
+ 
++		static void getDynamicUniformBufferRange( VkDescriptorBufferInfo const & info
++			, uint32_t dynamicOffset
++			, UINT & firstConstant
++			, UINT & constantCount )
++		{
++			auto const bufferSize = get( info.buffer )->getSize();
++
++			if ( info.offset > bufferSize
++				|| VkDeviceSize( dynamicOffset ) > bufferSize - info.offset )
++			{
++				throw ashes::BaseException{ "Dynamic uniform buffer offset exceeds the buffer" };
++			}
++
++			auto const offset = info.offset + VkDeviceSize( dynamicOffset );
++			auto const available = bufferSize - offset;
++			auto const range = info.range == VK_WHOLE_SIZE
++				? available
++				: info.range;
++
++			if ( range == 0u
++				|| range > available
++				|| ( offset % 256u ) != 0u )
++			{
++				throw ashes::BaseException{ "Invalid dynamic uniform buffer range" };
++			}
++
++			auto const alignedRange = ashes::getAlignedSize( range, 256ULL );
++
++			if ( offset / 16u > std::numeric_limits< UINT >::max()
++				|| alignedRange / 16u > std::numeric_limits< UINT >::max() )
++			{
++				throw ashes::BaseException{ "Dynamic uniform buffer range exceeds D3D11 limits" };
++			}
++
++			firstConstant = UINT( offset / 16u );
++			constantCount = UINT( alignedRange / 16u );
++		}
++
+ 		template< bool Supports11_1 >
+ 		static void bindDynamicUniformBuffer( Context & context
+ 			, LayoutBindingWrites const & writeBinding
+ 			, ShaderBindingMap const & bindings
+ 			, uint32_t setIndex
+-			, uint32_t offset )
++			, UInt32Array const & offsets
++			, size_t offsetIndex )
+ 		{
++			assert( offsetIndex + writeBinding.binding.descriptorCount <= offsets.size() );
++
+ 			for ( auto & write : writeBinding.writes )
+ 			{
+ 				auto flags = writeBinding.binding.stageFlags;
+@@ -803,15 +846,18 @@
+ 				for ( auto i = 0u; i < write.descriptorCount; ++i )
+ 				{
+ 					uint32_t bindingIndex = dstBinding + write.dstArrayElement + i;
+-					auto buffer = getBuffer( write, i );
+-					auto range = std::min( write.pBufferInfo[i].range
+-						, get( write.pBufferInfo[i].buffer )->getSize() );
++					UINT firstConstant{};
++					UINT constantCount{};
++					getDynamicUniformBufferRange( write.pBufferInfo[i]
++						, offsets[offsetIndex + write.dstArrayElement + i]
++						, firstConstant
++						, constantCount );
+ 					tryBind< Supports11_1 >( context
+ 						, bindingIndex
+ 						, flags
+-						, buffer
+-						, UINT( ( offset + write.pBufferInfo[i].offset ) / 16 )
+-						, UINT( ashes::getAlignedSize( range, 256ULL ) / 16ULL ) );
++						, getBuffer( write, i )
++						, firstConstant
++						, constantCount );
+ 				}
+ 			}
+ 		}
+@@ -896,7 +942,8 @@
+ 			, LayoutBindingWrites const & writeBinding
+ 			, ShaderBindingMap const & bindings
+ 			, uint32_t setIndex
+-			, uint32_t /*offset*/ )
++			, UInt32Array const & /*offsets*/
++			, size_t /*offsetIndex*/ )
+ 		{
+ 			for ( auto & write : writeBinding.writes )
+ 			{
+@@ -924,26 +971,32 @@
+ 			, uint32_t setIndex
+ 			, UInt32Array const & offsets )
+ 		{
+-			for ( auto i = 0u; i < offsets.size(); ++i )
++			size_t offsetIndex{};
++
++			for ( auto const * write : writes )
+ 			{
+-				auto & writeBinding = *writes[i];
++				auto const & writeBinding = *write;
++				assert( offsetIndex + writeBinding.binding.descriptorCount <= offsets.size() );
+ 
+ 				switch ( writeBinding.binding.descriptorType )
+ 				{
+ 				case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC:
+-					bindDynamicUniformBuffer< Supports11_1 >( context, writeBinding, bindings.ubo, setIndex, offsets[i] );
++					bindDynamicUniformBuffer< Supports11_1 >( context, writeBinding, bindings.ubo, setIndex, offsets, offsetIndex );
+ 					break;
+ 
+ 				case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC:
+-					bindDynamicStorageBuffer< Supports11_1 >( context, writeBinding, bindings.sbo, setIndex, offsets[i] );
++					bindDynamicStorageBuffer< Supports11_1 >( context, writeBinding, bindings.sbo, setIndex, offsets, offsetIndex );
+ 					break;
+ 
+ 				default:
+ 					assert( false && "Unsupported dynamic descriptor type" );
+ 					throw ashes::BaseException{ "Unsupported dynamic descriptor type" };
+-					break;
+ 				}
++
++				offsetIndex += writeBinding.binding.descriptorCount;
+ 			}
++
++			assert( offsetIndex == offsets.size() );
+ 		}
+ 
+ 		template< VkShaderStageFlagBits Flag, typename ... Params >
+@@ -1035,7 +1088,8 @@
+ 			, ShaderBindingMap const & bindings
+ 			, uint32_t setIndex
+ 			, std::map< UINT, ID3D11UnorderedAccessView * > & uavs
+-			, uint32_t /*offset*/ )
++			, UInt32Array const & /*offsets*/
++			, size_t /*offsetIndex*/ )
+ 		{
+ 			for ( auto & write : writeBinding.writes )
+ 			{
+@@ -1062,26 +1116,37 @@
+ 			, std::map< UINT, ID3D11UnorderedAccessView * > & uavs
+ 			, UInt32Array const & offsets )
+ 		{
+-			for ( auto i = 0u; i < offsets.size(); ++i )
++			size_t offsetIndex{};
++
++			for ( auto const * write : writes )
+ 			{
+-				auto const & writeBinding = *writes[i];
++				auto const & writeBinding = *write;
++				assert( offsetIndex + writeBinding.binding.descriptorCount <= offsets.size() );
+ 
+ 				switch ( writeBinding.binding.descriptorType )
+ 				{
++				case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC:
++					// Uniform buffers do not contribute an output UAV.
++					break;
++
+ 				case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC:
+ 					gatherDynamicStorageBuffer( writeBinding
+ 						, bindings.sbo
+ 						, setIndex
+ 						, uavs
+-						, offsets[i] );
++						, offsets
++						, offsetIndex );
+ 					break;
+ 
+ 				default:
+ 					assert( false && "Unsupported dynamic descriptor type" );
+ 					throw ashes::BaseException{ "Unsupported dynamic descriptor type" };
+-					break;
+ 				}
++
++				offsetIndex += writeBinding.binding.descriptorCount;
+ 			}
++
++			assert( offsetIndex == offsets.size() );
+ 		}
+ 
+ 		template< bool Supports11_1 >
+@@ -1239,8 +1304,11 @@
+ 			, LayoutBindingWrites const & writeBinding
+ 			, ShaderBindingMap const & bindings
+ 			, uint32_t setIndex
+-			, uint32_t offset )
++			, UInt32Array const & offsets
++			, size_t offsetIndex )
+ 		{
++			assert( offsetIndex + writeBinding.binding.descriptorCount <= offsets.size() );
++
+ 			for ( auto & write : writeBinding.writes )
+ 			{
+ 				auto flags = writeBinding.binding.stageFlags;
+@@ -1251,14 +1319,18 @@
+ 				for ( auto i = 0u; i < write.descriptorCount; ++i )
+ 				{
+ 					uint32_t bindingIndex = dstBinding + write.dstArrayElement + i;
+-					auto range = std::min( write.pBufferInfo[i].range
+-						, get( write.pBufferInfo[i].buffer )->getSize() );
++					UINT firstConstant{};
++					UINT constantCount{};
++					getDynamicUniformBufferRange( write.pBufferInfo[i]
++						, offsets[offsetIndex + write.dstArrayElement + i]
++						, firstConstant
++						, constantCount );
+ 					tryBind< Supports11_1 >( context
+ 						, bindingIndex
+ 						, flags
+ 						, ( ID3D11Buffer * )nullptr
+-						, UINT( ( offset + write.pBufferInfo[i].offset ) / 16 )
+-						, UINT( ashes::getAlignedSize( range, 256ULL ) / 16ULL ) );
++						, firstConstant
++						, constantCount );
+ 				}
+ 			}
+ 		}
+@@ -1340,7 +1412,8 @@
+ 			, LayoutBindingWrites const & writeBinding
+ 			, ShaderBindingMap const & bindings
+ 			, uint32_t setIndex
+-			, uint32_t /*offset*/ )
++			, UInt32Array const & /*offsets*/
++			, size_t /*offsetIndex*/ )
+ 		{
+ 			for ( auto & write : writeBinding.writes )
+ 			{
+@@ -1367,37 +1440,43 @@
+ 			, uint32_t setIndex
+ 			, UInt32Array const & offsets )
+ 		{
+-			for ( auto i = 0u; i < offsets.size(); ++i )
++			size_t offsetIndex{};
++
++			for ( auto const * write : writes )
+ 			{
+-				auto & writeBinding = *writes[i];
++				auto const & writeBinding = *write;
++				assert( offsetIndex + writeBinding.binding.descriptorCount <= offsets.size() );
+ 
+ 				switch ( writeBinding.binding.descriptorType )
+ 				{
+ 				case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC:
+-					unbindDynamicUniformBuffer< Supports11_1 >( context, writeBinding, bindings.ubo, setIndex, offsets[i] );
++					unbindDynamicUniformBuffer< Supports11_1 >( context, writeBinding, bindings.ubo, setIndex, offsets, offsetIndex );
+ 					break;
+ 
+ 				case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC:
+-					unbindDynamicStorageBuffer< Supports11_1 >( context, writeBinding, bindings.tbo, setIndex, offsets[i] );
++					unbindDynamicStorageBuffer< Supports11_1 >( context, writeBinding, bindings.sbo, setIndex, offsets, offsetIndex );
+ 					break;
+ 
+ 				default:
+ 					assert( false && "Unsupported dynamic descriptor type" );
+ 					throw ashes::BaseException{ "Unsupported dynamic descriptor type" };
+-					break;
+ 				}
++
++				offsetIndex += writeBinding.binding.descriptorCount;
+ 			}
++
++			assert( offsetIndex == offsets.size() );
+ 		}
+ 
+ 		template< bool Supports11_1 >
+ 		static void bindAll( Context & context
+ 			, VkPipelineLayout pipelineLayout
+ 			, VkDescriptorSet descriptorSet
++			, uint32_t setIndex
+ 			, UInt32Array const & dynamicOffsets )
+ 		{
+ 			auto d3dDescriptorSet = get( descriptorSet );
+ 			auto & bindings = get( pipelineLayout )->getShaderBindings();
+-			auto setIndex = get( pipelineLayout )->getDescriptorSetIndex( descriptorSet );
+ 
+ 			for ( auto & write : d3dDescriptorSet->getInputAttachments() )
+ 			{
+@@ -1456,11 +1535,11 @@
+ 		static void unbindAll( Context & context
+ 			, VkPipelineLayout pipelineLayout
+ 			, VkDescriptorSet descriptorSet
++			, uint32_t setIndex
+ 			, UInt32Array const & dynamicOffsets )
+ 		{
+ 			auto d3dDescriptorSet = get( descriptorSet );
+ 			auto & bindings = get( pipelineLayout )->getShaderBindings();
+-			auto setIndex = get( pipelineLayout )->getDescriptorSetIndex( descriptorSet );
+ 
+ 			for ( auto & write : d3dDescriptorSet->getInputAttachments() )
+ 			{
+@@ -1517,11 +1596,11 @@
+ 
+ 		static std::map< UINT, ID3D11UnorderedAccessView * > gatherUavs( VkDescriptorSet descriptorSet
+ 			, VkPipelineLayout pipelineLayout
++			, uint32_t setIndex
+ 			, UInt32Array const & dynamicOffsets )
+ 		{
+ 			auto d3dDescriptorSet = get( descriptorSet );
+ 			auto & bindings = get( pipelineLayout )->getShaderBindings();
+-			auto setIndex = get( pipelineLayout )->getDescriptorSetIndex( descriptorSet );
+ 			std::map< UINT, ID3D11UnorderedAccessView * > result;
+ 
+ 			for ( auto & write : d3dDescriptorSet->getStorageBuffers() )
+@@ -1542,28 +1621,30 @@
+ 	BindDescriptorSetCommand::BindDescriptorSetCommand( VkDevice context
+ 		, VkDescriptorSet descriptorSet
+ 		, VkPipelineLayout layout
++		, uint32_t setIndex
+ 		, ArrayView< uint32_t const > const & dynamicOffsets
+ 		, VkPipelineBindPoint bindingPoint )
+ 		: CommandBase{ context }
+ 		, m_descriptorSet{ descriptorSet }
+ 		, m_layout{ layout }
++		, m_setIndex{ setIndex }
+ 		, m_bindingPoint{ bindingPoint }
+ 		, m_dynamicOffsets{ dynamicOffsets.begin(), dynamicOffsets.end() }
+-		, m_uavs{ binddesc::gatherUavs( m_descriptorSet, m_layout, m_dynamicOffsets ) }
++		, m_uavs{ binddesc::gatherUavs( m_descriptorSet, m_layout, m_setIndex, m_dynamicOffsets ) }
+ 	{
+-		assert( get( m_descriptorSet )->getDynamicBuffers().size() == m_dynamicOffsets.size()
+-			&& "Dynamic descriptors and dynamic offsets sizes must match." );
++		assert( get( m_descriptorSet )->getDynamicOffsetCount() == m_dynamicOffsets.size()
++			&& "Dynamic descriptor array elements and dynamic offsets sizes must match." );
+ 	}
+ 
+ 	void BindDescriptorSetCommand::apply( Context & context )const
+ 	{
+ 		if ( context.featureLevel >= D3D_FEATURE_LEVEL_11_1 )
+ 		{
+-			binddesc::bindAll< true >( context, m_layout, m_descriptorSet, m_dynamicOffsets );
++			binddesc::bindAll< true >( context, m_layout, m_descriptorSet, m_setIndex, m_dynamicOffsets );
+ 		}
+ 		else
+ 		{
+-			binddesc::bindAll< false >( context, m_layout, m_descriptorSet, m_dynamicOffsets );
++			binddesc::bindAll< false >( context, m_layout, m_descriptorSet, m_setIndex, m_dynamicOffsets );
+ 		}
+ 
+ 		std::map< UINT, ID3D11UnorderedAccessView * > newUavs = context.uavs;
+@@ -1601,11 +1682,11 @@
+ 	{
+ 		if ( context.featureLevel >= D3D_FEATURE_LEVEL_11_1 )
+ 		{
+-			binddesc::unbindAll< true >( const_cast< Context & >( context ), m_layout, m_descriptorSet, m_dynamicOffsets );
++			binddesc::unbindAll< true >( const_cast< Context & >( context ), m_layout, m_descriptorSet, m_setIndex, m_dynamicOffsets );
+ 		}
+ 		else
+ 		{
+-			binddesc::unbindAll< false >( const_cast< Context & >( context ), m_layout, m_descriptorSet, m_dynamicOffsets );
++			binddesc::unbindAll< false >( const_cast< Context & >( context ), m_layout, m_descriptorSet, m_setIndex, m_dynamicOffsets );
+ 		}
+ 	}
+ 
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.hpp v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.hpp
+--- v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.hpp	2026-10-17 14:30:26.882528893 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11BindDescriptorSetCommand.hpp	2026-10-17 14:30:26.811523552 +0000
+@@ -29,6 +29,7 @@
+ 		BindDescriptorSetCommand( VkDevice device
+ 			, VkDescriptorSet descriptorSet
+ 			, VkPipelineLayout layout
++			, uint32_t setIndex
+ 			, ArrayView< uint32_t const > const & dynamicOffsets
+ 			, VkPipelineBindPoint bindingPoint );
+ 
+@@ -40,6 +41,7 @@
+ 	private:
+ 		VkDescriptorSet m_descriptorSet;
+ 		VkPipelineLayout m_layout;
++		uint32_t m_setIndex{};
+ 		VkPipelineBindPoint m_bindingPoint;
+ 		UInt32Array m_dynamicOffsets;
+ 		std::map< UINT, ID3D11UnorderedAccessView * > m_uavs;
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11DrawIndexedCommand.cpp v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11DrawIndexedCommand.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11DrawIndexedCommand.cpp	2026-10-13 07:30:41.000000000 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11DrawIndexedCommand.cpp	2026-10-17 14:30:26.811820900 +0000
+@@ -3,6 +3,9 @@
+ See LICENSE file in root folder.
+ */
+ #include "Command/Commands/D3D11DrawIndexedCommand.hpp"
++#include <atomic>
++#include <cstdlib>
++#include <iostream>
+ 
+ namespace ashes::D3D11_NAMESPACE
+ {
+@@ -47,6 +50,22 @@
+ 
+ 	void DrawIndexedCommand::apply( Context & context )const
+ 	{
++		auto trace = std::getenv( "RW_HD5500_UI_TRACE" );
++		if ( trace && trace[0] == '1' )
++		{
++			static std::atomic< uint64_t > drawCount{ 0u };
++			auto serial = ++drawCount;
++			if ( serial <= 32u || ( serial & ( serial - 1u ) ) == 0u )
++			{
++				ID3D11Buffer * ibo{}; DXGI_FORMAT format{}; UINT offset{};
++				context.context->IAGetIndexBuffer( &ibo, &format, &offset );
++				std::cerr << "[RW-GPU-UI-DRAW] serial=" << serial << " indexed=1 indices=" << m_indexCount
++					<< " instances=" << m_instCount << " firstIndex=" << m_firstIndex
++					<< " vertexOffset=" << INT( m_vertexOffset ) << " ibo=" << ibo
++					<< " iboOffset=" << offset << " iboFormat=" << int( format ) << std::endl;
++				if ( ibo ) ibo->Release();
++			}
++		}
+ 		context.context->IASetPrimitiveTopology( m_mode );
+ 
+ 		for ( auto const & binding : m_vbos )
+@@ -58,7 +77,7 @@
+ 				, binding.offsets.data() );
+ 		}
+ 
+-		if ( m_instCount > 1 )
++		if ( m_instCount != 1u || m_firstInstance != 0u )
+ 		{
+ 			context.context->DrawIndexedInstanced( m_indexCount
+ 				, m_instCount
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.cpp v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.cpp	2026-10-13 07:30:41.000000000 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.cpp	2026-10-17 14:30:26.811923468 +0000
+@@ -7,6 +7,9 @@
+ #include "Miscellaneous/D3D11DeviceMemory.hpp"
+ 
+ #include "ashesd3d11_api.hpp"
++#include <atomic>
++#include <cstdlib>
++#include <iostream>
+ 
+ namespace ashes::D3D11_NAMESPACE
+ {
+@@ -14,21 +17,46 @@
+ 		, ObjectMemory const * memory
+ 		, VkDeviceSize offset
+ 		, VkDeviceSize size
+-		, UINT subresource )
++		, UINT subresource
++		, bool mappedOnly )
+ 		: CommandBase{ device }
+ 		, m_memory{ memory }
+ 		, m_range{ offset, size }
+ 		, m_subresource{ subresource }
++		, m_mappedOnly{ mappedOnly }
++		, m_parentLifetime{ get( memory->deviceMemory )->getLifetimeToken() }
+ 	{
+ 	}
+ 
+ 	void UploadMemoryCommand::apply( Context & context )const
+ 	{
+-		get( m_memory->deviceMemory )->updateUpload( context.context
++		// ObjectMemory metadata belongs to its parent allocation, not to this command.
++		if ( m_parentLifetime.expired() || !m_memory->resource ) return;
++		auto parent = get( m_memory->deviceMemory );
++		if ( m_mappedOnly )
++		{
++			auto toggle = std::getenv( "RW_HD5500_COHERENT_REFRESH" );
++			if ( ( toggle && toggle[0] == '0' ) || !parent->isMapped() ) return;
++		}
++		parent->updateUpload( context.context
+ 			, *m_memory
+ 			, m_range.first
+ 			, m_range.second
+ 			, m_subresource );
++		if ( m_mappedOnly )
++		{
++			auto trace = std::getenv( "RW_HD5500_UI_TRACE" );
++			if ( trace && trace[0] == '1' )
++			{
++				static std::atomic< uint64_t > count{ 0u };
++				auto serial = ++count;
++				if ( serial <= 32u || ( serial & ( serial - 1u ) ) == 0u )
++					std::cerr << "[RW-GPU-COHERENT] serial=" << serial
++						<< " resource=" << m_memory->resource << " childBytes=" << m_memory->size
++						<< " parentOffset=" << m_memory->offset << " offset=" << m_range.first
++						<< " range=" << m_range.second << " mapped=" << parent->isMapped() << std::endl;
++			}
++		}
+ 	}
+ 
+ 	CommandPtr UploadMemoryCommand::clone()const
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.hpp v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.hpp
+--- v12/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.hpp	2026-10-13 07:30:41.000000000 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Command/Commands/D3D11UploadMemoryCommand.hpp	2026-10-17 14:30:26.811944018 +0000
+@@ -16,7 +16,8 @@
+ 			, ObjectMemory const * memory
+ 			, VkDeviceSize offset
+ 			, VkDeviceSize size
+-			, UINT subresource );
++			, UINT subresource
++			, bool mappedOnly = false );
+ 
+ 		void apply( Context & context )const override;
+ 		CommandPtr clone()const override;
+@@ -25,5 +26,7 @@
+ 		ObjectMemory const * m_memory;
+ 		std::pair< VkDeviceSize, VkDeviceSize > m_range;
+ 		UINT m_subresource;
++		bool m_mappedOnly{};
++		std::weak_ptr< uint8_t > m_parentLifetime;
+ 	};
+ }
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.cpp v13/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.cpp	2026-10-17 14:30:26.882803023 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.cpp	2026-10-17 14:30:26.811944018 +0000
+@@ -401,6 +401,7 @@
+ 		doAddAfterSubmitAction();
+ 		m_state.indexType = indexType;
+ 		m_state.newlyBoundIbo = buffer;
++		m_state.boundIbo = buffer;
+ 	}
+ 
+ 	void CommandBuffer::bindDescriptorSets( VkPipelineBindPoint bindingPoint
+@@ -409,17 +410,90 @@
+ 		, ArrayView< VkDescriptorSet const > descriptorSets
+ 		, ArrayView< uint32_t const > dynamicOffsets )const
+ 	{
+-		for ( auto & descriptorSet : ashes::makeArrayView( std::next( descriptorSets.begin(), firstSet ), descriptorSets.end() ) )
++		try
++		{
++		if ( m_recordingResult != VK_SUCCESS ) return;
++
++		auto const & layouts = get( layout )->getDescriptorsLayouts();
++
++		if ( firstSet > layouts.size()
++			|| descriptorSets.size() > layouts.size() - firstSet )
++		{
++			recordFailure( VK_ERROR_INITIALIZATION_FAILED );
++			return;
++		}
++
++		size_t dynamicOffsetIndex{};
++
++		// Validate before recording any command so malformed offsets cannot leave a
++		// partially bound descriptor sequence behind.
++		for ( auto descriptorSetIndex = 0u; descriptorSetIndex < descriptorSets.size(); ++descriptorSetIndex )
++		{
++			auto descriptorSet = descriptorSets[descriptorSetIndex];
++
++			if ( !descriptorSet
++				|| get( descriptorSet )->getLayout() != layouts[firstSet + descriptorSetIndex] )
++			{
++				recordFailure( VK_ERROR_INITIALIZATION_FAILED );
++				return;
++			}
++
++			if ( !get( descriptorSet )->getDynamicStorageBuffers().empty() )
++			{
++				// D3D11 has no descriptor-time storage-buffer range binding here.
++				// Reject dynamic storage buffers rather than silently ignoring offsets.
++				recordFailure( VK_ERROR_FEATURE_NOT_PRESENT );
++				return;
++			}
++
++			auto const dynamicOffsetCount = get( descriptorSet )->getDynamicOffsetCount();
++
++			if ( dynamicOffsetIndex > dynamicOffsets.size()
++				|| dynamicOffsetCount > dynamicOffsets.size() - dynamicOffsetIndex )
++			{
++				recordFailure( VK_ERROR_INITIALIZATION_FAILED );
++				return;
++			}
++
++			dynamicOffsetIndex += dynamicOffsetCount;
++		}
++
++		if ( dynamicOffsetIndex != dynamicOffsets.size() )
++		{
++			recordFailure( VK_ERROR_INITIALIZATION_FAILED );
++			return;
++		}
++
++		dynamicOffsetIndex = 0u;
++
++		for ( auto descriptorSetIndex = 0u; descriptorSetIndex < descriptorSets.size(); ++descriptorSetIndex )
+ 		{
++			auto descriptorSet = descriptorSets[descriptorSetIndex];
++			auto const dynamicOffsetCount = get( descriptorSet )->getDynamicOffsetCount();
++			auto dynamicOffsetBegin = dynamicOffsets.begin() + dynamicOffsetIndex;
++			auto dynamicOffsetEnd = dynamicOffsetBegin + dynamicOffsetCount;
++			auto const setDynamicOffsets = ArrayView< uint32_t const >{ dynamicOffsetBegin, dynamicOffsetEnd };
++
+ 			m_state.boundDescriptors.push_back( descriptorSet );
+ 			doProcessMappedBoundDescriptorResourcesIn( descriptorSet );
+ 			m_commands.emplace_back( std::make_unique< BindDescriptorSetCommand >( m_device
+ 				, descriptorSet
+ 				, layout
+-				, dynamicOffsets
++				, firstSet + descriptorSetIndex
++				, setDynamicOffsets
+ 				, bindingPoint ) );
+ 			doAddAfterSubmitAction();
++			dynamicOffsetIndex += dynamicOffsetCount;
++		}
+ 		}
++		catch ( Exception const & error ) { recordFailure( error.getResult() ); }
++		catch ( std::bad_alloc const & ) { recordFailure( VK_ERROR_OUT_OF_HOST_MEMORY ); }
++		catch ( std::exception const & error )
++		{
++			recordFailure( VK_ERROR_INITIALIZATION_FAILED );
++			std::cerr << "Descriptor recording failed: " << error.what() << std::endl;
++		}
++
+ 	}
+ 
+ 	void CommandBuffer::setViewport( uint32_t firstViewport
+@@ -445,6 +519,7 @@
+ 		if ( !get( m_state.currentPipeline )->hasVertexLayout() )
+ 		{
+ 			bindIndexBuffer( get( m_device )->getEmptyIndexedVaoIdx(), 0u, VK_INDEX_TYPE_UINT32 );
++			doProcessMappedBoundIndexBufferIn();
+ 			doProcessMappedBoundVaoBuffersIn();
+ 			m_commands.emplace_back( std::make_unique< DrawIndexedCommand >( m_device
+ 				, vtxCount
+@@ -478,7 +553,7 @@
+ 		, uint32_t firstInstance )const
+ 	{
+ 		if ( !get( m_state.currentPipeline )->hasVertexLayout()
+-			&& m_state.newlyBoundIbo == nullptr )
++			&& m_state.boundIbo == nullptr )
+ 		{
+ 			bindIndexBuffer( get( m_device )->getEmptyIndexedVaoIdx(), 0u, VK_INDEX_TYPE_UINT32 );
+ 		}
+@@ -486,6 +561,7 @@
+ 		doBindDynamicStates();
+ 		doFillVboStrides();
+ 		doProcessMappedBoundVaoBuffersIn();
++		doProcessMappedBoundIndexBufferIn();
+ 		m_commands.emplace_back( std::make_unique< DrawIndexedCommand >( m_device
+ 			, indexCount
+ 			, instCount
+@@ -504,6 +580,7 @@
+ 		, uint32_t drawCount
+ 		, uint32_t stride )const
+ 	{
++		doProcessMappedBoundResourceIn( buffer, offset, get( buffer )->getSize() - offset );
+ 		doFillVboStrides();
+ 		doProcessMappedBoundVaoBuffersIn();
+ 		doBindDynamicStates();
+@@ -522,14 +599,16 @@
+ 		, uint32_t drawCount
+ 		, uint32_t stride )const
+ 	{
++		doProcessMappedBoundResourceIn( buffer, offset, get( buffer )->getSize() - offset );
+ 		if ( !get( m_state.currentPipeline )->hasVertexLayout()
+-			&& m_state.newlyBoundIbo == nullptr )
++			&& m_state.boundIbo == nullptr )
+ 		{
+ 			bindIndexBuffer( get( m_device )->getEmptyIndexedVaoIdx(), 0u, VK_INDEX_TYPE_UINT32 );
+ 		}
+ 
+ 		doFillVboStrides();
+ 		doProcessMappedBoundVaoBuffersIn();
++		doProcessMappedBoundIndexBufferIn();
+ 		doBindDynamicStates();
+ 		m_commands.emplace_back( std::make_unique< DrawIndexedIndirectCommand >( m_device
+ 			, buffer
+@@ -550,6 +629,7 @@
+ 		if ( m_recordingResult != VK_SUCCESS ) return;
+ 		try
+ 		{
++			doProcessMappedBoundResourceIn( src, 0u, get( src )->getSize() );
+ 			get( m_device )->onCopyToImageCommand( get( this ), copyInfos, src, dst );
+ 			m_commands.emplace_back( std::make_unique< CopyBufferToImageCommand >( m_device
+ 				, std::move( copyInfos )
+@@ -625,6 +705,7 @@
+ 		, VkBuffer dst
+ 		, ArrayView< VkBufferCopy const > copyInfos )const
+ 	{
++		doProcessMappedBoundResourceIn( src, 0u, get( src )->getSize() );
+ 		for ( auto const & copyInfo : copyInfos )
+ 		{
+ 			m_commands.emplace_back( std::make_unique< CopyBufferCommand >( m_device
+@@ -792,6 +873,7 @@
+ 	void CommandBuffer::dispatchIndirect( VkBuffer buffer
+ 		, VkDeviceSize offset )const
+ 	{
++		doProcessMappedBoundResourceIn( buffer, offset, get( buffer )->getSize() - offset );
+ 		m_commands.emplace_back( std::make_unique< DispatchIndirectCommand >( m_device
+ 			, buffer
+ 			, offset ) );
+@@ -1113,19 +1195,23 @@
+ 		}
+ 	}
+ 
++	void CommandBuffer::doProcessMappedBoundIndexBufferIn()const
++	{
++		if ( m_state.boundIbo )
++			doProcessMappedBoundResourceIn( m_state.boundIbo, 0u, get( m_state.boundIbo )->getSize() );
++	}
+ 	void CommandBuffer::doProcessMappedBoundResourceIn( VkBuffer buffer
+ 		, VkDeviceSize offset
+ 		, VkDeviceSize range )const
+ 	{
+ 		auto buf = get( buffer );
+-
+-		if ( get( buf->getMemory() )->isMapped() )
++		auto parent = get( buf->getMemory() );
++		// Record the use even when mapping happens after recording.  At execution,
++		// only a currently mapped host-visible child is refreshed; GPU-only data is untouched.
++		if ( checkFlag( parent->getMemoryPropertyFlags(), VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT ) )
+ 		{
+-			doAddMappedResource( &buf->getObjectMemory()
+-				, offset
+-				, range
+-				, 0u
+-				, true );
++			m_commands.emplace_back( std::make_unique< UploadMemoryCommand >( m_device
++				, &buf->getObjectMemory(), offset, range, 0u, true ) );
+ 		}
+ 	}
+ 
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.hpp v13/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.hpp
+--- v12/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.hpp	2026-10-17 14:30:26.882849275 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Command/D3D11CommandBuffer.hpp	2026-10-17 14:30:26.811996424 +0000
+@@ -205,6 +205,7 @@
+ 		void doProcessMappedBoundDescriptorResourcesIn( VkDescriptorSet descriptor )const;
+ 		void doProcessMappedBoundDescriptorsResourcesOut()const;
+ 		void doProcessMappedBoundVaoBuffersIn()const;
++		void doProcessMappedBoundIndexBufferIn()const;
+ 		void doProcessMappedBoundResourceIn( VkBuffer buffer
+ 			, VkDeviceSize offset
+ 			, VkDeviceSize range )const;
+@@ -244,6 +245,7 @@
+ 			VkIndexType indexType{};
+ 			VkDescriptorSetArray boundDescriptors;
+ 			VkBuffer newlyBoundIbo{};
++			VkBuffer boundIbo{};
+ 			Optional< float > lineWidth{};
+ 			Optional< DepthBias > depthBias{};
+ 			Optional< std::array< float, 4u > > blendConstants{};
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Core/D3D11DebugReportCallback.cpp v13/source/ashes/renderer/D3D11Renderer/Core/D3D11DebugReportCallback.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Core/D3D11DebugReportCallback.cpp	2026-10-17 14:30:26.882917673 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Core/D3D11DebugReportCallback.cpp	2026-10-17 14:30:26.812066667 +0000
+@@ -236,11 +236,44 @@
+ 			{ S_OK, { "No error occurred.", VK_SUCCESS } },
+ 		};
+ 
+-		static ErrorsMap const & getErrors()
+-		{
+-			return Errors;
++			static ErrorsMap const & getErrors()
++			{
++				return Errors;
++			}
++
++			static std::string getHResultText( HRESULT hresult )
++			{
++				LPSTR text{};
++				std::string result;
++				auto const length = ::FormatMessageA( FORMAT_MESSAGE_ALLOCATE_BUFFER
++					| FORMAT_MESSAGE_FROM_SYSTEM
++					| FORMAT_MESSAGE_IGNORE_INSERTS
++					, nullptr
++					, DWORD( hresult )
++					, MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT )
++					, reinterpret_cast< LPSTR >( &text )
++					, 0u
++					, nullptr );
++
++				if ( length && text )
++				{
++					result.assign( text, length );
++
++					while ( !result.empty()
++						&& ( result.back() == '\r' || result.back() == '\n' || result.back() == ' ' ) )
++					{
++						result.pop_back();
++					}
++				}
++
++				if ( text )
++				{
++					::LocalFree( text );
++				}
++
++				return result;
++			}
+ 		}
+-	}
+ 
+ 	//*************************************************************************
+ 
+@@ -393,13 +426,14 @@
+ 			},
+ 		};
+ 		MessageData messageData{ baseMessage };
+-		bool result = hresult == S_OK;
++		bool result = SUCCEEDED( hresult );
+ 
+ 		if ( !result )
+ 		{
+ 			std::stringstream stream;
+ 			stream.imbue( std::locale{ "C" } );
+-			stream << "Error calling [" << message << "]: " << std::hex << hresult;
++			stream << "Error calling [" << message << "]: HRESULT=0x"
++				<< std::hex << uint32_t( hresult );
+ 
+ 			if ( auto it = debugcb::getErrors().find( hresult );
+ 				it != debugcb::getErrors().end() )
+@@ -407,7 +441,11 @@
+ 				stream << "\n    Direct3D: " << it->second.name;
+ 			}
+ 
+-			stream << "\n    Windows: " << getLastErrorText();
++			if ( auto const hresultText = debugcb::getHResultText( hresult ); !hresultText.empty() )
++			{
++				stream << "\n    HRESULT: " << hresultText;
++			}
++
+ 			messageData.callbackData.messageIdNumber = hresult;
+ 			du::check( m_callback
+ 				, std::move( messageData )
+@@ -597,13 +635,14 @@
+ 			"VALIDATION",
+ 		};
+ 		ReportData report{ baseReport };
+-		bool result = hresult == S_OK;
++		bool result = SUCCEEDED( hresult );
+ 
+ 		if ( !result )
+ 		{
+ 			std::stringstream stream;
+ 			stream.imbue( std::locale{ "C" } );
+-			stream << "Error calling [" << message << "]: " << std::hex << hresult;
++			stream << "Error calling [" << message << "]: HRESULT=0x"
++				<< std::hex << uint32_t( hresult );
+ 
+ 			if ( auto it = debugcb::getErrors().find( hresult );
+ 				it != debugcb::getErrors().end() )
+@@ -611,7 +650,11 @@
+ 				stream << "\n    Direct3D: " << it->second.name;
+ 			}
+ 
+-			stream << "\n    Windows: " << getLastErrorText();
++			if ( auto const hresultText = debugcb::getHResultText( hresult ); !hresultText.empty() )
++			{
++				stream << "\n    HRESULT: " << hresultText;
++			}
++
+ 			report.messageCode = hresult;
+ 			dr::check( m_callback
+ 				, std::move( report )
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Core/D3D11PhysicalDevice.cpp v13/source/ashes/renderer/D3D11Renderer/Core/D3D11PhysicalDevice.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Core/D3D11PhysicalDevice.cpp	2026-10-17 14:30:26.883003182 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Core/D3D11PhysicalDevice.cpp	2026-10-17 14:30:26.812188328 +0000
+@@ -432,6 +432,12 @@
+ 		}
+ 
+ 		imageProperties.maxMipLevels = physdev::getMaxMipLevels( imageProperties.maxExtent.width );
++		// The view-typed X8_D24 backing has no native mipped texture support on
++		// the user's Intel driver. Preserve the working single-mip case honestly.
++		if ( format == VK_FORMAT_X8_D24_UNORM_PACK32 && !physdev::legacyCapabilities() )
++			imageProperties.maxMipLevels = 1u;
++		if ( ( usage & VK_IMAGE_USAGE_STORAGE_BIT ) && !physdev::legacyCapabilities() )
++			imageProperties.sampleCounts = VK_SAMPLE_COUNT_1_BIT;
+ 		imageProperties.maxResourceSize = imageProperties.maxArrayLayers * ashes::getLevelsSize( imageProperties.maxExtent
+ 			, format
+ 			, 0u
+@@ -730,7 +736,7 @@
+ 		m_properties.limits.maxDescriptorSetUniformBuffers = D3D11_COMMONSHADER_CONSTANT_BUFFER_HW_SLOT_COUNT;
+ 		m_properties.limits.maxDescriptorSetUniformBuffersDynamic = D3D11_COMMONSHADER_CONSTANT_BUFFER_HW_SLOT_COUNT;
+ 		m_properties.limits.maxDescriptorSetStorageBuffers = D3D11_1_UAV_SLOT_COUNT;
+-		m_properties.limits.maxDescriptorSetStorageBuffersDynamic = D3D11_1_UAV_SLOT_COUNT;
++		m_properties.limits.maxDescriptorSetStorageBuffersDynamic = 0u; // dynamic storage range binding is not implemented
+ 		m_properties.limits.maxDescriptorSetSampledImages = D3D11_COMMONSHADER_SAMPLER_REGISTER_COUNT;
+ 		m_properties.limits.maxDescriptorSetStorageImages = 1048576u;
+ 		m_properties.limits.maxDescriptorSetInputAttachments = 1048576u;
+@@ -1151,6 +1157,33 @@
+ 							}
+ 						}
+ 					}
++					// v13: shader-load support is not typed UAV support. Unioning SRV
++					// aliases previously advertised invalid depth and packed-4444 storage.
++					if ( !physdev::legacyCapabilities() )
++					{
++						props.optimalTilingFeatures &= ~( VK_FORMAT_FEATURE_STORAGE_IMAGE_BIT | VK_FORMAT_FEATURE_STORAGE_IMAGE_ATOMIC_BIT );
++						if ( !isDepthOrStencilFormat( fmt ) && !isCompressedFormat( fmt ) && props.optimalTilingFeatures )
++						{
++							UINT uavSupport{};
++							auto uavFormat = getUAVFormat( fmt );
++							if ( uavFormat != DXGI_FORMAT_UNKNOWN
++								&& SUCCEEDED( d3dDevice->CheckFormatSupport( uavFormat, &uavSupport ) )
++								&& ( uavSupport & D3D11_FORMAT_SUPPORT_TYPED_UNORDERED_ACCESS_VIEW ) )
++							{
++								D3D11_TEXTURE2D_DESC trial{};
++								trial.Width = 13u; trial.Height = 7u; trial.MipLevels = 4u; trial.ArraySize = 1u;
++								trial.Format = getTextureFormat( fmt ); trial.SampleDesc.Count = 1u;
++								trial.Usage = D3D11_USAGE_DEFAULT;
++								trial.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET | D3D11_BIND_UNORDERED_ACCESS;
++								ID3D11Texture2D * texture{};
++								auto hr = d3dDevice->CreateTexture2D( &trial, nullptr, &texture );
++								safeRelease( texture );
++								if ( SUCCEEDED( hr ) )
++									props.optimalTilingFeatures |= VK_FORMAT_FEATURE_STORAGE_IMAGE_BIT;
++							}
++						}
++						props.linearTilingFeatures = props.optimalTilingFeatures;
++					}
+ 					m_formatProperties[fmt] = props;
+ 			}
+ 
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.cpp v13/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.cpp	2026-10-17 14:30:26.883075174 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.cpp	2026-10-17 14:30:26.812280446 +0000
+@@ -19,8 +19,543 @@
+ #endif
+ #pragma warning( pop )
+ 
++#include <chrono>
++#include <cstring>
++#include <iostream>
++
+ namespace ashes::D3D11_NAMESPACE
+ {
++	namespace
++	{
++		// This is deliberately a per-swapchain, opt-in diagnostic.  It must not
++		// create a normal-frame synchronization point or retain a global resource.
++		namespace frameprobe
++		{
++			static constexpr uint64_t FnvOffset = 1469598103934665603ull;
++			static constexpr uint64_t FnvPrime = 1099511628211ull;
++			static constexpr UINT SampleAxis = 5u;
++			static constexpr UINT MaxWaitMillis = 250u;
++			static constexpr uint64_t MaxExactCompareBytes = 1024ull * 1024ull;
++			static constexpr uint64_t ProbeIntervalMillis = 10000u;
++			static constexpr uint32_t MaxTimedCaptures = 12u;
++
++			struct Sample
++			{
++				bool mapped{};
++				HRESULT hr{ E_FAIL };
++				uint32_t sampleCount{};
++				uint32_t nonZeroBytes{};
++				uint64_t colourHash{ FnvOffset };
++				std::vector< uint8_t > fullFrame;
++			};
++
++			struct Capture
++			{
++				~Capture()noexcept
++				{
++					safeRelease( fakeReadback );
++					safeRelease( realReadback );
++					safeRelease( completion );
++				}
++
++				D3D11_TEXTURE2D_DESC fakeDesc{};
++				D3D11_TEXTURE2D_DESC realDesc{};
++				D3D11_TEXTURE2D_DESC fakeReadbackDesc{};
++				D3D11_TEXTURE2D_DESC realReadbackDesc{};
++				D3D11_BOX copyBox{};
++				ID3D11Texture2D * fakeReadback{};
++				ID3D11Texture2D * realReadback{};
++				ID3D11Query * completion{};
++				HRESULT fakeCreateHr{ E_FAIL };
++				HRESULT realCreateHr{ E_FAIL };
++				HRESULT queryCreateHr{ E_FAIL };
++				HRESULT waitHr{ E_FAIL };
++				bool descriptors{};
++				bool copyCompatible{};
++				bool fullFakeReadback{};
++				bool fullRealReadback{};
++				bool armed{};
++				bool completed{};
++				bool deviceLost{};
++				bool exactCompared{};
++				bool exactEqual{};
++				Sample pre;
++				Sample post;
++			};
++
++			static bool isEnabled()
++			{
++			#if defined( Ashes_D3D11_XBox )
++				return false;
++			#else
++				char value[ 4u ]{};
++				auto const length = ::GetEnvironmentVariableA( "RW_HD5500_FRAME_PROBE"
++					, value
++					, DWORD( sizeof( value ) ) );
++				return length == 1u && value[ 0 ] == '1';
++			#endif
++			}
++
++			static uint64_t getTickMillis()
++			{
++				return uint64_t( std::chrono::duration_cast< std::chrono::milliseconds >(
++					std::chrono::steady_clock::now().time_since_epoch() ).count() );
++			}
++
++			static bool shouldCapture( uint64_t frame
++				, uint64_t now
++				, uint64_t & nextTick
++				, uint32_t & timedCaptureCount )
++			{
++				if ( frame <= 3u )
++				{
++					if ( frame == 3u )
++					{
++						nextTick = now + ProbeIntervalMillis;
++					}
++
++					return true;
++				}
++
++				if ( timedCaptureCount < MaxTimedCaptures && now >= nextTick )
++				{
++					// Advance from now rather than catching up: prolonged loading remains
++					// bounded to one synchronous capture per ten seconds.
++					nextTick = now + ProbeIntervalMillis;
++					timedCaptureCount += 1u;
++					return true;
++				}
++
++				return false;
++			}
++
++			static bool isDeviceLoss( HRESULT hr )
++			{
++				return hr == DXGI_ERROR_DEVICE_REMOVED
++					|| hr == DXGI_ERROR_DEVICE_RESET
++					|| hr == DXGI_ERROR_DEVICE_HUNG
++					|| hr == DXGI_ERROR_DRIVER_INTERNAL_ERROR;
++			}
++
++			static std::string asHResult( HRESULT hr )
++			{
++				std::stringstream stream;
++				stream.imbue( std::locale{ "C" } );
++				stream << "0x" << std::hex << std::uppercase << uint32_t( hr );
++				return stream.str();
++			}
++
++			static std::string describe( D3D11_TEXTURE2D_DESC const & desc )
++			{
++				std::stringstream stream;
++				stream.imbue( std::locale{ "C" } );
++				stream << "w=" << desc.Width
++					<< ",h=" << desc.Height
++					<< ",fmt=" << uint32_t( desc.Format )
++					<< ",mips=" << desc.MipLevels
++					<< ",array=" << desc.ArraySize
++					<< ",samples=" << desc.SampleDesc.Count << "/" << desc.SampleDesc.Quality
++					<< ",usage=" << uint32_t( desc.Usage )
++					<< ",bind=0x" << std::hex << desc.BindFlags << std::dec;
++				return stream.str();
++			}
++
++			static UINT getPixelBytes( DXGI_FORMAT format )
++			{
++				switch ( format )
++				{
++				case DXGI_FORMAT_R8_UNORM:
++				case DXGI_FORMAT_R8_UINT:
++				case DXGI_FORMAT_R8_SNORM:
++				case DXGI_FORMAT_R8_SINT:
++				case DXGI_FORMAT_A8_UNORM:
++					return 1u;
++				case DXGI_FORMAT_R8G8_UNORM:
++				case DXGI_FORMAT_R8G8_UINT:
++				case DXGI_FORMAT_R8G8_SNORM:
++				case DXGI_FORMAT_R8G8_SINT:
++				case DXGI_FORMAT_R16_FLOAT:
++				case DXGI_FORMAT_R16_UNORM:
++				case DXGI_FORMAT_R16_UINT:
++				case DXGI_FORMAT_R16_SNORM:
++				case DXGI_FORMAT_R16_SINT:
++				case DXGI_FORMAT_B5G6R5_UNORM:
++				case DXGI_FORMAT_B5G5R5A1_UNORM:
++					return 2u;
++				case DXGI_FORMAT_R8G8B8A8_UNORM:
++				case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
++				case DXGI_FORMAT_R8G8B8A8_UINT:
++				case DXGI_FORMAT_R8G8B8A8_SNORM:
++				case DXGI_FORMAT_R8G8B8A8_SINT:
++				case DXGI_FORMAT_B8G8R8A8_UNORM:
++				case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
++				case DXGI_FORMAT_B8G8R8X8_UNORM:
++				case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
++				case DXGI_FORMAT_R10G10B10A2_UNORM:
++				case DXGI_FORMAT_R10G10B10A2_UINT:
++				case DXGI_FORMAT_R11G11B10_FLOAT:
++				case DXGI_FORMAT_R16G16_FLOAT:
++				case DXGI_FORMAT_R16G16_UNORM:
++				case DXGI_FORMAT_R16G16_UINT:
++				case DXGI_FORMAT_R16G16_SNORM:
++				case DXGI_FORMAT_R16G16_SINT:
++				case DXGI_FORMAT_R32_FLOAT:
++				case DXGI_FORMAT_R32_UINT:
++				case DXGI_FORMAT_R32_SINT:
++					return 4u;
++				case DXGI_FORMAT_R16G16B16A16_FLOAT:
++				case DXGI_FORMAT_R16G16B16A16_UNORM:
++				case DXGI_FORMAT_R16G16B16A16_UINT:
++				case DXGI_FORMAT_R16G16B16A16_SNORM:
++				case DXGI_FORMAT_R16G16B16A16_SINT:
++				case DXGI_FORMAT_R32G32_FLOAT:
++				case DXGI_FORMAT_R32G32_UINT:
++				case DXGI_FORMAT_R32G32_SINT:
++					return 8u;
++				case DXGI_FORMAT_R32G32B32A32_FLOAT:
++				case DXGI_FORMAT_R32G32B32A32_UINT:
++				case DXGI_FORMAT_R32G32B32A32_SINT:
++					return 16u;
++				default:
++					return 0u;
++				}
++			}
++
++			static uint64_t hashBytes( uint64_t hash, uint8_t const * bytes, size_t size )
++			{
++				for ( size_t index = 0u; index < size; ++index )
++				{
++					hash ^= bytes[ index ];
++					hash *= FnvPrime;
++				}
++
++				return hash;
++			}
++
++			static bool isCopyCompatible( D3D11_TEXTURE2D_DESC const & fakeDesc
++				, D3D11_TEXTURE2D_DESC const & realDesc
++				, D3D11_BOX const & box )
++			{
++				return fakeDesc.Format == realDesc.Format
++					&& fakeDesc.SampleDesc.Count == realDesc.SampleDesc.Count
++					&& fakeDesc.SampleDesc.Quality == realDesc.SampleDesc.Quality
++					&& fakeDesc.MipLevels > 0u
++					&& fakeDesc.ArraySize > 0u
++					&& realDesc.MipLevels > 0u
++					&& realDesc.ArraySize > 0u
++					&& box.left <= box.right
++					&& box.top <= box.bottom
++					&& box.right <= fakeDesc.Width
++					&& box.bottom <= fakeDesc.Height
++					&& ( box.right - box.left ) <= realDesc.Width
++					&& ( box.bottom - box.top ) <= realDesc.Height;
++			}
++
++			static bool useFullReadback( D3D11_TEXTURE2D_DESC const & desc )
++			{
++				auto const pixelBytes = getPixelBytes( desc.Format );
++				return pixelBytes
++					&& desc.SampleDesc.Count == 1u
++					&& desc.MipLevels == 1u
++					&& desc.ArraySize == 1u
++					&& uint64_t( desc.Width ) * desc.Height * pixelBytes <= MaxExactCompareBytes;
++			}
++
++			static HRESULT createReadback( ID3D11Device * device
++				, D3D11_TEXTURE2D_DESC const & sourceDesc
++				, bool fullReadback
++				, D3D11_TEXTURE2D_DESC & readbackDesc
++				, ID3D11Texture2D *& result )
++			{
++				if ( !device || sourceDesc.SampleDesc.Count != 1u
++					|| !getPixelBytes( sourceDesc.Format ) )
++				{
++					return E_INVALIDARG;
++				}
++
++				readbackDesc = sourceDesc;
++
++				if ( !fullReadback )
++				{
++					readbackDesc.Width = SampleAxis;
++					readbackDesc.Height = SampleAxis;
++					readbackDesc.MipLevels = 1u;
++					readbackDesc.ArraySize = 1u;
++				}
++
++				readbackDesc.Usage = D3D11_USAGE_STAGING;
++				readbackDesc.BindFlags = 0u;
++				readbackDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
++				readbackDesc.MiscFlags = 0u;
++				return device->CreateTexture2D( &readbackDesc, nullptr, &result );
++			}
++
++			static void copyToReadback( ID3D11DeviceContext * context
++				, ID3D11Texture2D * readback
++				, ID3D11Texture2D * source
++				, D3D11_TEXTURE2D_DESC const & sourceDesc
++				, bool fullReadback )
++			{
++				if ( fullReadback )
++				{
++					context->CopyResource( readback, source );
++					return;
++				}
++
++				for ( UINT y = 0u; y < SampleAxis; ++y )
++				{
++					auto const sourceY = sourceDesc.Height <= 1u
++						? 0u
++						: UINT( uint64_t( sourceDesc.Height - 1u ) * y / ( SampleAxis - 1u ) );
++
++					for ( UINT x = 0u; x < SampleAxis; ++x )
++					{
++						auto const sourceX = sourceDesc.Width <= 1u
++							? 0u
++							: UINT( uint64_t( sourceDesc.Width - 1u ) * x / ( SampleAxis - 1u ) );
++						D3D11_BOX sourceBox{ sourceX, sourceY, 0u, sourceX + 1u, sourceY + 1u, 1u };
++						context->CopySubresourceRegion( readback, 0u, x, y, 0u, source, 0u, &sourceBox );
++					}
++				}
++			}
++
++			static Sample readSample( ID3D11DeviceContext * context
++				, ID3D11Texture2D * texture
++				, D3D11_TEXTURE2D_DESC const & desc )
++			{
++				Sample result;
++				auto const pixelBytes = getPixelBytes( desc.Format );
++
++				if ( !context || !texture || !pixelBytes )
++				{
++					result.hr = E_INVALIDARG;
++					return result;
++				}
++
++				D3D11_MAPPED_SUBRESOURCE mapped{};
++				result.hr = context->Map( texture, 0u, D3D11_MAP_READ, 0u, &mapped );
++
++				if ( FAILED( result.hr ) || !mapped.pData )
++				{
++					if ( SUCCEEDED( result.hr ) )
++					{
++						result.hr = E_FAIL;
++					}
++					return result;
++				}
++
++				auto const rowBytes = uint64_t( desc.Width ) * pixelBytes;
++
++				if ( rowBytes > mapped.RowPitch )
++				{
++					result.hr = E_INVALIDARG;
++					context->Unmap( texture, 0u );
++					return result;
++				}
++
++				result.mapped = true;
++				auto const * base = static_cast< uint8_t const * >( mapped.pData );
++
++				for ( UINT y = 0u; y < SampleAxis; ++y )
++				{
++					auto const sampleY = desc.Height <= 1u
++						? 0u
++						: UINT( uint64_t( desc.Height - 1u ) * y / ( SampleAxis - 1u ) );
++
++					for ( UINT x = 0u; x < SampleAxis; ++x )
++					{
++						auto const sampleX = desc.Width <= 1u
++							? 0u
++							: UINT( uint64_t( desc.Width - 1u ) * x / ( SampleAxis - 1u ) );
++						auto const * pixel = base + uint64_t( sampleY ) * mapped.RowPitch
++							+ uint64_t( sampleX ) * pixelBytes;
++						result.colourHash = hashBytes( result.colourHash, pixel, pixelBytes );
++						result.sampleCount += 1u;
++
++						for ( UINT component = 0u; component < pixelBytes; ++component )
++						{
++							result.nonZeroBytes += pixel[ component ] != 0u ? 1u : 0u;
++						}
++					}
++				}
++
++				auto const fullFrameBytes = rowBytes * desc.Height;
++
++				if ( fullFrameBytes <= MaxExactCompareBytes )
++				{
++					result.fullFrame.resize( size_t( fullFrameBytes ) );
++
++					for ( UINT row = 0u; row < desc.Height; ++row )
++					{
++						std::memcpy( result.fullFrame.data() + size_t( uint64_t( row ) * rowBytes )
++							, base + uint64_t( row ) * mapped.RowPitch
++							, size_t( rowBytes ) );
++					}
++				}
++
++				context->Unmap( texture, 0u );
++				return result;
++			}
++
++			static void begin( Capture & capture
++				, VkDevice device
++				, ID3D11DeviceContext * context
++				, ID3D11Texture2D * fake
++				, ID3D11Texture2D * real
++				, D3D11_BOX const & box )
++			{
++				capture.copyBox = box;
++
++				if ( !context || !fake || !real )
++				{
++					return;
++				}
++
++				fake->GetDesc( &capture.fakeDesc );
++				real->GetDesc( &capture.realDesc );
++				capture.descriptors = true;
++				capture.copyCompatible = isCopyCompatible( capture.fakeDesc, capture.realDesc, box );
++				auto nativeDevice = get( device )->getDevice();
++				capture.fullFakeReadback = useFullReadback( capture.fakeDesc );
++				capture.fullRealReadback = useFullReadback( capture.realDesc );
++				capture.fakeCreateHr = createReadback( nativeDevice
++					, capture.fakeDesc
++					, capture.fullFakeReadback
++					, capture.fakeReadbackDesc
++					, capture.fakeReadback );
++				capture.realCreateHr = createReadback( nativeDevice
++					, capture.realDesc
++					, capture.fullRealReadback
++					, capture.realReadbackDesc
++					, capture.realReadback );
++
++				if ( FAILED( capture.fakeCreateHr ) || FAILED( capture.realCreateHr )
++					|| !capture.fakeReadback || !capture.realReadback )
++				{
++					return;
++				}
++
++				D3D11_QUERY_DESC queryDesc{};
++				queryDesc.Query = D3D11_QUERY_EVENT;
++				capture.queryCreateHr = nativeDevice->CreateQuery( &queryDesc, &capture.completion );
++
++				if ( FAILED( capture.queryCreateHr ) || !capture.completion )
++				{
++					return;
++				}
++
++				// Staging copies are read-only with respect to the fake swapchain image.
++				copyToReadback( context, capture.fakeReadback, fake, capture.fakeDesc, capture.fullFakeReadback );
++				capture.armed = true;
++			}
++
++			static void finish( Capture & capture
++				, VkDevice device
++				, ID3D11DeviceContext * context
++				, ID3D11Texture2D * real )
++			{
++				if ( !capture.armed || !context || !real )
++				{
++					return;
++				}
++
++				// This observes the native backbuffer after the existing fake-to-real
++				// copy.  It never writes either render target.
++				copyToReadback( context, capture.realReadback, real, capture.realDesc, capture.fullRealReadback );
++				context->End( capture.completion );
++				context->Flush(); // Probe-only: no normal frame flush or polling.
++
++				capture.waitHr = S_FALSE;
++
++				for ( UINT elapsed = 0u; elapsed < MaxWaitMillis; ++elapsed )
++				{
++					capture.waitHr = context->GetData( capture.completion
++						, nullptr
++						, 0u
++						, D3D11_ASYNC_GETDATA_DONOTFLUSH );
++
++					if ( capture.waitHr == S_OK || FAILED( capture.waitHr ) )
++					{
++						break;
++					}
++
++					::Sleep( 1u );
++				}
++
++				capture.completed = capture.waitHr == S_OK;
++				capture.deviceLost = isDeviceLoss( capture.waitHr )
++					|| get( device )->getStatus() == VK_ERROR_DEVICE_LOST;
++
++				if ( !capture.completed )
++				{
++					return;
++				}
++
++				capture.pre = readSample( context, capture.fakeReadback, capture.fakeReadbackDesc );
++				capture.post = readSample( context, capture.realReadback, capture.realReadbackDesc );
++				capture.deviceLost = capture.deviceLost
++					|| isDeviceLoss( capture.pre.hr )
++					|| isDeviceLoss( capture.post.hr )
++					|| get( device )->getStatus() == VK_ERROR_DEVICE_LOST;
++
++				if ( capture.copyCompatible
++					&& capture.fullFakeReadback && capture.fullRealReadback
++					&& capture.pre.mapped && capture.post.mapped
++					&& !capture.pre.fullFrame.empty()
++					&& capture.pre.fullFrame.size() == capture.post.fullFrame.size() )
++				{
++					capture.exactCompared = true;
++					capture.exactEqual = capture.pre.fullFrame == capture.post.fullFrame;
++				}
++			}
++
++			static void report( Capture const & capture
++				, uint64_t frame
++				, VkExtent2D const & logicalExtent
++				, VkExtent2D const & wrapperExtent
++				, HRESULT presentHr )
++			{
++				std::clog << "RW_HD5500_FRAME_PROBE"
++					<< " frame=" << frame
++					<< " pre{mapped=" << uint32_t( capture.pre.mapped )
++					<< ",hr=" << asHResult( capture.pre.hr )
++					<< ",samples=" << capture.pre.sampleCount
++					<< ",nonzeroBytes=" << capture.pre.nonZeroBytes
++					<< ",colourHash=0x" << std::hex << std::uppercase << uint64_t( capture.pre.colourHash ) << std::dec
++					<< "} post{mapped=" << uint32_t( capture.post.mapped )
++					<< ",hr=" << asHResult( capture.post.hr )
++					<< ",samples=" << capture.post.sampleCount
++					<< ",nonzeroBytes=" << capture.post.nonZeroBytes
++					<< ",colourHash=0x" << std::hex << std::uppercase << uint64_t( capture.post.colourHash ) << std::dec
++					<< "} exact{compared=" << uint32_t( capture.exactCompared )
++					<< ",equal=" << uint32_t( capture.exactEqual )
++					<< "} readback{pre=" << ( capture.fullFakeReadback ? "full" : "sampled" )
++					<< ",post=" << ( capture.fullRealReadback ? "full" : "sampled" )
++					<< "} copy{armed=" << uint32_t( capture.armed )
++					<< ",completed=" << uint32_t( capture.completed )
++					<< ",compatible=" << uint32_t( capture.copyCompatible )
++					<< ",box=" << capture.copyBox.left << "," << capture.copyBox.top
++					<< "," << capture.copyBox.right << "," << capture.copyBox.bottom
++					<< ",logical=" << logicalExtent.width << "x" << logicalExtent.height
++					<< ",wrapper=" << wrapperExtent.width << "x" << wrapperExtent.height;
++
++				if ( capture.descriptors )
++				{
++					std::clog << ",fakeDesc={" << describe( capture.fakeDesc )
++						<< "},realDesc={" << describe( capture.realDesc ) << "}";
++				}
++
++				std::clog << ",fakeCreateHr=" << asHResult( capture.fakeCreateHr )
++					<< ",realCreateHr=" << asHResult( capture.realCreateHr )
++					<< ",queryCreateHr=" << asHResult( capture.queryCreateHr )
++					<< ",waitHr=" << asHResult( capture.waitHr )
++					<< ",deviceLost=" << uint32_t( capture.deviceLost )
++					<< "} presentHr=" << asHResult( presentHr )
++					<< "\n";
++			}
++		}
++	}
++
+ 	namespace swapchain
+ 	{
+ 		static VkImage createImage( VkDevice device
+@@ -155,6 +690,13 @@
+ 				, m_image
+ 				, m_createInfo.imageFormat );
+ 			dxDebugName( get( m_view )->getRenderTargetView(), SwapChainFakeImageView );
++			m_frameProbeEnabled = frameprobe::isEnabled();
++
++			if ( m_frameProbeEnabled )
++			{
++				std::clog << "RW_HD5500_FRAME_PROBE enabled captures=first3+12x10sec"
++					<< " mode=read-only-staging\n";
++			}
+ 		}
+ 		catch ( std::exception & exc )
+ 		{
+@@ -204,6 +746,21 @@
+ 		srcBox.right = m_windowExtent.width;
+ 		srcBox.bottom = m_windowExtent.height;
+ 		srcBox.back = 1u;
++		auto const frame = ++m_presentCount;
++		auto const probeThisFrame = m_frameProbeEnabled
++			&& frameprobe::shouldCapture( frame
++				, frameprobe::getTickMillis()
++				, m_nextFrameProbeTick
++				, m_timedFrameProbeCount );
++		frameprobe::Capture probe;
++		auto fake = get( m_image )->getTexture2D();
++		auto real = get( m_swapChainImage )->getTexture2D();
++
++		if ( probeThisFrame )
++		{
++			frameprobe::begin( probe, m_device, *context, fake, real, srcBox );
++		}
++
+ 		context->CopySubresourceRegion( get( m_swapChainImage )->getResource()
+ 			, 0u
+ 			, 0u
+@@ -212,9 +769,36 @@
+ 			, get( m_image )->getResource()
+ 			, 0u
+ 			, &srcBox );
+-		return checkError( m_device, getSwapChain()->Present( 0u, 0u ), "Presentation" )
+-			? VK_SUCCESS
+-			: VK_ERROR_SURFACE_LOST_KHR;
++
++		if ( probeThisFrame )
++		{
++			frameprobe::finish( probe, m_device, *context, real );
++		}
++
++		auto const presentHr = getSwapChain()->Present( 0u, 0u );
++
++		if ( probeThisFrame )
++		{
++			frameprobe::report( probe, frame, m_windowExtent, m_swapchainExtent, presentHr );
++		}
++
++		if ( SUCCEEDED( presentHr ) )
++		{
++			// checkError still forwards genuine failures to validation layers, but
++			// statuses such as DXGI_STATUS_OCCLUDED are successful HRESULTs.
++			checkError( m_device, presentHr, "Presentation" );
++			return VK_SUCCESS;
++		}
++
++		checkError( m_device, presentHr, "Presentation" );
++
++		if ( frameprobe::isDeviceLoss( presentHr )
++			|| get( m_device )->getStatus() == VK_ERROR_DEVICE_LOST )
++		{
++			return VK_ERROR_DEVICE_LOST;
++		}
++
++		return VK_ERROR_SURFACE_LOST_KHR;
+ 	}
+ 
+ 	VkResult SwapchainKHR::acquireNextImage( uint32_t & imageIndex )const
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.hpp v13/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.hpp
+--- v12/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.hpp	2026-10-13 07:30:41.000000000 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Core/D3D11SwapChain.hpp	2026-10-17 14:30:26.812309996 +0000
+@@ -53,5 +53,10 @@
+ 		VkImageView m_view{};
+ 		VkExtent2D m_swapchainExtent;
+ 		VkExtent2D m_windowExtent;
++		// Opt-in only (RW_HD5500_FRAME_PROBE=1); mutable because present() is const.
++		bool m_frameProbeEnabled{};
++		mutable uint64_t m_presentCount{};
++		mutable uint64_t m_nextFrameProbeTick{};
++		mutable uint32_t m_timedFrameProbeCount{};
+ 	};
+ }
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Descriptor/D3D11DescriptorSet.hpp v13/source/ashes/renderer/D3D11Renderer/Descriptor/D3D11DescriptorSet.hpp
+--- v12/source/ashes/renderer/D3D11Renderer/Descriptor/D3D11DescriptorSet.hpp	2026-10-13 07:30:41.000000000 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Descriptor/D3D11DescriptorSet.hpp	2026-10-17 14:30:26.812325871 +0000
+@@ -93,6 +93,18 @@
+ 			return m_dynamicStorageBuffers;
+ 		}
+ 
++		size_t getDynamicOffsetCount()const
++		{
++			size_t result{};
++
++			for ( auto const * write : m_dynamicBuffers )
++			{
++				result += write->binding.descriptorCount;
++			}
++
++			return result;
++		}
++
+ 	private:
+ 		void mergeWrites( LayoutBindingWrites & writes, VkWriteDescriptorSet const & write );
+ 
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.cpp v13/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.cpp
+--- v12/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.cpp	2026-10-13 07:30:41.000000000 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.cpp	2026-10-17 14:30:26.812846328 +0000
+@@ -43,17 +43,6 @@
+ 		return m_shaderBindings;
+ 	}
+ 
+-	uint32_t PipelineLayout::getDescriptorSetIndex( VkDescriptorSet set )const
+-	{
+-		auto & layouts = getDescriptorsLayouts();
+-		auto layout = get( set )->getLayout();
+-		auto it = std::find( layouts.begin()
+-			, layouts.end()
+-			, layout );
+-		assert( it != layouts.end() );
+-		return uint32_t( std::distance( layouts.begin(), it ) );
+-	}
+-
+ 	void PipelineLayout::addPipeline( VkPipeline pipeline )
+ 	{
+ 		m_pipelines.insert( pipeline );
+diff -ruN v12/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.hpp v13/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.hpp
+--- v12/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.hpp	2026-10-13 07:30:41.000000000 +0000
++++ v13/source/ashes/renderer/D3D11Renderer/Pipeline/D3D11PipelineLayout.hpp	2026-10-17 14:30:26.812937285 +0000
+@@ -23,7 +23,6 @@
+ 		~PipelineLayout()noexcept;
+ 
+ 		ShaderBindings const & getShaderBindings()const;
+-		uint32_t getDescriptorSetIndex( VkDescriptorSet set )const;
+ 
+ 		VkDescriptorSetLayoutArray const & getDescriptorsLayouts()const
+ 		{
