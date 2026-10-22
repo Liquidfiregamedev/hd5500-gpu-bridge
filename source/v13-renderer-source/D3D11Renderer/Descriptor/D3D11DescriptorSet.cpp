@@ -12,8 +12,62 @@
 
 #include <ashes/common/VkTypeTraits.hpp>
 
+#include <cstdio>
+#include <map>
+#include <mutex>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <atomic>
+
 namespace ashes::D3D11_NAMESPACE
 {
+	// v13.80: which descriptor-set layouts get the most new sets (the "2 million sets per session" question).
+	namespace setrecycle { extern std::atomic< uint64_t > g_reused; extern std::atomic< uint64_t > g_created; }
+	namespace setstats
+	{
+		static std::mutex g_mutex;
+		static std::map< VkDescriptorSetLayout, unsigned long long > g_counts;
+		void count( VkDescriptorSetLayout layout )
+		{
+			std::lock_guard< std::mutex > lock{ g_mutex };
+			++g_counts[layout];
+		}
+		void printAndReset( unsigned frames )
+		{
+			std::vector< std::pair< VkDescriptorSetLayout, unsigned long long > > v;
+			{
+				std::lock_guard< std::mutex > lock{ g_mutex };
+				v.assign( g_counts.begin(), g_counts.end() );
+				g_counts.clear();
+			}
+			if ( v.empty() || frames == 0u ) return;
+			std::sort( v.begin(), v.end(), []( auto & a, auto & b ){ return a.second > b.second; } );
+			unsigned long long total = 0; for ( auto & e : v ) total += e.second;
+			std::string line;
+			char buf[160];
+			for ( size_t i = 0; i < v.size() && i < 6u; ++i )
+			{
+				unsigned ubo = 0, uboDyn = 0, img = 0, smp = 0, ssbo = 0, other = 0;
+				for ( auto & b : *get( v[i].first ) )
+				{
+					switch ( b.descriptorType )
+					{
+					case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER: ubo += b.descriptorCount; break;
+					case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC: uboDyn += b.descriptorCount; break;
+					case VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER: case VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE: img += b.descriptorCount; break;
+					case VK_DESCRIPTOR_TYPE_SAMPLER: smp += b.descriptorCount; break;
+					case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER: case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC: ssbo += b.descriptorCount; break;
+					default: other += b.descriptorCount; break;
+					}
+				}
+				std::snprintf( buf, sizeof( buf ), "%s#%zu %.1f/frame (ubo %u, dynubo %u, img %u, smp %u, ssbo %u, other %u)", i ? "; " : "", i + 1, double( v[i].second ) / frames, ubo, uboDyn, img, smp, ssbo, other );
+				line += buf;
+			}
+			std::fprintf( stderr, "[RW-GPU-SETS] descriptor sets allocated %.1f/frame over %zu layouts (session: recycled %llu, newly built %llu); top: %s\n", double( total ) / frames, v.size(), (unsigned long long)setrecycle::g_reused.load(), (unsigned long long)setrecycle::g_created.load(), line.c_str() );
+		}
+	}
+
 	DescriptorSet::DescriptorSet( VkDevice device
 		, VkDescriptorPool pool
 		, VkDescriptorSetLayout layout )
@@ -148,6 +202,21 @@ namespace ashes::D3D11_NAMESPACE
 		assert( it->second.binding.descriptorCount >= write.dstArrayElement + write.descriptorCount );
 		assert( write.dstSet == get( this ) );
 		mergeWrites( it->second, write );
+	}
+
+	bool DescriptorSet::recycle()
+	{
+		if ( !m_inlineUbos.empty() )
+		{
+			return false;   // inline uniform blocks own buffers: not recycled
+		}
+		for ( auto & [_, write] : m_writes )
+		{
+			write.writes.clear();
+		}
+		m_imagesInfos.clear();
+		m_buffersInfos.clear();
+		return true;
 	}
 
 	void DescriptorSet::update()

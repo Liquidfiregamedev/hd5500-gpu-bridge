@@ -18,5 +18,5 @@ RW_GPU_PROCESS_PRIORITY=above
 #RW_GPU_INDEX_POOL=0
 # v13.75 switches back to v13.74 behaviour:
 # A/B test 20 Oct (name labels ghosting): v13.75 parts OFF for the next run. Put the # back to switch them on again.
-RW_GPU_UNIFORM_RING_STATIC=0
-RW_GPU_SET_CONTENT_UBO=0
+#RW_GPU_UNIFORM_RING_STATIC=0
+#RW_GPU_SET_CONTENT_UBO=0

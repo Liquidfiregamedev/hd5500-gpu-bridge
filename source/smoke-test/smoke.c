@@ -197,7 +197,7 @@ int main(int argc, char ** argv)
 	GD(vkCmdBeginRenderPass); GD(vkCmdEndRenderPass); GD(vkCmdBindPipeline); GD(vkCmdDraw); GD(vkQueueSubmit); GD(vkDeviceWaitIdle);
 	GD(vkResetCommandBuffer); GD(vkCreateSemaphore); GD(vkDestroySwapchainKHR);
 	GD(vkCmdPushConstants); GD(vkCmdClearAttachments); GD(vkCmdBlitImage); GD(vkCmdClearColorImage); GD(vkCreateBuffer); GD(vkCmdBindVertexBuffers); GD(vkGetBufferMemoryRequirements); GD(vkBindBufferMemory); GD(vkMapMemory); GD(vkUnmapMemory); GD(vkCmdPipelineBarrier); GD(vkCmdSetScissor); GD(vkCreateImage); GD(vkGetImageMemoryRequirements); GD(vkAllocateMemory); GD(vkBindImageMemory); GD(vkCreateSampler);
-	GD(vkCreateDescriptorSetLayout); GD(vkCreateDescriptorPool); GD(vkAllocateDescriptorSets); GD(vkUpdateDescriptorSets); GD(vkCmdBindDescriptorSets);
+	GD(vkCreateDescriptorSetLayout); GD(vkCreateDescriptorPool); GD(vkAllocateDescriptorSets); GD(vkUpdateDescriptorSets); GD(vkCmdBindDescriptorSets); GD(vkResetDescriptorPool); GD(vkFreeDescriptorSets);
 	GD(vkCmdCopyBufferToImage); GD(vkCmdCopyImageToBuffer); GD(vkCmdBindIndexBuffer); GD(vkCmdDrawIndexed); GD(vkCmdDrawIndexedIndirect); GD(vkCmdCopyBuffer);
 	VkQueue queue; vkGetDeviceQueue(device, 0, 0, &queue);
 
@@ -675,6 +675,27 @@ int main(int argc, char ** argv)
 			{ VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, NULL, wsetWater, 0, 0, 1, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, NULL, &dbWater, NULL },
 			{ VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, NULL, wsetWater, 1, 0, 5, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, diW, NULL, NULL } };
 		vkUpdateDescriptorSets(device, 5, ww, 0, NULL);
+		if (getenv("SMOKE_SETRECYCLE")) {   /* v13.81: the water set comes from a pool that was reset (=1) or a freed set (=2);
+			   the earlier set of the same layout had different textures. The picture must equal the normal water. */
+			int const viaFree = getenv("SMOKE_SETRECYCLE")[0] == '2';
+			VkDescriptorPoolCreateInfo rci = wdpci; if (viaFree) rci.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+			VkDescriptorPool rpool; CHECK(vkCreateDescriptorPool(device, &rci, NULL, &rpool));
+			VkDescriptorSetAllocateInfo ra = { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO, NULL, rpool, 1, &dslW };
+			VkDescriptorSet old; CHECK(vkAllocateDescriptorSets(device, &ra, &old));
+			VkDescriptorImageInfo diBad[5] = { diW[1], diW[0], diW[2], diW[4], diW[3] };
+			VkWriteDescriptorSet wb[2] = {
+				{ VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, NULL, old, 0, 0, 1, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, NULL, &dbDepth, NULL },
+				{ VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, NULL, old, 1, 0, 5, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, diBad, NULL, NULL } };
+			vkUpdateDescriptorSets(device, 2, wb, 0, NULL);
+			if (viaFree) CHECK(vkFreeDescriptorSets(device, rpool, 1, &old)); else CHECK(vkResetDescriptorPool(device, rpool, 0));
+			VkDescriptorSet fresh; CHECK(vkAllocateDescriptorSets(device, &ra, &fresh));
+			VkWriteDescriptorSet wr[2] = {
+				{ VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, NULL, fresh, 0, 0, 1, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, NULL, &dbWater, NULL },
+				{ VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, NULL, fresh, 1, 0, 5, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, diW, NULL, NULL } };
+			vkUpdateDescriptorSets(device, 2, wr, 0, NULL);
+			printf("setrecycle: %s, same handle reused: %s\n", viaFree ? "free" : "reset", fresh == old ? "yes" : "no");
+			wsetWater = fresh;
+		}
 		if (ubowin) {
 			float w2[128] = { 0 }; memcpy(w2, waterU, sizeof(float) * 64); memcpy(w2 + 64, waterU, sizeof(float) * 64); w2[64] = 1.0f; w2[65] = 0.3f; w2[66] = 0.3f;
 			VkBuffer ubWater2; CHECK(hostBuffer(&H, 512, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, w2, &ubWater2, NULL));

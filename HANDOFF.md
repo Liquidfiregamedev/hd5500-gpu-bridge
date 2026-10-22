@@ -1,4 +1,4 @@
-# FIX RIMWORLD — handoff (updated 2026-10-21, v13.77)
+# FIX RIMWORLD — handoff (updated 2026-10-21, v13.81)
 
 Goal: run RimWorld 1.7 (Waylith engine, .NET 10, Vulkan) on a laptop with an Intel HD 5500 (Windows 10, no native Vulkan driver), via the "HD5500 GPU Bridge": a Vulkan 1.0 ICD built from Ashes' D3D11 backend (`ashesD3D11Renderer.dll`) plus a compat loader proxy. v1–v13.2 came from Manus; v13.3 onward is Claude work. Design goal added by the user: the bridge must stay reusable for other pre-Vulkan GPUs (Haswell/Ivy Bridge Intel, pre-GCN AMD, Fermi), so capability checks are asked of the driver at run time, never hard-coded for the HD 5500.
 
@@ -6,6 +6,12 @@ Goal: run RimWorld 1.7 (Waylith engine, .NET 10, Vulkan) on a laptop with an Int
 
 ## Target hardware
 Lenovo Z70-80 · Win10 Pro 22H2 (19045) · i5-5200U (2C/4T) · HD 5500 (DEV_1616, driver 20.19.15.5171, D3D11 FL 11_1, D3D12 SM 5.1 / binding tier 1) · 16 GB DDR3L · 256 GB SSD (C: nearly full; keep deploys small) · external 1920×1200 display. The game window is 1920×1080 windowed.
+
+## Engine notes (v13.81)
+See `ENGINE-NOTES-WAYLITH.md` (Waylith architecture, drawing path, descriptor-set sources, switches). Bridge v13.81 recycles descriptor sets (`RW_GPU_SET_RECYCLE=0` = off). Local mod is at 0.6 (HUD/CSV, lazy sections, loading cap, TPS items). Linux: `LINUX-PLAN.md`.
+
+## Private local build (v13.78)
+`F:\HD5500-GPU-Bridge\local` (outside the repo): `local-env.txt`, `Play-Local.cmd`, `Speedtest-Local.cmd`, private mod `mods\HD5500Local` (Harmony; source in `mods\HD5500Local\Source`, build with net10 SDK against the game DLLs). The launcher uses it only with `-LocalDir`. v0.1: GPU-profile cache (skips the boot GPU probe), tick budget per frame. Next: per-draw uniforms through a dynamic UBO (Ludeon report B1). Useful results move into the bridge or the Optimizer mod. Cloud copy: `~/local`.
 
 ## Other Vulkan drivers (v13.77)
 `-AltIcd "<driver .json>"` / menu Diagnostics → Compare: other Vulkan driver runs the quicktest on a user-supplied ICD (e.g. Mesa Dozen) instead of the bridge. Renderer unchanged since v13.76. Findings from the Fracture sessions are in RESEARCH (ninth pass); none required a bridge change.

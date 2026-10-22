@@ -5,6 +5,9 @@
 #include "Core/D3D11Device.hpp"
 
 #include "ashesd3d11_api.hpp"
+#include "renderer/D3D11Renderer/Miscellaneous/D3D11EnvFlags.hpp"
+
+#include <atomic>
 
 namespace ashes::D3D11_NAMESPACE
 {
@@ -17,11 +20,29 @@ namespace ashes::D3D11_NAMESPACE
 		m_createInfos.pPoolSizes = m_poolSizes.data();
 	}
 
+	namespace setrecycle
+	{
+		std::atomic< uint64_t > g_reused{ 0u };
+		std::atomic< uint64_t > g_created{ 0u };
+		inline bool enabled()
+		{
+			static bool const result = envflags::on( "RW_GPU_SET_RECYCLE", true );
+			return result;
+		}
+	}
+
 	DescriptorPool::~DescriptorPool()noexcept
 	{
-		for ( auto & set : m_sets )
+		for ( auto & set : m_allSets )
 		{
 			deallocateNA( set );
+		}
+		for ( auto & [_, list] : m_free )
+		{
+			for ( auto & set : list )
+			{
+				deallocateNA( set );
+			}
 		}
 	}
 
@@ -29,17 +50,50 @@ namespace ashes::D3D11_NAMESPACE
 	{
 		if ( checkFlag( m_createInfos.flags, VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT ) )
 		{
-			m_sets.push_back( set );
+			m_sets.insert( set );
 		}
 
-		m_allSets.push_back( set );
+		m_allSets.insert( set );
+	}
+
+	void DescriptorPool::release( VkDescriptorSet set )
+	{
+		if ( setrecycle::enabled() )
+		{
+			auto & list = m_free[get( set )->getLayout()];
+			if ( list.size() < 16384u && get( set )->recycle() )
+			{
+				list.push_back( set );
+				return;
+			}
+		}
+		deallocateNA( set );
+	}
+
+	VkDescriptorSet DescriptorPool::tryReuse( VkDescriptorSetLayout layout )
+	{
+		if ( !setrecycle::enabled() )
+		{
+			return VK_NULL_HANDLE;
+		}
+		auto it = m_free.find( layout );
+		if ( it == m_free.end() || it->second.empty() )
+		{
+			setrecycle::g_created.fetch_add( 1u, std::memory_order_relaxed );
+			return VK_NULL_HANDLE;
+		}
+		auto set = it->second.back();
+		it->second.pop_back();
+		registerSet( set );
+		setrecycle::g_reused.fetch_add( 1u, std::memory_order_relaxed );
+		return set;
 	}
 
 	VkResult DescriptorPool::reset()
 	{
 		for ( auto & set : m_allSets )
 		{
-			deallocateNA( set );
+			release( set );
 		}
 
 		m_allSets.clear();
@@ -53,14 +107,10 @@ namespace ashes::D3D11_NAMESPACE
 		{
 			for ( auto set : sets )
 			{
-				auto it = std::find( m_sets.begin()
-					, m_sets.end()
-					, set );
-
-				if ( it != m_sets.end() )
+				if ( m_sets.erase( set ) )
 				{
-					deallocateNA( *it );
-					m_sets.erase( it );
+					m_allSets.erase( set );
+					release( set );
 				}
 			}
 		}

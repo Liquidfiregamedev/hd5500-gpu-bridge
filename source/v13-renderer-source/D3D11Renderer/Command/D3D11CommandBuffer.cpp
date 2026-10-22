@@ -303,10 +303,10 @@ namespace ashes::D3D11_NAMESPACE
 						char part[160];
 						char const * fullName = slots[i].type->name();
 						char const * shortName = std::strrchr( fullName, ':' );
-						std::snprintf( part, sizeof( part ), "%s%s x%u=%.0fms", i ? ", " : "", shortName ? shortName + 1 : fullName, slots[i].count, slots[i].ms );
+						std::snprintf( part, sizeof( part ), "%s%s x%u=%.2fms", i ? ", " : "", shortName ? shortName + 1 : fullName, slots[i].count, slots[i].ms );
 						top += part;
 					}
-					std::fprintf( stderr, "[RW-GPU-PROF] %s command buffer %.0f ms (thread CPU %.0f ms, kernel %.0f ms; machine busy %.0f%%, speed probe %.0f us), %zu commands: %s; uploads done=%llu skipped=%llu bytes=%.1fMB directTex=%llu; binds tex=%.0fms buf=%.0fms dyn=%.0fms uav=%.0fms\n", sample ? "sample" : ( medium ? "medium" : "slow" ), total, cpuMs, kernelMs, sysBusy, probe, m_commands.size(), top.c_str()
+					std::fprintf( stderr, "[RW-GPU-PROF] %s command buffer %.0f ms (thread CPU %.0f ms, kernel %.0f ms; machine busy %.0f%%, speed probe %.0f us), %zu commands: %s; uploads done=%llu skipped=%llu bytes=%.1fMB directTex=%llu; binds tex=%.3fms buf=%.3fms dyn=%.3fms uav=%.3fms\n", sample ? "sample" : ( medium ? "medium" : "slow" ), total, cpuMs, kernelMs, sysBusy, probe, m_commands.size(), top.c_str()
 						, static_cast< unsigned long long >( context.uploadsDone ), static_cast< unsigned long long >( context.uploadsSkipped ), double( context.uploadBytes ) / 1048576.0, static_cast< unsigned long long >( context.directUploads )
 						, context.bindMsTextures, context.bindMsBuffers, context.bindMsDynamic, context.bindMsUavs );
 				}

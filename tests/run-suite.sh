@@ -152,5 +152,17 @@ gn=$(grep -h 'readback grid:' suite-ubowin-new.txt | head -1); go=$(grep -h 'rea
 grep -q 'RW-GPU-SET\] descriptor-set content fast path in use' suite-ubowin-new.txt || ok=0
 grep -q 'RW-GPU-UBRING\] first batch' suite-ubowin-new.txt || ok=0
 if [ $ok = 1 ]; then printf 'ok    %-12s %s\n' ubowin "sets differing only in uniform offset: fast path + ring identical to old path"; else printf 'FAIL  %-12s\n' ubowin; fail=1; fi
+# v13.81 setrecycle: the water set is a recycled set (pool reset =1, freed set =2) whose earlier content had
+# other textures. Picture must equal the normal water, the handle must really be reused, and RW_GPU_SET_RECYCLE=0
+# must give the same picture.
+ok=1
+for m in 1 2; do
+SMOKE_SETRECYCLE=$m RW_HD5500_FRAME_DIAG=1 timeout 180 xvfb-run -a wine smoke.exe 'Z:\root\wt\run\suite-under-test.dll' 1 water > suite-recycle-$m.txt 2>&1
+RW_GPU_SET_RECYCLE=0 SMOKE_SETRECYCLE=$m RW_HD5500_FRAME_DIAG=1 timeout 180 xvfb-run -a wine smoke.exe 'Z:\root\wt\run\suite-under-test.dll' 1 water > suite-recycle-$m-off.txt 2>&1
+gr=$(grep -h 'readback grid:' suite-recycle-$m.txt | head -1); gf=$(grep -h 'readback grid:' suite-recycle-$m-off.txt | head -1)
+{ grep -q '^PASS' suite-recycle-$m.txt && [ -n "$gr" ] && [ "$gr" = "$wa" ] && [ "$gr" = "$gf" ]; } || ok=0
+grep -q 'same handle reused: yes' suite-recycle-$m.txt || ok=0
+done
+if [ $ok = 1 ]; then printf 'ok    %-12s %s\n' setrecycle "recycled descriptor sets (reset and free): no stale bindings, identical to recycling off"; else printf 'FAIL  %-12s\n' setrecycle; fail=1; fi
 [ $fail = 0 ] && echo "SUITE PASS" || echo "SUITE FAIL"
 exit $fail

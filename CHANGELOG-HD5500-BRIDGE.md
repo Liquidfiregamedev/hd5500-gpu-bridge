@@ -2,6 +2,102 @@
 
 Running record per version. Newest first. "Status" is what was verified where: *emu* = my Wine/D3D11 harness (`smoke.c`, 6 modes), *laptop* = the user's Lenovo Z70-80 (HD 5500, Win10).
 
+## v13.86 (2026-10-22) — measuring build for the 1.0 ms goal; v13.75 switches stay off
+- **Result of the A/B on game 1.7.4984.** With the v13.75 static uniform ring and the content key without UBO offsets switched back on, the content fast path hit only 12% of binds (341k of 2.9M). The ring copied 2.2M windows with one large Map per command buffer: about 9 uploads per frame at roughly 56 µs each. Even before the laptop throttled (from about 3.5 min, CPU down to 22%), the bridge measured 2.3 µs per draw against 1.3 µs in the baseline. These numbers come from the 22:53 speed test; the throttling and the different random map make it uncertain, but the switches don't help here. Both stay off in `experiment-env.txt`, and the baseline (1.4 ms) stays the reference.
+- **Profiler lines** `[RW-GPU-PROF]` now print the per-command and bind-category times with 2–3 decimals instead of whole milliseconds, so the next run shows where the 1.5 µs per descriptor-set bind goes: textures/samplers, buffers, dynamic buffers or storage buffers.
+- **Plan toward 1.0 ms:**
+  - Bind work currently happens when the set is bound, for every stage the layout declares. Waylith marks uniform buffers as visible to both vertex and fragment shaders, so every per-draw uniform buffer costs two D3D11 calls.
+  - The next step is deferred binding in the style of DXVK and ANGLE: record what each set wants, then at draw time apply only the slots that the current pipeline's shaders actually read. This needs per-pipeline slot masks from shader reflection.
+  - Expected saving: about half of the uniform-buffer calls, plus redundant SRV and sampler work.
+
+## v13.85 (2026-10-21) — presets in "Switch tweaks on/off"
+- Pick a preset, press "Tick this preset", then Save. Every preset includes the local defaults, the GPU-probe skip, the 25 ms tick budget, and the HUD and CSV. Presets:
+  - **1** Baseline
+  - **2** + simulation caches
+  - **3** + lighter interface
+  - **4** + fewer effects
+  - **5** + extra simulation throttles
+  - **6** + faster loading
+  - **7** + Satori GC
+  - **8** + zoom limit and no shadows
+  - **9** all safe tweaks (2-6) together
+  - **0** everything off
+- The experimental switches (fleck instancing, global throttling) and the .NET switches are in no preset; tick them by hand.
+
+## v13.84 (2026-10-21) — tick boxes for the local switches; v13.83 baseline measured
+- **Menu → Local build → "Switch tweaks on/off":** a list of every switch in `local\local-env.txt` with a tick box and its explanation. Save only adds or removes the `#` in front of a line; values are still changed with "Edit local switches".
+- **Baseline speed test with v13.83** (game 1.7.4984, quicktest map, 45 fps cap):
+  - 44.5 fps; 1% low 29.9 fps (v13.75: 21.5); 0.1% low 10.2; 8 gameplay frames over 50 ms.
+  - Bridge 1.4 ms per frame (4.3 µs per draw, about 322 draws); TPS 99% of target.
+  - Descriptor sets: only about **14.7 newly allocated per frame** (10 layouts). 318 were built in the whole session and over 156,000 recycled, so recycling works. The large figure from before (about 2.8 million "full" set binds per session) counts *binds*, not allocations. That is where the remaining per-draw descriptor cost lies.
+
+## v13.83 (2026-10-21) — menu: Local build page
+- The Bridge menu has a new **Local build** page. It only appears when a `local` folder with `local-env.txt` sits next to `package`, so the public package is unchanged for everyone else. The page has these buttons:
+  - Play (local)
+  - Speed test (local, 5 min)
+  - Quicktest (local)
+  - Edit local switches (Notepad)
+  - Read what each switch does
+  - Open the performance CSV folder
+- No renderer or launcher change.
+
+## v13.82 (2026-10-21) — native runtime findings (game 1.7.4984); Satori GC switch; AMD note
+The renderer is unchanged from v13.81.
+- **Game updated to 1.7.4984 rev1242 on the laptop.** All local-mod patch targets were re-checked against the new DLLs and every one still applies. The only exceptions are the two the harness cannot load (`TickManager.DoSingleTick`, which references Steamworks, and Waylith `RenderThread.Enqueue`); the mod checks both in game.
+- **Native files examined** (coreclr, clrjit, clrgc, hostfxr/hostpolicy, glfw3 with its PDB, vma, waylithaudio, VulkanEx). WaylithCLR's own runtimeconfig switches, read from coreclr.dll, include **`WaylithClr.SatoriGC`**: the Satori low-pause garbage collector is built into the game's runtime but switched off.
+  - **New local switch `RW_LOCAL_SATORI_GC=1`:** the launcher adds the property to `RimWorld.runtimeconfig.json` for that run and restores the original afterwards. A backup left by a crashed run is restored at the next start. Experimental; the CSV/HUD GC columns show the effect.
+- **Found:** `vulkan-1.dll` and `rw_system_vulkan.dll` in the RimWorld folder are the bridge's own temporary files, left behind by an earlier run that was cut off. The launcher reuses them; a normal Steam start would also pick up the compat loader. Delete both files from the game folder if you start RimWorld without the bridge.
+- **AMD:** RimWorldAMDFix (MIT, a Vulkan layer) works around an AMD driver bug in 1:1 BC7 blits during atlas building, which leaves items drawn as their top-left corner on the RX 9070 XT with driver 26.10.1. It is not needed in the bridge: our own blit/BC path is unaffected, and bridge runs disable implicit layers anyway. Gpu-Compat now points AMD users to it, and the Ludeon report has a new item 3.32.
+
+## v13.81 (2026-10-21) — descriptor sets recycled; double-free fixed; engine notes
+- **Descriptor-set recycling (`RW_GPU_SET_RECYCLE`, default on; `=0` = old behaviour).** RimWorld 1.7 allocates a new descriptor set for almost every draw and resets the pools every frame, about 2 million sets per session. Until now, each set was built from scratch: a new object, a std::map node per binding, and up to 13 pointer arrays. On pool reset or free, the bridge now keeps the set object per layout and hands it out again with its writes cleared. `[RW-GPU-SETS]` shows how many sets were recycled versus newly built.
+- **Fixed (upstream Ashes bug):** a set freed with `vkFreeDescriptorSets` stayed in the pool's list of all sets, so a later `vkResetDescriptorPool` deleted it a second time. Freeing was also a linear search through every set of the pool. Both lists are now hash sets.
+- New suite check `setrecycle` (35 checks): water drawn from a recycled set, after a pool reset and after an individual free, where the previous content used other textures. The picture must equal the reference and the result with recycling off, and the handle must really be reused. The suite passes in default mode and with the submit thread.
+- New doc `ENGINE-NOTES-WAYLITH.md` covers threads, the drawing path, where the descriptor sets come from (a Cecil scan found about 30 property-block draw sites), simulation, loading and caches, all verified switches, and what we applied where.
+- Private build: Linux launch-script draft in `local/linux/play-local.sh` (untested).
+
+## v13.80 (2026-10-21) — descriptor-set counter
+- The renderer now logs a [RW-GPU-SETS] line with each periodic report: new descriptor sets per frame, and the 6 layouts that create the most, with their binding mix (uniform buffers, images, samplers, storage buffers). This is the groundwork for the "per-draw descriptor set" fix.
+- A code scan with Mono.Cecil found about 30 places in the game that draw with their own property block, and each of those means a new set. The ones that run every frame are pawn overlays, designations, map-edge clippers, the darkness layer, motes, flecks and DrawBatch.
+- The suite passes (34 checks). Local mod v0.6 is unchanged.
+
+## v13.79 + local build v0.4 (2026-10-21)
+- **Launcher:** `local-env.txt` may also set the Waylith engine variables `WAYLITH_NO_ASSET_PREFETCH`, `WAYLITH_STAGE_UPLOADS_IN_RAM` and `WAYLITH_VRAM_BUDGET_MB`, which were found in the 1.7 code. Nothing else has changed, and the renderer is still the v13.76 file.
+- **Local mod 0.4 (private):** 19 simulation caches and throttles (`RW_LOCAL_TPS_CACHES`, with exclusions), alerts mini mode, colonist bar icons, tab-check cache, mote alpha steps, experimental fleck instancing and global-shader throttling. All are off by default and pass the patch harness except one target the harness cannot load. Details in `local\README-LOCAL.md`.
+
+## Local build v0.3 (2026-10-21) — public package unchanged
+Frame-time techniques from the open-source Performance Optimizer (MIT) and Performance Fish (MPL-2.0), re-implemented for RimWorld 1.7 after checking each target in the 1.7.4981 code. No code was copied, and neither mod supports 1.7. Each technique has its own switch, off by default:
+- interface parts drawn only while the mouse is near them;
+- off-screen fleck creation and drawing culled;
+- fleck cap per frame;
+- gizmo cache for up to 8 frames;
+- plant-wind loop skipped while sway is off;
+- fall-colour cache.
+
+A start-up self-check logs `SELFTEST FAIL` for a changed target, and a counter line 60 s after a map loads shows that each patch actually runs. All 10 targets patch cleanly in the cloud harness. Details: `local\README-LOCAL.md`.
+
+## Local build v0.2 (2026-10-21) — public package unchanged
+Private mod "HD5500 Local Tweaks" 0.2 and new `local-env.txt` switches, from two more code passes and a web pass. All are off by default:
+- zoom limit;
+- shadows off;
+- plant sway off (session only);
+- text size cache;
+- alerts every 2nd frame;
+- single-threaded dynamic drawing;
+- GC low-latency mode;
+- JIT/GC tests;
+- `-WindowSize=1920,1017`.
+
+The mod also logs whether the runtime honours `DOTNET_*` variables. Details, verified engine switches and the items that were ruled out are in `local\README-LOCAL.md`. Bridge ideas recorded for later: a push-constant ring, sub-state filtering, descriptor-pool reset cost, and a waitable swapchain.
+
+## v13.78 (2026-10-21) — hook for a private local build (`..\local`, not in the repo)
+Renderer unchanged (same DLL as v13.76). Launcher only.
+- **New: `-LocalDir <folder>`.** Used by a private folder next to `package\` (on this laptop `F:\HD5500-GPU-Bridge\local`, outside the Git repo). The launcher reads `local-env.txt` from there after `experiment-env.txt` (`RW_LOCAL_*` plus the usual RW_GPU_/RW_OPT_/DOTNET_ names, and `RW_LOCAL_GAME_ARGS` for extra game arguments), installs private mods from `local\mods\` into `RimWorld\Mods` (test runs load them with `-mod=`), and with `RW_LOCAL_GPU_PROFILE=1` writes Waylith's GPU-profile cache. Without `-LocalDir` nothing changes.
+- **GPU-profile cache (found in `Waylith.Hardware.HardwareProfile` / `GpuPerformanceProfileStore`, `RimWorldWaylith.Bootstrap`):** every boot runs a GPU benchmark (~1.7 s full GPU load, 272 MB of buffers). On the HD 5500 it never completes within its 1.5 s budget, so it is never cached and runs again next boot. The cache file is `<LocalLow>\Ludeon Studios\RimWorld by Ludeon Studios\HardwareProfile\gpu-profile.bin`, keyed on the vendor/device/driver version the Vulkan device reports (the bridge reports PCI vendor, device and revision). The launcher writes it with values giving the same "Low" tier. A wrong key means the file is ignored and the probe runs as before. Candidate for the public build once confirmed.
+- **Private mod "HD5500 Local Tweaks" 0.1 (local only):** Harmony transpiler on `Verse.TickManager.TickManagerUpdate`, replacing the 45.45 ms tick budget per frame with `RW_LOCAL_TICK_BUDGET_MS`. Verified against the 1.7.4981 IL in the cloud with Harmony 2.4.3 on .NET 10.0.13 (exactly one constant replaced). The mod skips itself if the code changed. It uses an already-loaded Harmony (brrainz.harmony) or its own copy, kept outside `Assemblies\`.
+- `local-env.txt` also accepts `DOTNET_PROCESSOR_COUNT`: Waylith's job runtime starts `ProcessorCount - 1` workers (3 on this 2-core/4-thread CPU, next to the main, render and bridge submit threads); the switch tests fewer. More code-pass notes (frame limiter, Harmony on `Waylith.dll` versus `JitPatchableAssemblies`, map sections, pawn atlas, Waylith's existing material-set caches) are in `local\README-LOCAL.md`.
+- Re-checked: the Vulkan 1.1 shader-pack route (`RW_GPU_API_VERSION=1.1`, v13.49) is already a switch and showed no difference with warm caches.
+
 ## v13.77 (2026-10-21) — compare with another Vulkan driver (Mesa Dozen); notes from the Fracture sessions
 Renderer unchanged (same DLL and hash as v13.76). Launcher and menu only.
 - **New: `-AltIcd <driver .json>`** and menu **Diagnostics → Compare: other Vulkan driver**. Runs the quicktest map on a Vulkan driver the user downloaded instead of the bridge, for example Mesa **Dozen** (Vulkan on Direct3D 12, `dzn_icd.x86_64.json` from mesa-dist-win). Nothing is bundled or installed. Works like `-Reference`: the Intel preflight and `experiment-env.txt` are skipped. Fallback: simply don't use it; normal play is untouched.

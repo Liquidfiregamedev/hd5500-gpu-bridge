@@ -48,6 +48,9 @@ param(
     # vulkan_dzn.dll + dzn_icd.x86_64.json from mesa-dist-win). Not bundled; nothing is installed. Like
     # -Reference: the Intel preflight and experiment-env.txt are skipped. Experimental comparison only.
     [string]$AltIcd = '',
+    # v13.78: PRIVATE local build - a folder outside the public package (e.g. ..\local) with local-env.txt
+    # (RW_LOCAL_* switches) and mods\ (private runtime-patch mods). Used by local\Play-Local.cmd.
+    [string]$LocalDir = '',
     # v13.56: load the read-only tick-rate counter mod (mods\HD5500TickRate) with -mod=. Automatic for test
     # runs (-quicktest / -AutoCloseSeconds); for normal play only with -TickCounter, because -mod= starts the
     # game with the base game + DLCs + this mod only (other mods off for that run).
@@ -79,6 +82,7 @@ try {
 $runner = $null
 $workDir = $PSScriptRoot
 $temporaryFiles = @{}
+$runtimeConfigBackup = $null   # v13.82: local Satori GC switch
 $startUtc = [DateTime]::UtcNow
 
 function Invoke-Captured([string]$FilePath,[string]$RawArguments,[string]$Label,[int]$TimeoutSeconds=0) {
@@ -295,7 +299,7 @@ try {
         if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { throw ('Missing ' + $file + '. Extract the whole ZIP to a separate folder.') }
     }
     Write-Host ('Renderer SHA256: ' + (Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash)
-    if ((Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash -ne '18FCD22080BDBF241DA1065E2B826994F8DF6DF6EA1EF05FF0BFF8BED3A89635') { throw 'Renderer hash differs from this v13.76 release. Re-extract the whole ZIP; do not mix revisions.' }
+    if ((Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash -ne 'F4BEF519E2F667C6C6D4C6D3235F3BC979EB63EB8819BA2B954467ABA62428C8') { throw 'Renderer hash differs from this v13.86 release. Re-extract the whole ZIP; do not mix revisions.' }
     # Local byte-identical copy of the user's existing loader; no Windows file changes.
     Copy-Item -LiteralPath $system -Destination $loaderCopy -Force
     if ((Get-FileHash -LiteralPath $system).Hash -ne (Get-FileHash -LiteralPath $loaderCopy).Hash) { throw 'Local original-loader copy verification failed.' }
@@ -385,6 +389,22 @@ try {
                 Write-Host ('EXPERIMENT: ' + $Matches[1] + '=' + $Matches[2] + ' (from experiment-env.txt)')
             }
         }
+    }
+    # v13.78: private local build - its env file is read after experiment-env.txt (local wins).
+    $localGameArgs = ''
+    if ($LocalDir -and -not $foreignIcd) {
+        $localEnv = Join-Path $LocalDir 'local-env.txt'
+        if (Test-Path -LiteralPath $localEnv -PathType Leaf) {
+            foreach ($line in Get-Content -LiteralPath $localEnv) {
+                $t = $line.Trim()
+                if ($t -eq '' -or $t.StartsWith('#')) { continue }
+                if ($t -match '^RW_LOCAL_GAME_ARGS=(.*)$') { $localGameArgs = $Matches[1].Trim(); Write-Host ('LOCAL: extra game arguments ' + $localGameArgs); continue }
+                if ($t -match '^(RW_LOCAL_[A-Z0-9_]+|RW_GPU_[A-Z0-9_]+|RW_HD5500_[A-Z0-9_]+|RW_OPT_[A-Z0-9_]+|DOTNET_GC[A-Za-z0-9_]+|DOTNET_Tiered[A-Za-z0-9_]*|DOTNET_TC_[A-Za-z0-9_]+|DOTNET_ReadyToRun|DOTNET_PROCESSOR_COUNT|WAYLITH_NO_ASSET_PREFETCH|WAYLITH_STAGE_UPLOADS_IN_RAM|WAYLITH_VRAM_BUDGET_MB)=(.*)$') {
+                    [Environment]::SetEnvironmentVariable($Matches[1],$Matches[2],'Process')
+                    Write-Host ('LOCAL: ' + $Matches[1] + '=' + $Matches[2] + ' (from local-env.txt)')
+                }
+            }
+        } else { Write-Host ('LOCAL: no local-env.txt in ' + $LocalDir) }
     }
     # v13.49: Vulkan version comparison. RW_GPU_API_VERSION=1.1 or 1.2 (experiment-env.txt) makes the
     # bridge report that version; the loader also reads the version from the ICD manifest, so a
@@ -708,6 +728,65 @@ try {
                 }
             } catch { Write-Host ('Game frame profile not available: ' + $_.Exception.Message) }
         }
+        # v13.78: private local build - extra game arguments, cached GPU profile, private mods.
+        if ($LocalDir -and -not $foreignIcd) {
+            if ($localGameArgs) { $GameArguments = ($GameArguments + ' ' + $localGameArgs).Trim() }
+            # Waylith runs a ~1.7 s GPU benchmark at every boot on slow GPUs because the result is "incomplete"
+            # and never cached (Waylith.Hardware.HardwareProfile / GpuPerformanceProfileStore). Writing the
+            # cache file it looks for skips it. Key = what the bridge reports: PCI vendor, device, revision.
+            # Values give the same "Low" tier the game uses now. Wrong key = file ignored, probe runs as before.
+            if ([Environment]::GetEnvironmentVariable('RW_LOCAL_GPU_PROFILE','Process') -eq '1') {
+                try {
+                    $vc = @(Get-CimInstance Win32_VideoController -ErrorAction Stop | Where-Object { $_.PNPDeviceID -match 'VEN_([0-9A-F]{4})&DEV_([0-9A-F]{4}).*REV_([0-9A-F]{2})' -and $_.PNPDeviceID -match 'VEN_8086' } | Select-Object -First 1)
+                    if ($vc.Count -and $vc[0].PNPDeviceID -match 'VEN_([0-9A-F]{4})&DEV_([0-9A-F]{4}).*REV_([0-9A-F]{2})') {
+                        $ven = [Convert]::ToInt32($Matches[1],16); $dev = [Convert]::ToInt32($Matches[2],16); $rev = [Convert]::ToInt32($Matches[3],16)
+                        $profDir = Join-Path $data 'HardwareProfile'; New-Item -ItemType Directory -Force -Path $profDir | Out-Null
+                        $ms = New-Object IO.MemoryStream; $bw = New-Object IO.BinaryWriter($ms)
+                        $bw.Write([uint32]1196446278); $bw.Write([int32]4); $bw.Write([int32]$ven); $bw.Write([int32]$dev); $bw.Write([int32]$rev)
+                        $bw.Write([single]250.0); $bw.Write([single]25.6); $bw.Write([int32]0); $bw.Flush()
+                        [IO.File]::WriteAllBytes((Join-Path $profDir 'gpu-profile.bin'), $ms.ToArray())
+                        Write-Host ('LOCAL: cached GPU profile written (vendor ' + $Matches[1] + ' device ' + $Matches[2] + ' rev ' + $Matches[3] + '): the boot GPU benchmark is skipped. Look for "HardwareProfile: loaded cached" in Player.log.')
+                    } else { Write-Host 'LOCAL: GPU profile not written (no Intel adapter with a PCI revision found).' }
+                } catch { Write-Host ('LOCAL: GPU profile not written: ' + $_.Exception.Message) }
+            }
+            # v13.82: the game's runtime (WaylithCLR) contains the Satori low-pause garbage collector, switched by the
+            # runtimeconfig property WaylithClr.SatoriGC (found in coreclr.dll). Local only: the launcher writes the
+            # property into RimWorld.runtimeconfig.json for this run and restores the original afterwards (a backup
+            # left by a crashed run is restored at the next start).
+            $rcPath = Join-Path (Split-Path -Parent $GameExe) 'RimWorld.runtimeconfig.json'
+            $rcBackup = $rcPath + '.hd5500-original'
+            if (Test-Path -LiteralPath $rcBackup) { Copy-Item -LiteralPath $rcBackup -Destination $rcPath -Force; Remove-Item -LiteralPath $rcBackup -Force -ErrorAction SilentlyContinue; Write-Host 'LOCAL: restored the original runtimeconfig left by an earlier run.' }
+            if ([Environment]::GetEnvironmentVariable('RW_LOCAL_SATORI_GC','Process') -eq '1' -and (Test-Path -LiteralPath $rcPath)) {
+                try {
+                    $rcText = [IO.File]::ReadAllText($rcPath)
+                    if ($rcText -notmatch 'WaylithClr\.SatoriGC') {
+                        Copy-Item -LiteralPath $rcPath -Destination $rcBackup -Force
+                        $rcNew = $rcText -replace '"configProperties"\s*:\s*\{', ('"configProperties": {' + [Environment]::NewLine + '      "WaylithClr.SatoriGC": true,')
+                        [IO.File]::WriteAllText($rcPath, $rcNew)
+                        $script:runtimeConfigBackup = $rcBackup
+                        Write-Host 'LOCAL: Satori GC switched on for this run (RimWorld.runtimeconfig.json, restored afterwards).'
+                    } else { Write-Host 'LOCAL: runtimeconfig already mentions SatoriGC; left as is.' }
+                } catch { Write-Host ('LOCAL: Satori GC not switched on: ' + $_.Exception.Message) }
+            }
+            $localMods = Join-Path $LocalDir 'mods'
+            if (Test-Path -LiteralPath $localMods -PathType Container) {
+                foreach ($m in @(Get-ChildItem -LiteralPath $localMods -Directory)) {
+                    try {
+                        $about = Join-Path $m.FullName 'About\About.xml'
+                        if (-not (Test-Path -LiteralPath $about)) { continue }
+                        $pkg = ([xml](Get-Content -LiteralPath $about -Raw)).ModMetaData.packageId
+                        $target = Join-Path (Split-Path -Parent $GameExe) ('Mods\' + $m.Name)
+                        New-Item -ItemType Directory -Force -Path $target | Out-Null
+                        foreach ($sub in 'About','Assemblies','Harmony') { $src = Join-Path $m.FullName $sub; if (Test-Path -LiteralPath $src) { Copy-Item -LiteralPath $src -Destination $target -Recurse -Force } }
+                        Write-Host ('LOCAL: private mod ' + $pkg + ' installed in ' + $target)
+                        if ($isTestRun) {
+                            if ($GameArguments -match '-mod=(\S+)') { if ($Matches[1] -notmatch [regex]::Escape($pkg)) { $GameArguments = $GameArguments -replace '-mod=(\S+)', ('-mod=$1,' + $pkg) } }
+                            else { $GameArguments = ($GameArguments + ' -mod=' + $pkg).Trim() }
+                        } else { Write-Host ('LOCAL: for normal play enable "' + $pkg + '" once in the game''s mod list.') }
+                    } catch { Write-Host ('LOCAL: mod ' + $m.Name + ' not installed: ' + $_.Exception.Message) }
+                }
+            }
+        }
         # v13.53: one line per frame (frame time, present, bridge time, CPU speed) for graphs and 1%/0.1% lows.
         [Environment]::SetEnvironmentVariable('RW_GPU_FRAMETIME_CSV',(Join-Path $runDir 'frametimes.csv'),'Process')
         if ([Environment]::GetEnvironmentVariable('RW_GPU_THERMAL_GUARD','Process') -eq '1') { Write-Host 'Heat guard ON: the game is capped to 30 fps while the laptop throttles or runs hot.' }
@@ -738,6 +817,9 @@ try {
     Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red
     $exitCode = 1
 } finally {
+    if ($runtimeConfigBackup -and (Test-Path -LiteralPath $runtimeConfigBackup)) {
+        try { $rcOrig = $runtimeConfigBackup.Substring(0, $runtimeConfigBackup.Length - '.hd5500-original'.Length); Copy-Item -LiteralPath $runtimeConfigBackup -Destination $rcOrig -Force; Remove-Item -LiteralPath $runtimeConfigBackup -Force; Write-Host 'LOCAL: original runtimeconfig restored.' } catch { Write-Host ('LOCAL: could not restore the runtimeconfig; copy ' + $runtimeConfigBackup + ' back by hand: ' + $_.Exception.Message) -ForegroundColor Yellow }
+    }
     foreach ($file in @($temporaryFiles.Keys)) {
         try {
             if ((Test-Path -LiteralPath $file -PathType Leaf) -and (Get-FileHash -LiteralPath $file).Hash -eq $temporaryFiles[$file]) {

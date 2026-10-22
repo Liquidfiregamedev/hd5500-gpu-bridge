@@ -1045,6 +1045,8 @@ namespace ashes::D3D11_NAMESPACE
 		return get( descriptorPool )->reset();
 	}
 
+	namespace setstats { void count( VkDescriptorSetLayout layout ); }
+
 	VkResult VKAPI_CALL vkAllocateDescriptorSets(
 		VkDevice device,
 		const VkDescriptorSetAllocateInfo * pAllocateInfo,
@@ -1059,6 +1061,13 @@ namespace ashes::D3D11_NAMESPACE
 		{
 			if ( result == VK_SUCCESS )
 			{
+				setstats::count( *itLayout );   // v13.80
+				// v13.81: a set recycled by the pool skips the construction (map + arrays per set)
+				if ( auto reused = get( pAllocateInfo->descriptorPool )->tryReuse( *itLayout ) )
+				{
+					*itSet = reused;
+					continue;
+				}
 				result = allocateNA( *itSet
 					, device
 					, pAllocateInfo->descriptorPool

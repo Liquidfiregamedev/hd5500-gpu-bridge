@@ -44,6 +44,7 @@
 
 namespace ashes::D3D11_NAMESPACE
 {
+	namespace setstats { void printAndReset( unsigned frames ); }
 	namespace framepacing
 	{
 		// v13.48: wait (sleeping, not spinning) after each present until the GPU has finished
@@ -337,6 +338,7 @@ namespace ashes::D3D11_NAMESPACE
 					, double( submitthread::g_drainWaitUs.load() ) / 1000.0, double( submitthread::g_presentWaitUs.load() ) / 1000.0 );
 				cmdstats::printAndReset( sorted.size() );   // v13.66
 				apitime::printAndReset( sorted.size() );   // v13.68
+				setstats::printAndReset( unsigned( sorted.size() ) );   // v13.80
 				std::fprintf( stderr, "[RW-GPU-IA] index-buffer binds (session): D3D11 calls=%llu unchanged=%llu offset folded into firstIndex=%llu; sub-page uploads without write-watch query=%llu; commands freed in the background=%llu; descriptor sets bound by content match=%llu; uploads merged at recording=%llu; uniform ring: windows=%llu fallbacks=%llu maps=%llu wraps=%llu; index pool: hits=%llu copies=%llu restarts=%llu%s\n"
 					, (unsigned long long)g_indexBinds.load(), (unsigned long long)g_indexSame.load(), (unsigned long long)g_indexFolded.load(), (unsigned long long)g_subpageDirect.load(), (unsigned long long)reaper::g_deferred.load(), (unsigned long long)g_setContentFast.load(), (unsigned long long)g_uploadsMerged.load(), (unsigned long long)ubring::g_windows.load(), (unsigned long long)ubring::g_fallbacks.load(), (unsigned long long)ubring::g_maps.load(), (unsigned long long)ubring::g_discards.load(), (unsigned long long)idxpool::g_hits.load(), (unsigned long long)idxpool::g_copies.load(), (unsigned long long)idxpool::g_resets.load(), idxpool::g_disabled.load() ? " (switched off: did not fit)" : "" );
 				s.lastWatchUs = g_watchQueryUs.load();

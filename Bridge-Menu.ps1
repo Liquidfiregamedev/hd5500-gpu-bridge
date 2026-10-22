@@ -1,5 +1,5 @@
 ﻿# HD5500 GPU Bridge menu.
-# v13.19: first graphical menu. v13.29: lavapipe reference. v13.43: auto-close. v13.50: laptop speed/heat.
+# v13.19: first graphical menu. v13.83: Local build page. v13.84: tick-box switch editor. v13.85: presets. v13.29: lavapipe reference. v13.43: auto-close. v13.50: laptop speed/heat.
 # v13.54: redesigned: dark mode (default; Light/Dark toggle remembered in Bridge-Menu.settings.json),
 #         sidebar navigation (Home, Play, Tests, Diagnostics, Laptop health, Results, Options, Help),
 #         every action shows a one-line description, and an explanation panel at the bottom shows the
@@ -342,6 +342,91 @@ Add-Action $pHeat 'Game Bar recording off' 'Stops Windows recording games in the
 Add-Action $pHeat 'Game Bar recording: undo' 'Restores the Game Bar values from before.' 'Puts the two Game Bar values back exactly as they were before "Game Bar recording off".' { Start-Tweak 'GameBarOn' 'Restore the Game Bar settings as they were before?' } | Out-Null
 
 # ---------- Results ----------
+# v13.84: tick-box editor for local\local-env.txt (adds/removes the leading # of KEY=VALUE lines; nothing else changes).
+function Show-LocalSwitches {
+    $path = Join-Path $script:localDir 'local-env.txt'
+    if (-not (Test-Path -LiteralPath $path)) { $script:status.Text = 'local\local-env.txt not found.'; return }
+    $lines = [Collections.Generic.List[string]]([IO.File]::ReadAllLines($path))
+    $items = New-Object Collections.Generic.List[object]
+    $lastComment = ''
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        $t = $lines[$i]
+        if ($t -match '^\s*(#?)((RW_LOCAL_|RW_OPT_|RW_GPU_|DOTNET_|WAYLITH_)[A-Za-z0-9_]+)=(.*)$') {
+            $label = $Matches[2] + '=' + $Matches[4]
+            if ($lastComment) { $label += '   - ' + $lastComment }
+            $items.Add([pscustomobject]@{ Index = $i; On = ($Matches[1] -eq ''); Label = $label; Key = $Matches[2] })
+            $lastComment = ''
+        } elseif ($t -match '^\s*#\s*([A-J][0-9]+\.\s*.*)$') { $lastComment = $Matches[1].Trim() }
+        elseif ($t -match '^\s*#\s{2,}') { }
+        else { $lastComment = '' }
+    }
+    $f = New-Object System.Windows.Forms.Form
+    $f.Text = 'Local build switches (ticked = on)'; $f.Width = 980; $f.Height = 640; $f.StartPosition = 'CenterParent'
+    $list = New-Object System.Windows.Forms.CheckedListBox
+    $list.Dock = 'Fill'; $list.CheckOnClick = $true; $list.HorizontalScrollbar = $true
+    foreach ($it in $items) { [void]$list.Items.Add($it.Label, $it.On) }
+    # v13.85: presets - one click ticks a ready-made test set (Save still required).
+    $base = @('RW_LOCAL_GPU_PROFILE','RW_LOCAL_TICK_BUDGET_MS','RW_LOCAL_PERF_HUD','RW_LOCAL_PERF_CSV')
+    $presets = [ordered]@{
+        '1. Baseline: local defaults + HUD/CSV' = $base
+        '2. + simulation caches (TPS)' = $base + @('RW_LOCAL_TPS_CACHES')
+        '3. + lighter interface' = $base + @('RW_LOCAL_TEXT_CACHE','RW_LOCAL_ALERTS_MINI','RW_LOCAL_COLONISTBAR_ICONS','RW_LOCAL_GIZMO_CACHE','RW_LOCAL_PAWN_LABEL_ZOOM','RW_LOCAL_HIDE_UI')
+        '4. + fewer effects' = $base + @('RW_LOCAL_FLECK_CULL','RW_LOCAL_FLECK_CAP','RW_LOCAL_MOTE_QUANT','RW_LOCAL_FALLCOLOR_CACHE','RW_LOCAL_WEATHER_MESH_FRAMES')
+        '5. + extra simulation throttles' = $base + @('RW_LOCAL_PAWN_TICK_FLOOR','RW_LOCAL_FAILCHECK_THROTTLE','RW_LOCAL_ROOM_STATS_THROTTLE','RW_LOCAL_TURRET_IDLE','RW_LOCAL_PLAYLOG_CAP','RW_LOCAL_STEAL_VALUE_CACHE')
+        '6. + faster loading' = $base + @('RW_LOCAL_LAZY_SECTIONS','RW_LOCAL_LOAD_FPS','WAYLITH_NO_ASSET_PREFETCH')
+        '7. + Satori GC (experimental)' = $base + @('RW_LOCAL_SATORI_GC')
+        '8. + zoom limit and no shadows (looks different)' = $base + @('RW_OPT_MAX_ZOOM','RW_LOCAL_NO_SHADOWS')
+        '9. All safe tweaks together (2-6)' = $base + @('RW_LOCAL_TPS_CACHES','RW_LOCAL_TEXT_CACHE','RW_LOCAL_ALERTS_MINI','RW_LOCAL_COLONISTBAR_ICONS','RW_LOCAL_GIZMO_CACHE','RW_LOCAL_PAWN_LABEL_ZOOM','RW_LOCAL_HIDE_UI','RW_LOCAL_FLECK_CULL','RW_LOCAL_FLECK_CAP','RW_LOCAL_MOTE_QUANT','RW_LOCAL_FALLCOLOR_CACHE','RW_LOCAL_WEATHER_MESH_FRAMES','RW_LOCAL_PAWN_TICK_FLOOR','RW_LOCAL_FAILCHECK_THROTTLE','RW_LOCAL_ROOM_STATS_THROTTLE','RW_LOCAL_TURRET_IDLE','RW_LOCAL_PLAYLOG_CAP','RW_LOCAL_STEAL_VALUE_CACHE','RW_LOCAL_LAZY_SECTIONS','RW_LOCAL_LOAD_FPS','WAYLITH_NO_ASSET_PREFETCH')
+        '0. Everything off' = @()
+    }
+    $top = New-Object System.Windows.Forms.FlowLayoutPanel; $top.Dock = 'Top'; $top.Height = 40
+    $plabel = New-Object System.Windows.Forms.Label; $plabel.Text = 'Preset:'; $plabel.AutoSize = $true; $plabel.Padding = '0,8,0,0'
+    $combo = New-Object System.Windows.Forms.ComboBox; $combo.DropDownStyle = 'DropDownList'; $combo.Width = 420
+    foreach ($k in $presets.Keys) { [void]$combo.Items.Add($k) }
+    $apply = New-Object System.Windows.Forms.Button; $apply.Text = 'Tick this preset'; $apply.Width = 150; $apply.Height = 28
+    $apply.Add_Click({
+        if ($combo.SelectedIndex -lt 0) { return }
+        $want = $presets[$combo.SelectedItem]
+        for ($k = 0; $k -lt $items.Count; $k++) {
+            $key = $items[$k].Key
+            $on = ($want -contains $key) -and -not ($key -eq 'RW_LOCAL_TPS_EXCLUDE')
+            $list.SetItemChecked($k, $on)
+        }
+    })
+    $top.Controls.AddRange(@($plabel, $combo, $apply))
+    $bar = New-Object System.Windows.Forms.FlowLayoutPanel; $bar.Dock = 'Bottom'; $bar.Height = 44; $bar.FlowDirection = 'RightToLeft'
+    $save = New-Object System.Windows.Forms.Button; $save.Text = 'Save'; $save.Width = 110; $save.Height = 32
+    $cancel = New-Object System.Windows.Forms.Button; $cancel.Text = 'Cancel'; $cancel.Width = 110; $cancel.Height = 32
+    $hint = New-Object System.Windows.Forms.Label; $hint.AutoSize = $true; $hint.Padding = '0,10,20,0'; $hint.Text = 'Pick a preset, press Tick this preset, then Save. Run presets 2-8 one at a time and compare with 1. Applies to the next game/test started from the Local build page.'
+    $save.Add_Click({
+        for ($k = 0; $k -lt $items.Count; $k++) {
+            $idx = $items[$k].Index
+            $body = $lines[$idx] -replace '^\s*#?\s*', ''
+            $lines[$idx] = $(if ($list.GetItemChecked($k)) { $body } else { '#' + $body })
+        }
+        [IO.File]::WriteAllLines($path, $lines)
+        $script:status.Text = 'Local switches saved (' + @($items | Where-Object { $true }).Count + ' listed).'
+        $f.Close()
+    })
+    $cancel.Add_Click({ $f.Close() })
+    $bar.Controls.AddRange(@($save, $cancel, $hint))
+    $f.Controls.Add($list); $f.Controls.Add($top); $f.Controls.Add($bar)
+    [void]$f.ShowDialog()
+}
+# v13.83: private local build (..\local next to this folder; never part of the public package). Page only shown when it exists.
+$script:localDir = Join-Path (Split-Path -Parent $script:root) 'local'
+if (Test-Path -LiteralPath (Join-Path $script:localDir 'local-env.txt')) {
+    $ld = '"' + $script:localDir + '"'
+    $pLocal = New-Page 'local' 'Local build' 'Private local build' 'Your own extra tweaks (local\local-env.txt + the private mod "HD5500 Local Tweaks"). Every switch is off until you remove the # in front of its line. Change one thing per speed test and compare with the normal Speed test. For normal play, enable "HD5500 Local Tweaks (private)" once in the game''s mod list; test runs load it automatically.'
+    Add-Action $pLocal 'Play (local build)' 'Normal play with your local switches.' 'Starts RimWorld through the bridge with the switches from local\local-env.txt (and the private mod, if enabled in the mod list).' { Start-Launcher 'Play (local)' ('-QuickStart -SwapchainImages 1 -LocalDir ' + $ld) '' 'play local' } $true | Out-Null
+    Add-Action $pLocal 'Speed test (local build, 5 min)' 'Unattended quicktest map with your local switches.' 'The same 5-minute speed test as on the Tests page, but with the local switches and the private mod loaded. Compare its summary with a normal Speed test.' { Start-Launcher 'Speed test (local)' ('-QuickStart -SwapchainImages 1 -AutoCloseSeconds 300 -LocalDir ' + $ld) '-quicktest' 'speed test local' } $true | Out-Null
+    Add-Action $pLocal 'Quicktest map (local build)' 'Starts straight into the test map with your local switches.' 'Opens the developer quicktest map with the local switches; you play/look around yourself. Good for checking how a switch looks (HUD with F11 if RW_LOCAL_PERF_HUD=1).' { Start-Launcher 'Quicktest (local)' ('-QuickStart -SwapchainImages 1 -LocalDir ' + $ld) '-quicktest' 'quicktest local' } | Out-Null
+    Add-Action $pLocal 'Switch tweaks on/off' 'Tick boxes for every switch in local-env.txt.' 'Opens a list of all local switches with a tick box each (ticked = on). Save writes local-env.txt for you (it only adds or removes the # in front of a line). Values such as 25 or 80 can be changed with Edit local switches.' { Show-LocalSwitches } $true | Out-Null
+    Add-Action $pLocal 'Edit local switches' 'Opens local\local-env.txt in Notepad.' 'All local switches with an explanation per line. Remove the # in front of a line to switch it on, put it back to switch it off. Save, then start a game or test from this page.' { Open-Text (Join-Path $script:localDir 'local-env.txt') 'local\local-env.txt not found.' } | Out-Null
+    Add-Action $pLocal 'Read: what each switch does' 'Opens local\README-LOCAL.md.' 'Background for every switch: where it comes from in the game code, what it changes and its side effects.' { Open-Text (Join-Path $script:localDir 'README-LOCAL.md') 'local\README-LOCAL.md not found.' } | Out-Null
+    Add-Action $pLocal 'Open the performance CSV folder' 'Where RW_LOCAL_PERF_CSV writes one line per second.' 'Opens the reports folder (the default target of RW_LOCAL_PERF_CSV in local-env.txt). Each run with the CSV switch on writes perf-<date>.csv there.' { Start-Process explorer.exe (Join-Path $script:root 'reports') } | Out-Null
+}
+
 $pRes = New-Page 'results' 'Results' 'Results' 'Every run writes a folder in "reports" and a short summary. These buttons open the latest ones.'
 Add-Action $pRes 'Latest run summary' 'Frame rate, 1%/0.1% lows, stutters, problems found.' 'Opens reports\LATEST-SUMMARY.txt: game and bridge errors, frame-time statistics (average, 1% low, 0.1% low, percentiles, stutters, missed refreshes), CPU speed and the bridge performance digest.' { Open-Text (Join-Path $script:reports 'LATEST-SUMMARY.txt') 'No summary yet - run a game or test first.' } $true | Out-Null
 Add-Action $pRes 'Latest self-test' 'Pass/fail per test picture, both GPUs.' 'Opens reports\LATEST-SELFTEST.txt with one line per test picture for the HD 5500 and WARP. Lines ending in "-old" are proof runs and are expected to show the old bug.' { Open-Text (Join-Path $script:reports 'LATEST-SELFTEST.txt') 'No self-test yet.' } | Out-Null

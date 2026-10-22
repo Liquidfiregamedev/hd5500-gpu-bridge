@@ -30,7 +30,7 @@ function Get-GpuKind([string]$name) {
     elseif ($name -match 'AMD|ATI|Radeon') {
         if ($name -match 'Radeon HD [2-4]\d{3}\b|Radeon X\d') { $kind = 'too-old'; $advice = 'Too old for RimWorld 1.7 (no Direct3D 11). The bridge cannot help.' }
         elseif ($name -match 'Radeon HD [56]\d{3}\b|Radeon HD 7[3-6]\d{2}\b') { $kind = 'bridge'; $advice = 'This Radeon (TeraScale) has no Vulkan driver: the bridge should work (untested - please report).' }
-        else { $kind = 'native'; $advice = 'This Radeon has Vulkan: RimWorld 1.7 should run without the bridge. Radeon HD 7000/R7/R9 200-300 (GCN 1-3): AMD "Legacy" driver 22.6.1 is the last one - older OEM drivers are known to show wrong sprite sizes.' }
+        else { $kind = 'native'; $advice = 'This Radeon has Vulkan: RimWorld 1.7 should run without the bridge. Radeon HD 7000/R7/R9 200-300 (GCN 1-3): AMD "Legacy" driver 22.6.1 is the last one - older OEM drivers are known to show wrong sprite sizes. Newer Radeons (e.g. RX 9070 XT, driver 26.10.1) draw items as only their top-left corner in 1.7.4984: community fix RimWorldAMDFix (github.com/RevenantBob/RimWorldAMDFix, a Vulkan layer that redoes one BC7 atlas copy).' }
     }
     [pscustomobject]@{ Kind = $kind; Advice = $advice }
 }

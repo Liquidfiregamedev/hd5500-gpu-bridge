@@ -36,6 +36,12 @@ Open `SUMMARY.txt`. The important lines:
 - **Game errors/warnings** — the game's own complaints with mod-metadata noise removed. `[VALIDATION]` lines come from the bridge rejecting something.
 - **Frame diagnostics** — for each saved frame: how much of the screen is non-black and the average colour. A frame with 0% non-black is a black screen.
 
+## Descriptor-set recycling (v13.81)
+If textures or colours look wrong somewhere after v13.81, add `RW_GPU_SET_RECYCLE=0` to `experiment-env.txt` and compare. The run log `[RW-GPU-SETS]` line shows sets recycled versus newly built.
+
+## Private local build (v13.78)
+`..\local\Play-Local.cmd` / `Speedtest-Local.cmd` start this launcher with `-LocalDir`. Settings are in `local\local-env.txt` (`RW_LOCAL_*`). Check the run log for `LOCAL:` lines and Player.log for `[HD5500-LOCAL]` and `HardwareProfile: loaded cached`. Without `-LocalDir` the launcher ignores the local folder completely.
+
 ## Other Vulkan driver (v13.77)
 Menu → Diagnostics → **Compare: other Vulkan driver**, or `Launch-HD5500-GPU.ps1 -QuickStart -AltIcd "C:\mesa\x64\dzn_icd.x86_64.json" -GameArguments "-quicktest"`. Runs the game on that driver instead of the bridge (nothing installed). On the HD 5500 Mesa Dozen will probably refuse to start (D3D12 binding tier 1); the report says why. Useful on PCs with D3D12 tier 2+ but a broken Vulkan driver.
 

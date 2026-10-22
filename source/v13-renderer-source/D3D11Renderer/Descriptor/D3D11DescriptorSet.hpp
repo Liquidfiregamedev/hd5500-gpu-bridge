@@ -27,6 +27,8 @@ namespace ashes::D3D11_NAMESPACE
 
 		void update( VkWriteDescriptorSet const & write );
 		void update();
+		// v13.81: forget all writes so the set can be handed out again (same layout).
+		bool recycle();
 
 		VkDescriptorSetLayout getLayout()const
 		{
