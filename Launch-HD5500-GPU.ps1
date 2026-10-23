@@ -299,7 +299,7 @@ try {
         if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { throw ('Missing ' + $file + '. Extract the whole ZIP to a separate folder.') }
     }
     Write-Host ('Renderer SHA256: ' + (Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash)
-    if ((Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash -ne 'F4BEF519E2F667C6C6D4C6D3235F3BC979EB63EB8819BA2B954467ABA62428C8') { throw 'Renderer hash differs from this v13.86 release. Re-extract the whole ZIP; do not mix revisions.' }
+    if ((Get-FileHash -LiteralPath $backend -Algorithm SHA256).Hash -ne 'F4BEF519E2F667C6C6D4C6D3235F3BC979EB63EB8819BA2B954467ABA62428C8') { throw 'Renderer hash differs from this v13.87 release. Re-extract the whole ZIP; do not mix revisions.' }
     # Local byte-identical copy of the user's existing loader; no Windows file changes.
     Copy-Item -LiteralPath $system -Destination $loaderCopy -Force
     if ((Get-FileHash -LiteralPath $system).Hash -ne (Get-FileHash -LiteralPath $loaderCopy).Hash) { throw 'Local original-loader copy verification failed.' }

@@ -1,8 +1,13 @@
-# FIX RIMWORLD — handoff (updated 2026-10-21, v13.81)
+# FIX RIMWORLD — handoff (updated 2026-10-22, v13.87)
 
 Goal: run RimWorld 1.7 (Waylith engine, .NET 10, Vulkan) on a laptop with an Intel HD 5500 (Windows 10, no native Vulkan driver), via the "HD5500 GPU Bridge": a Vulkan 1.0 ICD built from Ashes' D3D11 backend (`ashesD3D11Renderer.dll`) plus a compat loader proxy. v1–v13.2 came from Manus; v13.3 onward is Claude work. Design goal added by the user: the bridge must stay reusable for other pre-Vulkan GPUs (Haswell/Ivy Bridge Intel, pre-GCN AMD, Fermi), so capability checks are asked of the driver at run time, never hard-coded for the HD 5500.
 
 **Read `CHANGELOG-HD5500-BRIDGE.md` (project doc `claude/CHANGELOG-HD5500-BRIDGE.md`) for the per-version record.** This file is the operational guide.
+
+## Status v13.87 (22 Oct)
+- Local mod v0.8 adds section K (8 switches from community mods, menu presets A/B); harness OK on 1.7.4984, laptop test pending.
+- Bridge: v13.86 measuring build; next is deferred draw-time binding toward 1.0 ms/frame (needs per-pipeline slot masks).
+- Next mod candidates: standing-still pawn skip, hediff tick plan, construction early-out, merge index, alert registry, XML def cache for loading.
 
 ## Target hardware
 Lenovo Z70-80 · Win10 Pro 22H2 (19045) · i5-5200U (2C/4T) · HD 5500 (DEV_1616, driver 20.19.15.5171, D3D11 FL 11_1, D3D12 SM 5.1 / binding tier 1) · 16 GB DDR3L · 256 GB SSD (C: nearly full; keep deploys small) · external 1920×1200 display. The game window is 1920×1080 windowed.

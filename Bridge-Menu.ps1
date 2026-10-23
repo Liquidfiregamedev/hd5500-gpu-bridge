@@ -1,5 +1,5 @@
 ﻿# HD5500 GPU Bridge menu.
-# v13.19: first graphical menu. v13.83: Local build page. v13.84: tick-box switch editor. v13.85: presets. v13.29: lavapipe reference. v13.43: auto-close. v13.50: laptop speed/heat.
+# v13.19: first graphical menu. v13.83: Local build page. v13.84: tick-box switch editor. v13.85: presets. v13.87: presets A/B (local v0.8). v13.29: lavapipe reference. v13.43: auto-close. v13.50: laptop speed/heat.
 # v13.54: redesigned: dark mode (default; Light/Dark toggle remembered in Bridge-Menu.settings.json),
 #         sidebar navigation (Home, Play, Tests, Diagnostics, Laptop health, Results, Options, Help),
 #         every action shows a one-line description, and an explanation panel at the bottom shows the
@@ -356,7 +356,7 @@ function Show-LocalSwitches {
             if ($lastComment) { $label += '   - ' + $lastComment }
             $items.Add([pscustomobject]@{ Index = $i; On = ($Matches[1] -eq ''); Label = $label; Key = $Matches[2] })
             $lastComment = ''
-        } elseif ($t -match '^\s*#\s*([A-J][0-9]+\.\s*.*)$') { $lastComment = $Matches[1].Trim() }
+        } elseif ($t -match '^\s*#\s*([A-Z][0-9]+\.\s*.*)$') { $lastComment = $Matches[1].Trim() }
         elseif ($t -match '^\s*#\s{2,}') { }
         else { $lastComment = '' }
     }
@@ -376,7 +376,9 @@ function Show-LocalSwitches {
         '6. + faster loading' = $base + @('RW_LOCAL_LAZY_SECTIONS','RW_LOCAL_LOAD_FPS','WAYLITH_NO_ASSET_PREFETCH')
         '7. + Satori GC (experimental)' = $base + @('RW_LOCAL_SATORI_GC')
         '8. + zoom limit and no shadows (looks different)' = $base + @('RW_OPT_MAX_ZOOM','RW_LOCAL_NO_SHADOWS')
-        '9. All safe tweaks together (2-6)' = $base + @('RW_LOCAL_TPS_CACHES','RW_LOCAL_TEXT_CACHE','RW_LOCAL_ALERTS_MINI','RW_LOCAL_COLONISTBAR_ICONS','RW_LOCAL_GIZMO_CACHE','RW_LOCAL_PAWN_LABEL_ZOOM','RW_LOCAL_HIDE_UI','RW_LOCAL_FLECK_CULL','RW_LOCAL_FLECK_CAP','RW_LOCAL_MOTE_QUANT','RW_LOCAL_FALLCOLOR_CACHE','RW_LOCAL_WEATHER_MESH_FRAMES','RW_LOCAL_PAWN_TICK_FLOOR','RW_LOCAL_FAILCHECK_THROTTLE','RW_LOCAL_ROOM_STATS_THROTTLE','RW_LOCAL_TURRET_IDLE','RW_LOCAL_PLAYLOG_CAP','RW_LOCAL_STEAL_VALUE_CACHE','RW_LOCAL_LAZY_SECTIONS','RW_LOCAL_LOAD_FPS','WAYLITH_NO_ASSET_PREFETCH')
+        '9. All safe tweaks together (2-6 + A)' = $base + @('RW_LOCAL_TPS_CACHES','RW_LOCAL_TEXT_CACHE','RW_LOCAL_ALERTS_MINI','RW_LOCAL_COLONISTBAR_ICONS','RW_LOCAL_GIZMO_CACHE','RW_LOCAL_PAWN_LABEL_ZOOM','RW_LOCAL_HIDE_UI','RW_LOCAL_FLECK_CULL','RW_LOCAL_FLECK_CAP','RW_LOCAL_MOTE_QUANT','RW_LOCAL_FALLCOLOR_CACHE','RW_LOCAL_WEATHER_MESH_FRAMES','RW_LOCAL_PAWN_TICK_FLOOR','RW_LOCAL_FAILCHECK_THROTTLE','RW_LOCAL_ROOM_STATS_THROTTLE','RW_LOCAL_TURRET_IDLE','RW_LOCAL_PLAYLOG_CAP','RW_LOCAL_STEAL_VALUE_CACHE','RW_LOCAL_LAZY_SECTIONS','RW_LOCAL_LOAD_FPS','WAYLITH_NO_ASSET_PREFETCH','RW_LOCAL_MARKET_MEMO','RW_LOCAL_SOLAR_CACHE','RW_LOCAL_TEMP_CACHE','RW_LOCAL_MUSIC_SKIP','RW_LOCAL_NO_SLEEP_Z','RW_LOCAL_FLOATMENU_FRAMES','RW_LOCAL_ADAPTIVE_BUDGET')
+        'A. + community ideas (v0.8)' = $base + @('RW_LOCAL_MARKET_MEMO','RW_LOCAL_SOLAR_CACHE','RW_LOCAL_TEMP_CACHE','RW_LOCAL_MUSIC_SKIP','RW_LOCAL_NO_SLEEP_Z','RW_LOCAL_FLOATMENU_FRAMES','RW_LOCAL_ADAPTIVE_BUDGET')
+        'B. + stat re-use (v0.8, experimental)' = $base + @('RW_LOCAL_STAT_STALE')
         '0. Everything off' = @()
     }
     $top = New-Object System.Windows.Forms.FlowLayoutPanel; $top.Dock = 'Top'; $top.Height = 40

@@ -2,6 +2,21 @@
 
 Running record per version. Newest first. "Status" is what was verified where: *emu* = my Wine/D3D11 harness (`smoke.c`, 6 modes), *laptop* = the user's Lenovo Z70-80 (HD 5500, Win10).
 
+## v13.87 (2026-10-22) — local build v0.8: ideas from community performance mods
+- **Research:** Steam and GitHub sweep in English, Chinese, Russian, Korean and Japanese (FreePerformance, ColonyScale, Performance Plus, FPS+/RimThreaded Continued, Hard RimWorld Optimization, Float Menu Optimizer, Adaptive TPS, DefLoadCache, RimMT and others). Each idea was checked against the 1.7.4984 decompile. Several are already in vanilla 1.7 (reachability cache, gas early-out, designation cache) or already in our build. Ideas were re-implemented; no code was copied.
+- **Local mod v0.8, section K** (all off by default; menu presets **A** and **B**):
+  - K1 `RW_LOCAL_MARKET_MEMO`: item base values memoized (exact).
+  - K2 `RW_LOCAL_SOLAR_CACHE`: solar roof factor cached until a roof changes (exact).
+  - K3 `RW_LOCAL_TEMP_CACHE`: comfortable temperature range per pawn, 60 ticks.
+  - K4 `RW_LOCAL_MUSIC_SKIP`: no instrument search when no instrument is played (exact).
+  - K5 `RW_LOCAL_NO_SLEEP_Z`: no sleep Z effects.
+  - K6 `RW_LOCAL_FLOATMENU_FRAMES`: right-click menu rebuild rate.
+  - K7 `RW_LOCAL_ADAPTIVE_BUDGET`: smaller tick budget while the player gives input.
+  - K8 `RW_LOCAL_STAT_STALE` (experimental): pawn stat re-use up to N ticks.
+- **Menu:** presets A (community ideas) and B (stat re-use); preset 9 now includes A.
+- **Status:** all 10 patch targets apply against the 1.7.4984 DLLs in the harness (float-menu constant found exactly once). Laptop test pending.
+- **Next candidates** (not yet built): standing-still pawn tick skip, hediff tick plan, construction delivery early-out, same-def merge index, alert skip registry, DefLoadCache-style XML cache for loading.
+
 ## v13.86 (2026-10-22) — measuring build for the 1.0 ms goal; v13.75 switches stay off
 - **Result of the A/B on game 1.7.4984.** With the v13.75 static uniform ring and the content key without UBO offsets switched back on, the content fast path hit only 12% of binds (341k of 2.9M). The ring copied 2.2M windows with one large Map per command buffer: about 9 uploads per frame at roughly 56 µs each. Even before the laptop throttled (from about 3.5 min, CPU down to 22%), the bridge measured 2.3 µs per draw against 1.3 µs in the baseline. These numbers come from the 22:53 speed test; the throttling and the different random map make it uncertain, but the switches don't help here. Both stay off in `experiment-env.txt`, and the baseline (1.4 ms) stays the reference.
 - **Profiler lines** `[RW-GPU-PROF]` now print the per-command and bind-category times with 2–3 decimals instead of whole milliseconds, so the next run shows where the 1.5 µs per descriptor-set bind goes: textures/samplers, buffers, dynamic buffers or storage buffers.
